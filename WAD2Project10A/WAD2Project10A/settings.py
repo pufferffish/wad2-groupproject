@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'OnlyPics',
+    'microsoft_auth',
 ]
 
 MIDDLEWARE = [
@@ -63,6 +64,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'microsoft_auth.context_processors.microsoft',
             ],
         },
     },
@@ -100,6 +102,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'microsoft_auth.backends.MicrosoftAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend'
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -119,3 +125,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# These tokens are specifically used for OnlyPics, get your own token for other projects
+MICROSOFT_AUTH_CLIENT_ID = '9d19e17e-b922-4e76-ad08-f8ae253cb0af'
+MICROSOFT_AUTH_CLIENT_SECRET = 'smm7Q~SL3rAperMUBxrYUyymNfZfgbtWxBoBF'
+
+# Microsoft Accounts
+MICROSOFT_AUTH_LOGIN_TYPE = 'ma'
