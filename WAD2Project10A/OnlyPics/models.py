@@ -54,3 +54,16 @@ class Picture(models.Model):
 
     def __str__(self):
         return self.name
+
+class Comment(models.Model):
+    # The user who made the comment
+    owner = models.ForeignKey(UserInfo, on_delete=models.CASCADE)
+    # The picture which the comment is made on
+    picture = models.ForeignKey(Picture, on_delete=models.CASCADE)
+    # The content of the comment
+    text = models.TextField()
+    # The time when the comment is made
+    made_at = models.DateTimeField()
+
+    def __str__(self):
+        f"{str(self.owner)}: {str(self.text)}"
