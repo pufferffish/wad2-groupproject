@@ -44,9 +44,6 @@ class Picture(models.Model):
     # Store the tags in such format: 'tag1;tag2;tag3;'
     # It's a workaround since django with sqlite doesn't support storing array
     tags = models.TextField()
-    # upvotes / downvotes (likes / dislikes)
-    upvote = models.PositiveIntegerField(default = 0)
-    downvote = models.PositiveIntegerField(default = 0)
     # when the picture was first created
     createdAt = models.DateTimeField()
     # The uploaded picture
@@ -54,6 +51,17 @@ class Picture(models.Model):
 
     def __str__(self):
         return self.name
+
+class PictureVotes(models.Model):
+    # The user who casted the vote
+    user = models.ForeignKey(UserInfo, on_delete=models.CASCADE)
+    # The picture which the vote is casted on
+    picture = models.ForeignKey(Picture, on_delete=models.CASCADE)
+    # Whether the vote is positive (a like) or negative (a dislike)
+    positive = models.BooleanField()
+
+    class Meta:
+        unique_together = [ 'user', 'picture' ]
 
 class Comment(models.Model):
     # The user who made the comment
