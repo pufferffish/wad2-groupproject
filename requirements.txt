@@ -10,3 +10,4 @@ requests==2.22.0
 six==1.12.0
 urllib3==1.25.3
 django_microsoft_auth==2.4.1
+django-resized==0.3.11

@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from django.contrib import admin
+from OnlyPics.models import UserInfo, Picture
+
+admin.site.register(UserInfo)
+admin.site.register(Picture)
+
