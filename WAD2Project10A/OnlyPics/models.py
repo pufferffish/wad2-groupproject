@@ -5,13 +5,15 @@ from django.contrib.auth.models import User
 class UserInfo(models.Model):
     # The underlying django user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # The actual username, since user.username is the microsoft email
+    username = models.CharField(max_length=32)
     # The amount of tokens / money the user have
     tokens = models.PositiveIntegerField(default = 0)
     # The profile picture
     pfp = models.ImageField(upload_to='profile_images', blank=True)
 
     def __str__(self):
-        return self.user.username
+        return self.username
 
 class Picture(models.Model):
     # The owner of the picture
@@ -24,7 +26,7 @@ class Picture(models.Model):
     # The tags / categories which the picture belong to
     # Store the tags in such format: 'tag1;tag2;tag3;'
     # It's a workaround since django with sqlite doesn't support storing array
-    tags = models.CharField(max_length=256)
+    tags = models.TextField()
     # upvotes / downvotes (likes / dislikes)
     upvote = models.PositiveIntegerField(default = 0)
     downvote = models.PositiveIntegerField(default = 0)
