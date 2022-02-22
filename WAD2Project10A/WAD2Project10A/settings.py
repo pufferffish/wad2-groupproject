@@ -133,3 +133,5 @@ MICROSOFT_AUTH_CLIENT_SECRET = 'smm7Q~SL3rAperMUBxrYUyymNfZfgbtWxBoBF'
 
 # Microsoft Accounts
 MICROSOFT_AUTH_LOGIN_TYPE = 'ma'
+
+LOGIN_URL = 'microsoft_auth:to-auth-redirect'
