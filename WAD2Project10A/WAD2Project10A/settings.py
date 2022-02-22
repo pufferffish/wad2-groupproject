@@ -25,7 +25,7 @@ SECRET_KEY = 'hjcrbda*)*!q)e1im_#14seqqyj%q4v+h#k7mug6r32js5@i-+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 'localhost', 'example.com' ]
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'OnlyPics',
     'microsoft_auth',
 ]
