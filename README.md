@@ -4,6 +4,10 @@ The Microsoft OAuth mechanism requires setting some variable in the sites framew
 Run the content of [this script](WAD2Project10A/django_setup.py) in `python3 manage.py shell`
 before testing anything.
 
+To test the login mechanism, goto [/microsoft/to-auth-redirect/](http://localhost:8000/microsoft/to-auth-redirect/),
+it should redirect you to Microsoft login site. use [/onlypics/whoami](http://localhost:8000/onlypics/whoami) to test if it works.
+
+
 Project Idea:
     --> A site where which we can upload and sell images;
     --> ...

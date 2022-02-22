@@ -132,4 +132,5 @@ dmypy.json
 .idea/
 
 # Django migrations
-onlypics/migrations/
+migrations/
+
