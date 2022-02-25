@@ -32,6 +32,18 @@ class UserInfo(models.Model):
     def __str__(self):
         return self.nickname
 
+class Category(models.Model):
+    # name of the category
+    name = models.CharField(max_length=255)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['name'], name='unique_name'),
+        ]
+
+    def __str__(self):
+        return self.name
+
 class Picture(models.Model):
     # The owner of the picture
     owner = models.ForeignKey(UserInfo, on_delete=models.CASCADE)
@@ -43,7 +55,7 @@ class Picture(models.Model):
     # The tags / categories which the picture belong to
     # Store the tags in such format: 'tag1;tag2;tag3;'
     # It's a workaround since django with sqlite doesn't support storing array
-    tags = models.TextField()
+    tags = models.ForeignKey(Category, on_delete=models.CASCADE)
     # when the picture was first created
     createdAt = models.DateTimeField()
     # The uploaded picture
