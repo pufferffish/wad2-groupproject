@@ -1,0 +1,10 @@
+/home
+/about
+/explore
+/explore/category/category_name
+/account
+/account/edit
+/account/add_tokens
+/sell
+/microsoft/to-auth-redirect
+/logout
