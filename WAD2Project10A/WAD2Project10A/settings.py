@@ -25,7 +25,7 @@ SECRET_KEY = 'hjcrbda*)*!q)e1im_#14seqqyj%q4v+h#k7mug6r32js5@i-+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'localhost', 'example.com' ]
+ALLOWED_HOSTS = [ 'localhost', 'example.com', 'wad2.lvh.me' ]
 
 
 # Application definition
@@ -54,10 +54,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'WAD2Project10A.urls'
 
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            TEMPLATE_DIR,
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,6 +134,7 @@ STATIC_URL = '/static/'
 # These tokens are specifically used for OnlyPics, get your own token for other projects
 MICROSOFT_AUTH_CLIENT_ID = '9d19e17e-b922-4e76-ad08-f8ae253cb0af'
 MICROSOFT_AUTH_CLIENT_SECRET = 'smm7Q~SL3rAperMUBxrYUyymNfZfgbtWxBoBF'
+HCAPTCHA_SECRET_KEY = '0xF793f9B1FbFEeE0bdA87B73eD2ABB8bD3180341B'
 
 # Microsoft Accounts
 MICROSOFT_AUTH_LOGIN_TYPE = 'ma'

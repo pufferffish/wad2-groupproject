@@ -1,11 +1,13 @@
 # READ THIS
 
+**Please use [wad2.lvh.me](http://wad2.lvh.me:8000/) instead of localhost or 127.0.0.1 and port 8000 when testing locally so captcha would work.**
+
 The Microsoft OAuth mechanism requires setting some variable in the sites framework.
 Run the content of [this script](WAD2Project10A/django_setup.py) in `python3 manage.py shell`
 before testing anything.
 
-To test the login mechanism, goto [/microsoft/to-auth-redirect/](http://localhost:8000/microsoft/to-auth-redirect/),
-it should redirect you to Microsoft login site. use [/onlypics/whoami](http://localhost:8000/onlypics/whoami) to test if it works.
+To test the login mechanism, goto [/microsoft/to-auth-redirect/](http://wad2.lvh.me:8000/microsoft/to-auth-redirect/),
+it should redirect you to Microsoft login site. use [/onlypics/whoami](http://wad2.lvh.me:8000/onlypics/whoami) to test if it works.
 
 
 Project Idea:

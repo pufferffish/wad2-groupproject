@@ -9,4 +9,5 @@ urlpatterns = [
     path("whoami", views.whoami, name="whoami"),
     path("edit_profile", views.edit_profile, name="edit_profile"),
     path("logout", views.logout_user, name="logout"),
+    path("vbucks", views.vbucks, name="vbucks"),
 ]

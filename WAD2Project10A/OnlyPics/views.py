@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
 from OnlyPics.models import UserInfo
+from OnlyPics.hcaptcha import verify_hcaptcha_request
 
 def index(request):
     return HttpResponse(
@@ -21,6 +22,14 @@ def whoami(request):
         return HttpResponse(f"You are {user_info.nickname}")
     except UserInfo.DoesNotExist:
         return HttpResponse("You are logged in but there's no profile of you")
+
+# hCaptcha testing
+def vbucks(request):
+    if request.method == 'POST':
+        verify_hcaptcha_request(request)
+        return HttpResponse("let it out")
+    else:
+        return render(request, 'onlypics/vbucks.html')
 
 @login_required
 def edit_profile(request):
