@@ -14,7 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -25,7 +25,7 @@ SECRET_KEY = 'hjcrbda*)*!q)e1im_#14seqqyj%q4v+h#k7mug6r32js5@i-+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'localhost', 'example.com' ]
+ALLOWED_HOSTS = [ 'localhost', 'example.com', '127.0.0.1']
 
 
 # Application definition
@@ -75,6 +75,7 @@ TEMPLATES = [
     },
 ]
 
+STATICFILES_DIRS = [STATIC_DIR, ]
 WSGI_APPLICATION = 'WAD2Project10A.wsgi.application'
 
 
@@ -108,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'microsoft_auth.backends.MicrosoftAuthenticationBackend',
+    #'microsoft_auth.backends.MicrosoftAuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend'
 ]
 

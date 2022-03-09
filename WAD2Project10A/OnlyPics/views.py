@@ -13,12 +13,16 @@ def index(request):
             But I'm afraid you've been misinformed.
             """)
 
+# testing purposes only
+def base(request):
+    return render(request, 'OnlyPics/base.html')
+
 def whoami(request):
     if not request.user.is_authenticated:
         return HttpResponse(f"You are not logged in")
     user = request.user
     try:
-        user_info = UserInfo.objects.get(user = user)
+        user_info = UserInfo.objects.get_or_create(user=user, tokens=50)[0]
         return HttpResponse(f"You are {user_info.nickname}")
     except UserInfo.DoesNotExist:
         return HttpResponse("You are logged in but there's no profile of you")
@@ -41,3 +45,4 @@ def logout_user(request):
         return HttpResponse("You have logged out.")
     else:
         return HttpResponse("You have already logged out.")
+

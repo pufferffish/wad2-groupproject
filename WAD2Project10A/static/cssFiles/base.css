@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+html, body{
+    font-family: 'Nunito', sans-serif;
+}
+.navbarHeader{
+    background-color: #0f6797;
+}
+
+.navbarHeader p{
+    text-align: center;
+}
+
+.navbar {
+    background-color: #17394E;
+}
+.navbarBtns {
+    list-style-type: none;
+    background-color: #17394E;
+    overflow: hidden;
+}
+.navbarBtns li{
+    display: inline;
+    background-color: #17394E;
+    color: white;
+    padding: 10px;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.navbarBtns a{
+    display: inline;
+    background-color: #17394E;
+    color: white;
+    padding: 10px;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+.footer {
+    background-color: #0f6797;
+    font-size: 11px;
+}
+
+.aboutUsList, categoriesList{
+    list-style-type: none;
+    padding: 3px;
+    overflow: hidden;
+}
+
+.aboutUsList a, .categoryList a{
+    display: inline;
+    color: white;
+    overflow: hidden;
+    text-decoration: none;
+    text-size: 10px;
+}
+
+.OnlyPicsList {
+    display: inline;
+    font-size: 10px;
+}
+
+.OnlyPicsList a{
+    color: white;
+    text-decoration: none;
+}
