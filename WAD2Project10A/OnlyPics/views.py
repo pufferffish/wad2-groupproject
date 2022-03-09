@@ -13,6 +13,9 @@ def index(request):
             But I'm afraid you've been misinformed.
             """)
 
+def base(request):
+    return render(request, 'onlypics/base.html')
+
 def whoami(request):
     if not request.user.is_authenticated:
         return HttpResponse(f"You are not logged in")

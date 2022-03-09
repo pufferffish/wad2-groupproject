@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+html{
+    font-family: 'Nunito'
+}
+
+.navbarHeader, .footer {
+    background-color: #0f6797;
+}
+
+.navbarHeader p{
+    text-align: center;
+    font-size: 25px;
+}
+
+.footer{
+    font-size: 12px;
+    padding: 0px;
+}
+
+.navbarBtns li, .OnlyPicsList {
+    display: inline;
+}
+
+.navbarBtns a, .aboutUsList a {
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+}
+
+.categories, .OnlyPicsList a{
+    color: white;
+    text-decoration: none;
+}
+
+.categories, .aboutUsList{
+    list-style-type: none;
+}
