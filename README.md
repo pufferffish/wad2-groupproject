@@ -27,5 +27,3 @@ Initial Structure:
 
 Main Ideas:
     --> 
-
-.

@@ -1,0 +1,16 @@
+<html>
+  <head>
+    <title>hCaptcha Demo</title>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+  </head>
+  <body>
+    Click here to get free vbucks
+    <form action="" method="POST">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="YOU ARE NOT REAL"/>
+      <div class="h-captcha" data-sitekey="ec1c9032-3b4c-44d1-adea-4a9cc95d9f00"></div>
+      <br />
+      <input type="submit" value="Submit" />
+    </form>
+  </body>
+</html>
