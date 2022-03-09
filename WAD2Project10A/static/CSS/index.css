@@ -1,0 +1,30 @@
+#stage {
+height: 292px;
+}
+
+#stage a {
+position: absolute;
+}
+#stage a img {
+padding: 10px;
+border: 1px solid #ccc;
+background: #fff;
+}
+
+#stage a:nth-of-type(1) {
+animation-name: fader;
+animation-delay: 4s;
+animation-duration: 0.5s;
+z-index: 30;
+}
+#stage a:nth-of-type(2) {
+z-index: 20;
+}
+#stage a:nth-of-type(3) {
+z-index: 10;
+}
+
+@keyframes fader {
+from { opacity: 1.0; }
+to   { opacity: 0.0; }
+}

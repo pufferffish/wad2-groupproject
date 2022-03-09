@@ -6,12 +6,7 @@ from OnlyPics.models import UserInfo
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 
 def index(request):
-    return HttpResponse(
-            """
-            Connection terminated.
-            I'm sorry to interrupt you, Elizabeth. If you still even remember that name.
-            But I'm afraid you've been misinformed.
-            """)
+    return render(request, 'onlypics/index.html')
 
 def base(request):
     return render(request, 'onlypics/base.html')
