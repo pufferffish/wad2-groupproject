@@ -22,7 +22,7 @@ class UserInfo(models.Model):
     # The underlying django user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # The name which is shown on the website, since user.username is the microsoft email
-    nickname = models.CharField(max_length=32, default=random_string())
+    nickname = models.CharField(max_length=32, default=random_string)
     # The amount of tokens / money the user have
     tokens = models.PositiveIntegerField(default = 0)
     # The profile picture
