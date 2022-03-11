@@ -6,12 +6,13 @@ from OnlyPics.models import UserInfo
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 
 def index(request):
-    return HttpResponse(
-            """
-            Connection terminated.
-            I'm sorry to interrupt you, Elizabeth. If you still even remember that name.
-            But I'm afraid you've been misinformed.
-            """)
+    return render(request, 'onlypics/index.html')
+
+def about(request):
+    return render(request, 'onlypics/about.html')
+
+def explore(request):
+    return render(request, 'onlypics/explore.html')
 
 def whoami(request):
     if not request.user.is_authenticated:

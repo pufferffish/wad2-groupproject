@@ -14,6 +14,10 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+MEDIA_DIR = os.path.join(BASE_DIR, 'media')
+print(MEDIA_DIR)
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
 
 # Quick-start development settings - unsuitable for production
@@ -25,7 +29,8 @@ SECRET_KEY = 'hjcrbda*)*!q)e1im_#14seqqyj%q4v+h#k7mug6r32js5@i-+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'localhost', 'example.com' ]
+ALLOWED_HOSTS = [ 'localhost', 'example.com', "127.0.0.1"]
+
 
 
 # Application definition
@@ -69,12 +74,14 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
                 'microsoft_auth.context_processors.microsoft',
             ],
         },
     },
 ]
 
+STATICFILES_DIRS = [STATIC_DIR, ]
 WSGI_APPLICATION = 'WAD2Project10A.wsgi.application'
 
 
@@ -130,6 +137,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = MEDIA_DIR
+MEDIA_URL = '/media/'
+
 
 # These tokens are specifically used for OnlyPics, get your own token for other projects
 MICROSOFT_AUTH_CLIENT_ID = '9d19e17e-b922-4e76-ad08-f8ae253cb0af'
