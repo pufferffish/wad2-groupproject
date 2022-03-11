@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ea20b1fb-6b64-472a-a2f6-0cebf4866a86" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/WAD2Project10A/WAD2Project10A/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/WAD2Project10A/WAD2Project10A/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WAD2Project10A/static/CSS/about.css" beforeDir="false" afterPath="$PROJECT_DIR$/WAD2Project10A/static/CSS/about.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WAD2Project10A/templates/onlypics/about.html" beforeDir="false" afterPath="$PROJECT_DIR$/WAD2Project10A/templates/onlypics/about.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WAD2Project10A/templates/onlypics/explore.html" beforeDir="false" afterPath="$PROJECT_DIR$/WAD2Project10A/templates/onlypics/explore.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WAD2Project10A/OnlyPics/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/WAD2Project10A/OnlyPics/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WAD2Project10A/OnlyPics/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/WAD2Project10A/OnlyPics/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

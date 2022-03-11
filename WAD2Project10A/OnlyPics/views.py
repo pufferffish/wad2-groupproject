@@ -8,9 +8,6 @@ from OnlyPics.hcaptcha import verify_hcaptcha_request
 def index(request):
     return render(request, 'onlypics/index.html')
 
-def base(request):
-    return render(request, 'onlypics/base.html')
-
 def about(request):
     return render(request, 'onlypics/about.html')
 

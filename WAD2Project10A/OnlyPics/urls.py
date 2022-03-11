@@ -10,7 +10,6 @@ urlpatterns = [
     path("edit_profile", views.edit_profile, name="edit_profile"),
     path("logout", views.logout_user, name="logout"),
     path("vbucks", views.vbucks, name="vbucks"),
-    path("base", views.base, name='base'),
     path("about", views.about, name='about'),
     path("home", views.index, name=''),
     path("explore", views.explore, name='explore')
