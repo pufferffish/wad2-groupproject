@@ -28,7 +28,7 @@
                     <div class="navbar">
                         <ul class="navbarBtns">
                             <li><a href="{% url 'onlypics:index'%}">Home</a></li>
-                            <li><a href="#explore">Explore</a></li>
+                            <li><a href="{% url 'onlypics:explore'%}">Explore</a></li>
                             <li><a href="{% url 'onlypics:about'%}">About</a></li>
                         {% if user.is_authenticated%}
                             <li><a href="#logout">Log out</a></li>
