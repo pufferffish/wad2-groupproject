@@ -15,12 +15,7 @@ def index(request):
     # context_dic = {}
     # context_dic['pics'] = top_five_most_liked_pictures
     # return render(request, 'onlypics/index.html', context=context_dic)
-    return HttpResponse(
-            """
-            Connection terminated.
-            I'm sorry to interrupt you, Elizabeth. If you still even remember that name.
-            But I'm afraid you've been misinformed.
-            """)
+    return render(request, 'onlypics/index.html')
 
 def explore(request):
     picture_list = Picture.objects.order_by('-likes')
@@ -30,6 +25,10 @@ def explore(request):
     context_dic = {}
     context_dic['pictures'] = picture_list
     context_dic['categories'] = categories
+    #return render(request, 'onlypics/explore.html')
+
+def about(request):
+    return render(request, 'onlypics/about.html')
 
 @login_required
 def post_for_sale(request):
