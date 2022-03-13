@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
-from OnlyPics.models import UserInfo, Picture
+from OnlyPics.models import UserInfo, Picture, Category
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 
 #to be used in the template
@@ -11,21 +11,19 @@ def get_comments_according_to_picture(picture):
     return comments
 
 def index(request):
-    # top_five_most_liked_pictures = Picture.objects.order_by('-likes')[:5]
-    # context_dic = {}
-    # context_dic['pics'] = top_five_most_liked_pictures
-    # return render(request, 'onlypics/index.html', context=context_dic)
-    return render(request, 'onlypics/index.html')
+    top_five_most_liked_pictures = Picture.objects.order_by('-likes')[:5]
+    context_dic = {}
+    context_dic['pics'] = top_five_most_liked_pictures
+    return render(request, 'onlypics/index.html', context=context_dic)
 
 def explore(request):
     picture_list = Picture.objects.order_by('-likes')
     categories = Category.objects.all()
-
-
     context_dic = {}
     context_dic['pictures'] = picture_list
     context_dic['categories'] = categories
-    #return render(request, 'onlypics/explore.html')
+
+    return render(request, 'onlypics/explore.html', context=context_dic)
 
 def about(request):
     return render(request, 'onlypics/about.html')
@@ -48,6 +46,7 @@ def post_for_sale(request):
 def profile(request):
     user = request.user
     pictures = Picture.objects.filter(user = user)
+
 
 @login_required
 def add_tokens(request):
@@ -76,9 +75,8 @@ def vbucks(request):
 def edit_profile(request):
     return HttpResponse("Joke")
 
+@login_required
 def logout_user(request):
     if request.user.is_authenticated:
         logout(request)
-        return HttpResponse("You have logged out.")
-    else:
-        return HttpResponse("You have already logged out.")
+    return render(request, 'onlypics/index.html')

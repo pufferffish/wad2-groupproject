@@ -31,10 +31,10 @@
                             <li><a href="{% url 'onlypics:explore'%}">Explore</a></li>
                             <li><a href="{% url 'onlypics:about'%}">About</a></li>
                         {% if user.is_authenticated%}
-                            <li><a href="#logout">Log out</a></li>
+                            <li><a href="{% url 'onlypics:logout'%}">Log out</a></li>
                             <li><a href="#account">Account</a></li>
                         {% else %}
-                            <li><a href="#login">Log in</a></li>
+                            <li><a href="/microsoft/to-auth-redirect/?next=/onlypics">Log in</a></li>
                         {% endif %}
                         </ul>
                     </div>
@@ -85,13 +85,13 @@
             </div>
             <div class="col-md-4">
                 <li class="aboutUsList">
-                    <a href="#about">Visit our about page</a>
+                    <a href="{% url 'onlypics:about'%}#about-us">Visit our about page</a>
                 </li>
                 <li class="aboutUsList">
-                    <a href="#faqs">FAQs</a>
+                    <a href="{% url 'onlypics:about'%}#faqs">FAQs</a>
                 </li>
                 <li class="aboutUsList">
-                    <a href="#contact">Contact Us</a>
+                    <a href="{% url 'onlypics:about'%}#contact-us">Contact Us</a>
                 </li>
             </div>
             <div class="col-md-4">

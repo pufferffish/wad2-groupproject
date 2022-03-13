@@ -26,7 +26,7 @@ class UserInfo(models.Model):
     # The amount of tokens / money the user have
     tokens = models.PositiveIntegerField(default = 0)
     # The profile picture
-    pfp = ResizedImageField(size=[500,500], force_format='JPG', upload_to='profile_images', blank=True)
+    pfp = ResizedImageField(size=[500,500], upload_to='profile_images/', blank=True)
 
     class Meta:
         constraints = [
