@@ -19,10 +19,11 @@ def random_username():
     return f"user{str(random())}"
 
 class UserInfo(models.Model):
+    NICKNAME_MAX_LENGTH = 32
     # The underlying django user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # The name which is shown on the website, since user.username is the microsoft email
-    nickname = models.CharField(max_length=32, default=random_string)
+    nickname = models.CharField(max_length=NICKNAME_MAX_LENGTH, default="")
     # The amount of tokens / money the user have
     tokens = models.PositiveIntegerField(default = 0)
     # The profile picture

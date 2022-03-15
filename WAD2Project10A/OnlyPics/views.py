@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
 from OnlyPics.models import UserInfo, Picture, Category
+from OnlyPics.forms import UserInfoForm
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 
 #to be used in the template
@@ -40,7 +41,7 @@ def post_for_sale(request):
         #else
             #print(form.errors)
 
-     #return render(request, 'onlypics/post_for_sale.html', {'form':form}
+     #return render(request, 'onlypics/post_for_sale.html', {'form':form})
 
 @login_required
 def profile(request):
@@ -80,3 +81,25 @@ def logout_user(request):
     if request.user.is_authenticated:
         logout(request)
     return render(request, 'onlypics/index.html')
+
+@login_required
+def upload(request):
+    form = UserInfoForm()
+    user = request.user
+    try:
+        user_info = UserInfo.objects.get(user=user)
+    except UserInfo.DoesNotExist:
+        if request.method == 'POST':
+            form = UserInfoForm(request.POST, request.FILES)
+            if form.is_valid():
+                if user:
+                    user_info = form.save(commit=False)
+                    user_info.user = user
+                    user_info.save()
+
+                    return redirect('/onlypics/')
+            else:
+                print(form.errors)
+    else:
+        return redirect('/onlypics/')
+    return render(request, 'onlypics/upload.html', {'form':form})
