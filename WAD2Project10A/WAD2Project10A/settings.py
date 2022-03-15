@@ -131,6 +131,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+DJANGORESIZED_DEFAULT_FORCE_FORMAT = 'JPEG'
+DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'JPEG': ".jpg"}
+DJANGORESIZED_DEFAULT_QUALITY = 75
 
 # Static files (css, javascript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
