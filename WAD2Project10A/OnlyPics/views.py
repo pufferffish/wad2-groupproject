@@ -14,6 +14,15 @@ def about(request):
 def explore(request):
     return render(request, 'onlypics/explore.html')
 
+def post_for_sale(request):
+    return render(request, 'onlypics/post_for_sale.html')
+
+def profile(request):
+    return render(request, 'onlypics/profile.html')
+
+def add_tokens(request):
+    return render(request, 'onlypics/add_tokens.html')
+
 def whoami(request):
     if not request.user.is_authenticated:
         return HttpResponse(f"You are not logged in")

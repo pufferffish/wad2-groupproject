@@ -1,7 +1,7 @@
-.aboutUsHeader, .FAQHeader, .contactHeader{
+.postForSaleHeader{
     margin-top: 5%;
     font-size: 25px;
-    text-decoration: none;
+    font-style: italic;
 }
 
  .githubLink a{
