@@ -3,3 +3,7 @@
     font-size: 25px;
     text-decoration: underline;
 }
+
+ .githubLink a{
+    text-decoration: none;
+}

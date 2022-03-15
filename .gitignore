@@ -2,10 +2,14 @@
 __pycache__/
 *.py[cod]
 *$py.class
+.pyc
 
 # C extensions
 *.so
+.idea
 
+# C extensions
+*.so
 # Distribution / packaging
 .Python
 build/
@@ -127,3 +131,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# JetBrains IDE
+.idea/
+
+# Django migrations
+migrations/

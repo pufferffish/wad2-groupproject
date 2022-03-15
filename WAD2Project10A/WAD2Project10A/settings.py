@@ -19,6 +19,7 @@ MEDIA_DIR = os.path.join(BASE_DIR, 'media')
 print(MEDIA_DIR)
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -56,6 +57,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'WAD2Project10A.urls'
+
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
 TEMPLATES = [
     {
@@ -129,12 +132,13 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (css, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
 
 # These tokens are specifically used for OnlyPics, get your own token for other projects
 MICROSOFT_AUTH_CLIENT_ID = '9d19e17e-b922-4e76-ad08-f8ae253cb0af'
