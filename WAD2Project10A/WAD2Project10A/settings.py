@@ -29,8 +29,7 @@ SECRET_KEY = 'hjcrbda*)*!q)e1im_#14seqqyj%q4v+h#k7mug6r32js5@i-+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ 'localhost', 'example.com', "127.0.0.1"]
-
+ALLOWED_HOSTS = [ 'localhost', 'example.com', '127.0.0.1']
 
 
 # Application definition
@@ -132,8 +131,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+DJANGORESIZED_DEFAULT_FORCE_FORMAT = 'JPEG'
+DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'JPEG': ".jpg"}
+DJANGORESIZED_DEFAULT_QUALITY = 75
 
-# Static files (CSS, JavaScript, Images)
+# Static files (css, javascript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'

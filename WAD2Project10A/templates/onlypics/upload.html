@@ -1,0 +1,40 @@
+<!doctype html>
+{% load staticfiles%}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Signin Template for Bootstrap</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/docs/4.0/examples/sign-in/signin.css" rel="stylesheet">
+  </head>
+
+  <body class="text-center">
+    <form class="form-signin" method="POST" enctype="multipart/form-data" action="{% url 'onlypics:upload'%}">
+      {% csrf_token %}
+        <h1>OnlyPics</h1>
+        <br>
+      <h2 class="h3 mb-3 font-weight-normal">Please choose a username and upload a profile picture!</h2>
+      {{ form }}
+      <img id="pic" width="150px"/>
+
+      <input class="btn btn-lg btn-primary btn-block" type="submit"></input>
+      <p class="mt-5 mb-3 text-muted">&copy; 2021-2022</p>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="{% static 'javascript/upload.js'%}"></script>
+  </body>
+</html>
+

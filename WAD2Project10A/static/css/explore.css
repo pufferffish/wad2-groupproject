@@ -1,0 +1,11 @@
+#sidebar {
+    position: sticky;
+    border-right: 1px solid black;
+}
+.container{
+    max-width: 100%;
+    padding: 20px;
+}
+.content-text{
+    text-align: center;
+}

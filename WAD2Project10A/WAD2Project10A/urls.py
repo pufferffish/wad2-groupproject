@@ -19,9 +19,8 @@ from OnlyPics import views
 from django.conf import settings
 from django.conf.urls.static import static
 
-
 urlpatterns = [
-    path('', views.index, name="index"),
+    path('', views.redirect_to_index, name="index"),
     path('onlypics/', include("OnlyPics.urls")),
     path('microsoft/', include('microsoft_auth.urls', namespace='microsoft')),
     path('admin/', admin.site.urls),
