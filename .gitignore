@@ -137,3 +137,6 @@ dmypy.json
 
 # Django migrations
 migrations/
+
+# profile pics
+profile_images/
