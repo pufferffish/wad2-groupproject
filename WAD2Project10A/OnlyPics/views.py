@@ -11,6 +11,9 @@ def get_comments_according_to_picture(picture):
     comments = Comment.objects.filter(picture=picture)
     return comments
 
+def redirect_to_index(request):
+    return redirect('/onlypics/')
+
 def index(request):
     top_five_most_liked_pictures = Picture.objects.order_by('-likes')[:5]
     context_dic = {}
