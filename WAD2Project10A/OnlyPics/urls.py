@@ -11,7 +11,6 @@ urlpatterns = [
     path("logout", views.logout_user, name="logout"),
     path("vbucks", views.vbucks, name="vbucks"),
     path("about", views.about, name='about'),
-    path("home", views.index, name=''),
     path("explore", views.explore, name='explore'),
     path("upload", views.upload, name='upload')
 ]

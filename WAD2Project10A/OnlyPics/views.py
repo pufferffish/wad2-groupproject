@@ -12,7 +12,7 @@ def get_comments_according_to_picture(picture):
     return comments
 
 def redirect_to_index(request):
-    return redirect('/onlypics/')
+    return redirect('onlypics:index')
 
 def index(request):
     top_five_most_liked_pictures = Picture.objects.order_by('-likes')[:5]
@@ -40,7 +40,7 @@ def post_for_sale(request):
         #form = PostForSaleForm(request.POST)
         #if form.is_valid():
             #form.save(commit=True)
-            #return redirect('/onlypics/')
+            #return redirect('onlypics:index')
         #else
             #print(form.errors)
 
@@ -83,7 +83,7 @@ def edit_profile(request):
 def logout_user(request):
     if request.user.is_authenticated:
         logout(request)
-    return render(request, 'onlypics/index.html')
+    return redirect('onlypics:index')
 
 @login_required
 def upload(request):
@@ -100,9 +100,9 @@ def upload(request):
                     user_info.user = user
                     user_info.save()
 
-                    return redirect('/onlypics/')
+                    return redirect('onlypics:index')
             else:
                 print(form.errors)
     else:
-        return redirect('/onlypics/')
+        return redirect('onlypics:index')
     return render(request, 'onlypics/upload.html', {'form':form})
