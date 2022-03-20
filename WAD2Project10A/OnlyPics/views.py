@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, logout
 from OnlyPics.models import UserInfo, Picture, Category
 from OnlyPics.forms import UserInfoForm
 from OnlyPics.hcaptcha import verify_hcaptcha_request
+import numpy as np
 
 #to be used in the template
 def get_comments_according_to_picture(picture):
@@ -15,13 +16,13 @@ def redirect_to_index(request):
     return redirect('onlypics:index')
 
 def index(request):
-    top_five_most_liked_pictures = Picture.objects.order_by('-likes')[:5]
+    top_five_most_liked_pictures = Picture.objects.all()
     context_dic = {}
     context_dic['pics'] = top_five_most_liked_pictures
     return render(request, 'onlypics/index.html', context=context_dic)
 
 def explore(request):
-    picture_list = Picture.objects.order_by('-likes')
+    picture_list = Picture.objects.all()
     categories = Category.objects.all()
     context_dic = {}
     context_dic['pictures'] = picture_list
@@ -106,3 +107,78 @@ def upload(request):
     else:
         return redirect('onlypics:index')
     return render(request, 'onlypics/upload.html', {'form':form})
+
+@login_required
+def search(request):
+    categories = Category.objects.all()
+
+    if 'search' in request.GET:
+        search_term = request.GET['search']
+
+    if (len(search_term) == 0):
+        context_dic_empty = {}
+        picture_list = Picture.objects.all()
+
+        context_dic_empty['pictures'] = picture_list
+        context_dic_empty['categories'] = categories
+
+        return render(request, 'onlypics/explore.html', context=context_dic_empty)
+
+    picture_list = calcDictDistance(search_term)
+    context_dic = {}
+    context_dic['pictures'] = picture_list
+    context_dic['categories'] = categories
+
+    return render(request, 'onlypics/explore.html', context=context_dic)
+
+
+def levenshteinDistanceDP(token1, token2):
+    distances = np.zeros((len(token1) + 1, len(token2) + 1))
+
+    for t1 in range(len(token1) + 1):
+        distances[t1][0] = t1
+
+    for t2 in range(len(token2) + 1):
+        distances[0][t2] = t2
+
+    a = 0
+    b = 0
+    c = 0
+
+    for t1 in range(1, len(token1) + 1):
+        for t2 in range(1, len(token2) + 1):
+            if (token1[t1 - 1] == token2[t2 - 1]):
+                distances[t1][t2] = distances[t1 - 1][t2 - 1]
+            else:
+                a = distances[t1][t2 - 1]
+                b = distances[t1 - 1][t2]
+                c = distances[t1 - 1][t2 - 1]
+
+                if (a <= b and a <= c):
+                    distances[t1][t2] = a + 1
+                elif (b <= a and b <= c):
+                    distances[t1][t2] = b + 1
+                else:
+                    distances[t1][t2] = c + 1
+
+    return distances[len(token1)][len(token2)]
+def calcDictDistance(word):
+    pictures = Picture.objects.all()
+
+    dictWordDist = {}
+    wordIdx = 0
+
+    for pic in pictures:
+        wordDistance = levenshteinDistanceDP(word, pic.name)
+
+        if wordDistance >= 10:
+            wordDistance = 9
+        dictWordDist[wordDistance] = pic
+        wordIdx = wordIdx + 1
+
+    closestWordsSorted = []
+    wordDetails = []
+    currWordDist = 0
+    sortedDict = dict(sorted(dictWordDist.items(), key=lambda x: x[0]))
+
+    return sortedDict.values()

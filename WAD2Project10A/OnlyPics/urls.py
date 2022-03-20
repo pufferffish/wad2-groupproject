@@ -12,5 +12,6 @@ urlpatterns = [
     path("vbucks", views.vbucks, name="vbucks"),
     path("about", views.about, name='about'),
     path("explore", views.explore, name='explore'),
-    path("upload", views.upload, name='upload')
+    path("upload", views.upload, name='upload'),
+    path("search", views.search, name='search'),
 ]
