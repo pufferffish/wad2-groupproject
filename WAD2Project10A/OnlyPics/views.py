@@ -156,11 +156,8 @@ def calcDictDistance(word):
     dictWordDist = {}
     wordIdx = 0
 
-    test =[]
-
     for pic in pictures:
         wordDistance = levenshteinDistanceDP(word, pic.name)
-        test.append(wordDistance)
 
         if wordDistance >= 10:
             wordDistance = 9
@@ -172,4 +169,4 @@ def calcDictDistance(word):
     currWordDist = 0
     sortedDict = dict(sorted(dictWordDist.items(), key=lambda x: x[0]))
 
-    return test
+    return sortedDict.values()
