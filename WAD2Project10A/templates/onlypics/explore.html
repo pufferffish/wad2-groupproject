@@ -33,7 +33,7 @@
             <p class="popCatText">pics go here</p>
             <div id="stage" align="center">
                 {% for picture in pictures %}
-                    <a><img src="{{ MEDIA_URL }}{{picture.upload}}" width="400" height="270"></a>
+                    <a><img src="{{ MEDIA_URL }}{{picture.upload}}" width="400" height="270">{{picture}}</a>
                 {% endfor %}
 
             </div>

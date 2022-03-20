@@ -133,43 +133,34 @@ def search(request):
 
 
 def levenshteinDistanceDP(token1, token2):
-    distances = np.zeros((len(token1) + 1, len(token2) + 1))
+    target = [k for k in token1]
+    source = [k for k in token2]
 
-    for t1 in range(len(token1) + 1):
-        distances[t1][0] = t1
+    distances = np.zeros((len(source), len(target)))
 
-    for t2 in range(len(token2) + 1):
-        distances[0][t2] = t2
+    distances[0] = [j for j in range(len(target))]
+    distances[:,0] = [j for j in range(len(source))]
 
-    a = 0
-    b = 0
-    c = 0
-
-    for t1 in range(1, len(token1) + 1):
-        for t2 in range(1, len(token2) + 1):
-            if (token1[t1 - 1] == token2[t2 - 1]):
-                distances[t1][t2] = distances[t1 - 1][t2 - 1]
+    for column in range(1, len(target)):
+        for row in range(1, len(source)):
+            if (target[column] != source[row]):
+                distances[row][column] = min(distances[row-1][column], distances[row][column-1]) + 1
             else:
-                a = distances[t1][t2 - 1]
-                b = distances[t1 - 1][t2]
-                c = distances[t1 - 1][t2 - 1]
+                distances[row][column] = distances[row - 1][column-1]
 
-                if (a <= b and a <= c):
-                    distances[t1][t2] = a + 1
-                elif (b <= a and b <= c):
-                    distances[t1][t2] = b + 1
-                else:
-                    distances[t1][t2] = c + 1
+    return distances[len(source) - 1][len(target) - 1]
 
-    return distances[len(token1)][len(token2)]
 def calcDictDistance(word):
     pictures = Picture.objects.all()
 
     dictWordDist = {}
     wordIdx = 0
 
+    test =[]
+
     for pic in pictures:
         wordDistance = levenshteinDistanceDP(word, pic.name)
+        test.append(wordDistance)
 
         if wordDistance >= 10:
             wordDistance = 9
@@ -181,4 +172,4 @@ def calcDictDistance(word):
     currWordDist = 0
     sortedDict = dict(sorted(dictWordDist.items(), key=lambda x: x[0]))
 
-    return sortedDict.values()
+    return test
