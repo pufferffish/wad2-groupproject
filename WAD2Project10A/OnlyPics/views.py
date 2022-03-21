@@ -111,9 +111,13 @@ def upload(request):
 @login_required
 def search(request):
     categories = Category.objects.all()
+    disallowed_characters = "._! ,/[]()"
 
     if 'search' in request.GET:
         search_term = request.GET['search']
+
+    for character in disallowed_characters:
+        search_term = search_term.replace(character, "")
 
     if (len(search_term) == 0):
         context_dic_empty = {}
@@ -152,12 +156,17 @@ def levenshteinDistanceDP(token1, token2):
 
 def calcDictDistance(word):
     pictures = Picture.objects.all()
+    disallowed_characters = "._! ,/[]()"
 
     dictWordDist = {}
     wordIdx = 0
 
     for pic in pictures:
-        wordDistance = levenshteinDistanceDP(word, pic.name)
+        splitPicName = pic.name
+        for character in disallowed_characters:
+            splitPicName = splitPicName.replace(character,"")
+
+        wordDistance = levenshteinDistanceDP(word, splitPicName)
 
         if wordDistance >= 10:
             wordDistance = 9
