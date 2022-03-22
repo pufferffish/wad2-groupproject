@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
 from OnlyPics.models import UserInfo, Picture, Category
-from OnlyPics.forms import UserInfoForm
+from OnlyPics.forms import UserInfoForm, PostForSaleForm
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 
 #to be used in the template
@@ -34,36 +34,31 @@ def about(request):
 
 @login_required
 def post_for_sale(request):
-    return HttpResponse("Not yet implemented!")
-    #form = PostForSaleForm()
-    #if request.method == 'POST':
-        #form = PostForSaleForm(request.POST)
-        #if form.is_valid():
-            #form.save(commit=True)
-            #return redirect('onlypics:index')
-        #else
-            #print(form.errors)
+    form = PostForSaleForm()
+    if request.method == 'POST':
+        form = PostForSaleForm(request.POST)
+        if form.is_valid():
+            form.save(commit=True)
+            return redirect('onlypics:index')
+        else:
+            print(form.errors)
 
-     #return render(request, 'onlypics/post_for_sale.html', {'form':form})
+    return render(request, 'onlypics/post_for_sale.html', {'form':form})
 
 @login_required
 def profile(request):
     user = request.user
     pictures = Picture.objects.filter(user = user)
-
+    context_dic['pictures'] = pictures
+    return render(request, 'onlypics/profile.html')
 
 @login_required
 def add_tokens(request):
-    return HttpResponse("Not yet implemented!")
-
-def post_for_sale(request):
-    return render(request, 'onlypics/post_for_sale.html')
-
-def profile(request):
-    return render(request, 'onlypics/profile.html')
-
-def add_tokens(request):
-    return render(request, 'onlypics/add_tokens.html')
+    if request.method == 'POST':
+        verify_hcaptcha_request(request)
+        return HttpResponse("let it out")
+    else:
+        return render(request, 'onlypics/add_tokens.html')
 
 def whoami(request):
     if not request.user.is_authenticated:

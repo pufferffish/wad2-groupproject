@@ -1,4 +1,4 @@
-{% extends 'OnlyPics/base.html' %}
+{% extends 'onlypics/base.html' %}
 {% load staticfiles %}
 
 {% block title_block %}
@@ -16,6 +16,35 @@
                 Start making money now!
             </div>
         </div>  
+
+        <div class="container pt-3 my-3 border">
+            <div class="col-sm-11" align="left">
+                {{form.upload}}
+            </div>   
+            <div class="col-md-4" align="left">
+                <li class="postList">
+                    Name: {{form.name}}
+                </li>
+                <li class="postList">
+                    Created at: {{form.createdAt}}
+                </li>
+                <li class="postList">
+                    Price: {{form.price}}
+                </li>
+                <li class="postList">
+                    Category: {{form.tags}}
+                </li>
+                <li class="postList">
+                    Description: {{form.description}}
+                </li>
+            </div>  
+        </div>     
+
+        <div class="container border">
+            <div class="postForSaleFooter">
+                Post for sale
+            </div>
+        </div>
     </div>
 
 {% endblock %}

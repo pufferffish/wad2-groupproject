@@ -1,5 +1,6 @@
 from django import forms
 from OnlyPics.models import UserInfo
+from OnlyPics.models import Picture
 
 class UserInfoForm(forms.ModelForm):
     nickname = forms.CharField(
@@ -27,3 +28,15 @@ class UserInfoForm(forms.ModelForm):
     class Meta:
         model = UserInfo
         fields = ('nickname','pfp')
+
+class PostForSaleForm(forms.ModelForm):
+    name = forms.CharField(max_length=100)    
+    price = forms.IntegerField()
+    createdAt = forms.DateTimeField()
+    tags = forms.CharField()
+    description = forms.CharField()
+    upload = forms.ImageField();
+
+    class Meta:
+        model = Picture
+        fields = ('name','price','createdAt','tags','description')

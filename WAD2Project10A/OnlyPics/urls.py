@@ -14,7 +14,7 @@ urlpatterns = [
     path("home", views.index, name=''),
     path("post_for_sale", views.post_for_sale, name='post_for_sale'),
     path("profile", views.profile, name='profile'),
-    path("add_tokens", views.post_for_sale, name='add_tokens'),
+    path("add_tokens", views.add_tokens, name='add_tokens'),
     path("explore", views.explore, name='explore'),
     path("upload", views.upload, name='upload')
 ]
