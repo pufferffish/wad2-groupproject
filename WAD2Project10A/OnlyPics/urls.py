@@ -15,5 +15,8 @@ urlpatterns = [
     path("profile", views.profile, name='profile'),
     path("add_tokens", views.add_tokens, name='add_tokens'),
     path("explore", views.explore, name='explore'),
-    path("upload", views.upload, name='upload')
+    path("upload", views.upload, name='upload'),
+    path("search", views.search, name='search'),
+
+    path("account", views.account, name='account'),
 ]

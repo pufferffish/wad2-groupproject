@@ -3,8 +3,9 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
 from OnlyPics.models import UserInfo, Picture, Category
-from OnlyPics.forms import UserInfoForm, PostForSaleForm
-from OnlyPics.hcaptcha import verify_hcaptcha_request, CaptchaException
+from OnlyPics.forms import UserInfoForm
+from OnlyPics.hcaptcha import verify_hcaptcha_request
+import numpy as np
 
 #to be used in the template
 def get_comments_according_to_picture(picture):
@@ -15,13 +16,13 @@ def redirect_to_index(request):
     return redirect('onlypics:index')
 
 def index(request):
-    top_five_most_liked_pictures = Picture.objects.order_by('-likes')[:5]
+    top_five_most_liked_pictures = Picture.objects.all()
     context_dic = {}
     context_dic['pics'] = top_five_most_liked_pictures
     return render(request, 'onlypics/index.html', context=context_dic)
 
 def explore(request):
-    picture_list = Picture.objects.order_by('-likes')
+    picture_list = Picture.objects.all()
     categories = Category.objects.all()
     context_dic = {}
     context_dic['pictures'] = picture_list
@@ -125,3 +126,77 @@ def upload(request):
     else:
         return redirect('onlypics:index')
     return render(request, 'onlypics/upload.html', {'form':form})
+
+@login_required
+def search(request):
+    categories = Category.objects.all()
+    disallowed_characters = "._! ,/[]()"
+
+    if 'search' in request.GET:
+        search_term = request.GET['search']
+
+    for character in disallowed_characters:
+        search_term = search_term.replace(character, "")
+
+    if (len(search_term) == 0):
+        context_dic_empty = {}
+        picture_list = Picture.objects.all()
+
+        context_dic_empty['pictures'] = picture_list
+        context_dic_empty['categories'] = categories
+
+        return render(request, 'onlypics/explore.html', context=context_dic_empty)
+
+    picture_list = calcDictDistance(search_term)
+    context_dic = {}
+    context_dic['pictures'] = picture_list
+    context_dic['categories'] = categories
+
+    return render(request, 'onlypics/explore.html', context=context_dic)
+
+def levenshteinDistanceDP(token1, token2):
+    target = [k for k in token1]
+    source = [k for k in token2]
+
+    distances = np.zeros((len(source), len(target)))
+
+    distances[0] = [j for j in range(len(target))]
+    distances[:,0] = [j for j in range(len(source))]
+
+    for column in range(1, len(target)):
+        for row in range(1, len(source)):
+            if (target[column] != source[row]):
+                distances[row][column] = min(distances[row-1][column], distances[row][column-1]) + 1
+            else:
+                distances[row][column] = distances[row - 1][column-1]
+
+    return distances[len(source) - 1][len(target) - 1]
+def calcDictDistance(word):
+    pictures = Picture.objects.all()
+    disallowed_characters = "._! ,/[]()"
+
+    dictWordDist = {}
+    wordIdx = 0
+
+    for pic in pictures:
+        splitPicName = pic.name
+        for character in disallowed_characters:
+            splitPicName = splitPicName.replace(character,"")
+
+        wordDistance = levenshteinDistanceDP(word, splitPicName)
+
+        if wordDistance >= 10:
+            wordDistance = 9
+        dictWordDist[wordDistance] = pic
+        wordIdx = wordIdx + 1
+
+    closestWordsSorted = []
+    wordDetails = []
+    currWordDist = 0
+    sortedDict = dict(sorted(dictWordDist.items(), key=lambda x: x[0]))
+
+    return sortedDict.values()
+
+@login_required
+def account(request):
+    return render(request, 'onlypics/account.html')

@@ -1,0 +1,38 @@
+{% extends 'onlypics/base.html' %}
+{% load staticfiles%}
+
+{% block title_block %}
+    Account
+{% endblock %}
+
+{% block cssFile %}
+    <link rel="stylesheet" href="{% static 'css/account.css'%}" type="text/css">
+{% endblock %}
+
+{% block body_block %}
+<div class="container-fluid">
+      <div class="row">
+        <div class="col-3 sticky">
+          <div class="sidebar-section">
+            Sidebar Section
+          </div>
+        </div>
+        <div class="col-9">
+          <div class="content-section">
+              <div>
+                  Owned pictures
+              </div>
+              <div class="picture-box">
+                  <img src="{{ MEDIA_URL }}index/img1.jpg" alt="Girl in a jacket" >
+              </div>
+              <div class="picture-box">
+                  <img src="{{ MEDIA_URL }}index/img1.jpg" alt="Girl in a jacket" >
+              </div>
+          </div>
+        </div>
+      </div>
+</div>
+{% endblock %}
+
+{% block javaScript %}
+{% endblock %}

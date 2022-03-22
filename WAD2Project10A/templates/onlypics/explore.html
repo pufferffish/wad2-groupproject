@@ -12,8 +12,8 @@
 {% block body_block %}
 <div class="container" id="containerId">
     <div class="row content-text">
-        <div class="col-md-2"  >
-            <div id="sidebar"  >
+        <div class="col-md-2">
+            <div id="sidebar">
                 <p><strong>Popular Categories</strong></p>
                 {% if categories %}
                     <ul class="list-group list-group-flush">
@@ -30,6 +30,12 @@
         </div>
         <div class="col-md-10 content">
             <p class="popCatText">pics go here</p>
+            <div id="stage" align="center">
+                {% for picture in pictures %}
+                    <a><img src="{{ MEDIA_URL }}{{picture.upload}}" width="400" height="270"></a>
+                {% endfor %}
+
+            </div>
         </div>
     </div>
 </div>

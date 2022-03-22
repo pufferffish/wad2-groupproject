@@ -32,7 +32,7 @@
                             <li><a href="{% url 'onlypics:about'%}">About</a></li>
                         {% if user.is_authenticated%}
                             <li><a href="{% url 'onlypics:logout'%}">Log out</a></li>
-                            <li><a href="#account">Account</a></li>
+                            <li><a href="{% url 'onlypics:account'%}">Account</a></li>
                         {% else %}
                             <li><a href="/microsoft/to-auth-redirect/?next=/onlypics/upload">Log in</a></li>
                         {% endif %}
@@ -41,10 +41,15 @@
                 </div>
                 <div class="col-md-4">
                     <div class="input-group rounded">
-                      <input type="search" class="form-control rounded form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                      <span class="input-group-text border-0" id="search-addon">
-                        <i class="fas fa-search"></i>
-                      </span>
+                        <form method="GET" action="{% url 'onlypics:search' %}" >
+                            <input type="search" name="search" class="form-control rounded form-control-sm" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                        </form>
+                        <button type="submit">
+                             <span class="input-group-text border-0" id="search-addon">
+                                 <i class="fas fa-search"></i>
+                             </span>
+                        </button>
+
                     </div>
                 </div>
             </div>
