@@ -64,7 +64,7 @@ class Picture(models.Model):
     # It's a workaround since django with sqlite doesn't support storing array
     tags = models.ForeignKey(Category, on_delete=models.CASCADE)
     # when the picture was first created
-    createdAt = models.DateTimeField(blank=True)
+    createdAt = models.DateTimeField()
     # The uploaded picture
     upload = models.ImageField(upload_to ='uploads/')
 
