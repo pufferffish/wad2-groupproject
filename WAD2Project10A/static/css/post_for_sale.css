@@ -9,12 +9,6 @@
     font-size: 25px;
 }
 
-.navbarBtns a, .postList a {
-    font-size: 20px;
-    padding: 5px;
-    text-decoration: none;
-}
-
- .githubLink a{
+.githubLink a{
     text-decoration: none;
 }

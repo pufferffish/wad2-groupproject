@@ -8,9 +8,13 @@
     font-size: 25px;
 }
 .addTokensBody{
-    margin-top: 15%;
+    margin-top: 10%;
     font-size: 15px;
 }
- .githubLink a{
+.addTokensBodyBottom{
+    margin-bottom: 5%;
+    font-size: 25px;
+}
+.githubLink a{
     text-decoration: none;
 }
