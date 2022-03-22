@@ -48,10 +48,11 @@ def post_for_sale(request):
 
 @login_required
 def profile(request):
-    user = request.user
-    pictures = Picture.objects.filter(user = user)
+    user = UserInfo.objects.get(user = request.user)
+    pictures = Picture.objects.filter(owner = user)
+    context_dic = {}
     context_dic['pictures'] = pictures
-    return render(request, 'onlypics/profile.html')
+    return render(request, 'onlypics/profile.html', context=context_dic)
 
 # calculate how many tokens should be gained
 # in add_tokens.html
