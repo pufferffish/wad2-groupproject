@@ -94,15 +94,6 @@ def whoami(request):
     except UserInfo.DoesNotExist:
         return HttpResponse("You are logged in but there's no profile of you")
 
-
-# hCaptcha testing
-def vbucks(request):
-    if request.method == 'POST':
-        verify_hcaptcha_request(request)
-        return HttpResponse("let it out")
-    else:
-        return render(request, 'onlypics/vbucks.html')
-
 @login_required
 def edit_profile(request):
     return HttpResponse("Joke")
