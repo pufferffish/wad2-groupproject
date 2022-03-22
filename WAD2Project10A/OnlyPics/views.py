@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
 from OnlyPics.models import UserInfo, Picture, Category
 from OnlyPics.forms import UserInfoForm, PostForSaleForm
-from OnlyPics.hcaptcha import verify_hcaptcha_request
+from OnlyPics.hcaptcha import verify_hcaptcha_request, CaptchaException
 
 #to be used in the template
 def get_comments_according_to_picture(picture):
@@ -52,14 +52,38 @@ def profile(request):
     context_dic['pictures'] = pictures
     return render(request, 'onlypics/profile.html')
 
+# calculate how many tokens should be gained
+# in add_tokens.html
+def calculate_tokens_gain(user):
+    return 50
+
 @login_required
 def add_tokens(request):
+    INVALID_CAPTCHA_REASON = "invalidCaptcha"
+    user = UserInfo.objects.get(user=request.user)
     if request.method == 'POST':
-        verify_hcaptcha_request(request)
-        return HttpResponse("let it out")
+        try:
+            verify_hcaptcha_request(request)
+            user.tokens += calculate_tokens_gain(request)
+            user.save()
+            return redirect('onlypics:add_tokens')
+        except CaptchaException:
+            return redirect(reverse('onlypics:add_tokens') + "?error=" + INVALID_CAPTCHA_REASON)
+        except Exception:
+            return redirect(reverse('onlypics:add_tokens') + "?error=unknown")
     else:
-        return render(request, 'onlypics/add_tokens.html')
+        gain = calculate_tokens_gain(user)
+        current_tokens = user.tokens
+        error_reason = request.GET.get("error", None)
+        if error_reason == None:
+            error_message = ""
+        elif error_reason == INVALID_CAPTCHA_REASON:
+            error_message = "Invalid hCaptcha, Please try again."
+        else:
+            error_message = "Unknown error. Please try again."
+        return render(request, 'onlypics/add_tokens.html', {"gain":  gain, 'current_tokens': current_tokens, 'error_msg': error_message})
 
+# testing purpose
 def whoami(request):
     if not request.user.is_authenticated:
         return HttpResponse(f"You are not logged in")

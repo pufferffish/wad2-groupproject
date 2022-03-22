@@ -8,12 +8,18 @@
     font-size: 25px;
 }
 .addTokensBody{
-    margin-top: 10%;
+    margin-top: 2%;
+    margin-bottom: 2%;
     font-size: 15px;
 }
 .addTokensBodyBottom{
     margin-bottom: 5%;
     font-size: 25px;
+}
+.addTokensErrorDiv{
+    color: #dc3545;
+    font-size: 20px;
+    padding: 12px;
 }
 .githubLink a{
     text-decoration: none;

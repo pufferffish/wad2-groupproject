@@ -24,15 +24,15 @@
                 <div class="addTokensBody">
                     In order to get the daily amount of tokens, you need to submit the captcha!
                 </div>
-                <div class="addTokensBody" align = "left">
-                    Reward = 50
+                <div class="addTokensBody">
+                    You will earn {{gain}} tokens. You currently have {{current_tokens}} tokens.
                 </div>
                 <form class="addTokensBodyBottom" action="" method="POST">
                     {% csrf_token %}
                     <div class="h-captcha" data-sitekey="ec1c9032-3b4c-44d1-adea-4a9cc95d9f00"></div>
-                    <br />
+                    <div class="addTokensErrorDiv">{{error_msg}}</div>
                     <a href="{% url 'onlypics:index'%}" class="btn btn-info" role="button">Cancel</a>
-                    <a href="{% url 'onlypics:index'%}" class="btn btn-info" role="button">Submit</a>
+                    <input type="submit" class="btn btn-info" role="button" value="Submit"></input>
                 </form>
             </div>
         </div> 
