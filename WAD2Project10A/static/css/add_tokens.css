@@ -1,0 +1,20 @@
+.addTokensHeader{
+    margin-top: 5%;
+    font-size: 25px;
+    font-style: italic;
+}
+.addTokensBodyTop{
+    margin-top: 5%;
+    font-size: 25px;
+}
+.addTokensBody{
+    margin-top: 10%;
+    font-size: 15px;
+}
+.addTokensBodyBottom{
+    margin-bottom: 5%;
+    font-size: 25px;
+}
+.githubLink a{
+    text-decoration: none;
+}

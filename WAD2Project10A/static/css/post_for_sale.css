@@ -1,0 +1,14 @@
+.postForSaleHeader{
+    margin-top: 5%;
+    font-size: 25px;
+    font-style: italic;
+}
+
+.postForSaleFooter{
+    margin-top: 5%;
+    font-size: 25px;
+}
+
+.githubLink a{
+    text-decoration: none;
+}
