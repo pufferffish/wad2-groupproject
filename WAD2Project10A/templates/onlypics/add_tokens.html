@@ -1,0 +1,48 @@
+{% extends 'onlypics/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Add Tokens
+{% endblock %}
+
+{% block cssFile %}
+    <link rel="stylesheet" href="{% static 'css/add_tokens.css'%}" type="text/css">
+{% endblock %}
+
+{% block body_block %}
+<div class="fluid-container ">
+    <div class="row" align="center">
+        <div class="col-sm-12">
+            <div class="addTokensHeader">
+                Add more tokens and start shopping now!
+            </div>
+            <div class="container pt-3 my-3 border">
+                <div class="addTokensBodyTop">
+                    OnlyPics
+                </div>
+                <div class="addTokensBody">
+                    In order to get the daily amount of tokens, you need to submit the captcha!
+                </div>
+                <div class="addTokensBody">
+                    You will earn {{gain}} tokens. You currently have {{current_tokens}} tokens.
+                </div>
+                <form class="addTokensBodyBottom" action="" method="POST">
+                    {% csrf_token %}
+                    <div class="h-captcha" data-sitekey="ec1c9032-3b4c-44d1-adea-4a9cc95d9f00" data-callback="onCaptchaDone"></div>
+                    <div class="addTokensErrorDiv">{{error_msg}}</div>
+                    <a href="{% url 'onlypics:index'%}" class="btn btn-info" role="button">Cancel</a>
+                    <input type="submit" class="btn btn-info" role="button" value="Submit" disabled="true" id="form_submit_btn"></input>
+                </form>
+            </div>
+        </div> 
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+<script src="{% static 'javascript/addtoken.js'%}"></script>
+{% endblock %}
