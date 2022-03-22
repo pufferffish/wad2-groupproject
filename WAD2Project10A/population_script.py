@@ -7,6 +7,7 @@ import django
 django.setup()
 from OnlyPics.models import Picture, Category, UserInfo
 from django.core.files.images import ImageFile
+from django.core.files.uploadedfile import UploadedFile
 
 def read_images():
     pop_text = "Photoshoot"
@@ -18,9 +19,19 @@ def read_images():
     d = datetime.datetime.utcnow()
 
     i = Picture.objects.get_or_create(owner=user, price=50, name="flower", tags=cat)[0]
+
     img = ImageFile(open("C:/Users/kalfo/Documents/University2/Semester 2/WAD2/pop/Photoshoot 1.JPG", "rb"))
-    i.upload = img
-    i.save()
+    instance = Picture(
+        owner=user,
+        price=50,
+        name="flower",
+        tags=cat,
+        createdAt=d,
+        upload=UploadedFile(
+            file=open("C:/Users/kalfo/Documents/University2/Semester 2/WAD2/pop/Photoshoot 1.JPG", 'rb')
+        )
+    )
+    instance.save()
 
 def add_picture(owner, price, name, category, createdAt, image):
     picture = Picture.objects.get_or_create(owner=owner)
