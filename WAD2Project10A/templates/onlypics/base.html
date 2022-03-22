@@ -32,7 +32,7 @@
                             <li><a href="{% url 'onlypics:about'%}">About</a></li>
                         {% if user.is_authenticated%}
                             <li><a href="{% url 'onlypics:logout'%}">Log out</a></li>
-                            <li><a href="#account">Account</a></li>
+                            <li><a href="{% url 'onlypics:account'%}">Account</a></li>
                         {% else %}
                             <li><a href="/microsoft/to-auth-redirect/?next=/onlypics/upload">Log in</a></li>
                         {% endif %}

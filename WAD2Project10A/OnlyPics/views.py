@@ -135,7 +135,6 @@ def search(request):
 
     return render(request, 'onlypics/explore.html', context=context_dic)
 
-
 def levenshteinDistanceDP(token1, token2):
     target = [k for k in token1]
     source = [k for k in token2]
@@ -153,7 +152,6 @@ def levenshteinDistanceDP(token1, token2):
                 distances[row][column] = distances[row - 1][column-1]
 
     return distances[len(source) - 1][len(target) - 1]
-
 def calcDictDistance(word):
     pictures = Picture.objects.all()
     disallowed_characters = "._! ,/[]()"
@@ -179,3 +177,7 @@ def calcDictDistance(word):
     sortedDict = dict(sorted(dictWordDist.items(), key=lambda x: x[0]))
 
     return sortedDict.values()
+
+@login_required
+def account(request):
+    return render(request, 'onlypics/account.html')

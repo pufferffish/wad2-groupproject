@@ -14,4 +14,6 @@ urlpatterns = [
     path("explore", views.explore, name='explore'),
     path("upload", views.upload, name='upload'),
     path("search", views.search, name='search'),
+
+    path("account", views.account, name='account'),
 ]
