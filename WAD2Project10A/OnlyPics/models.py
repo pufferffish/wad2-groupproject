@@ -58,13 +58,13 @@ class Picture(models.Model):
     # Use negative number to denote as not for sale
     price = models.IntegerField(default = -1)
     # The name of the picture
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     # The tags / categories which the picture belong to
     # Store the tags in such format: 'tag1;tag2;tag3;'
     # It's a workaround since django with sqlite doesn't support storing array
     tags = models.ForeignKey(Category, on_delete=models.CASCADE)
     # when the picture was first created
-    createdAt = models.DateTimeField()
+    createdAt = models.DateTimeField(null=True)
     # The uploaded picture
     upload = models.ImageField(upload_to ='uploads/')
 
