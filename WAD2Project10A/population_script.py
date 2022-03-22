@@ -1,41 +1,38 @@
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'WAD2Project10A.settings')
-from PIL import Image
-import datetime
+from datetime import datetime
 import django
 django.setup()
-from OnlyPics.models import Picture, Category, UserInfo
-from django.core.files.images import ImageFile
+from OnlyPics.models import Picture, Category, UserInfo, User
 from django.core.files.uploadedfile import UploadedFile
 
-def read_images():
-    pop_text = "Photoshoot"
-    im = Image.open("C:/Users/kalfo/Documents/University2/Semester 2/WAD2/pop/Photoshoot 1.JPG")
-    im.show()
+import random
 
-    user = UserInfo.objects.get(nickname="iliyan")
-    cat = Category.objects.get(name="Nature")
-    d = datetime.datetime.utcnow()
+images = {'Nature':['Photoshoot 2', 'Photoshoot 3', 'Photoshoot 4', 'Photoshoot 5', 'Photoshoot 6', 'Photoshoot 7',
+                    'Photoshoot 8', 'Photoshoot 9', 'Photoshoot 10', 'Photoshoot 11', 'Photoshoot 12', 'Photoshoot 13'],
+          'Animals':['cat', 'dog'],
+          'Cities':['london', 'Paris'],
+          'Objects':['vase', 'Photoshoot 1']}
 
-    i = Picture.objects.get_or_create(owner=user, price=50, name="flower", tags=cat)[0]
+def read_images(images):
+    user = UserInfo.objects.all()[0]
 
-    img = ImageFile(open("C:/Users/kalfo/Documents/University2/Semester 2/WAD2/pop/Photoshoot 1.JPG", "rb"))
-    instance = Picture(
-        owner=user,
-        price=50,
-        name="flower",
-        tags=cat,
-        createdAt=d,
-        upload=UploadedFile(
-            file=open("C:/Users/kalfo/Documents/University2/Semester 2/WAD2/pop/Photoshoot 1.JPG", 'rb')
-        )
-    )
-    instance.save()
-
-def add_picture(owner, price, name, category, createdAt, image):
-    picture = Picture.objects.get_or_create(owner=owner)
+    for cat in images:
+        category = Category.objects.get(name=cat)
+        for img in images[cat]:
+            instance = Picture(
+                owner=user,
+                price=random.randint(0,100),
+                name=img,
+                tags=category,
+                createdAt=datetime.now(),
+                upload=UploadedFile(
+                    file=open('populate_images\\' + img + '.JPG', 'rb')
+                )
+            )
+            instance.save()
 
 if __name__ == '__main__':
-    print("Showing images")
-    read_images()
+    print("population images")
+    read_images(images)
