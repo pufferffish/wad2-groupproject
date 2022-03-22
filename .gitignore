@@ -140,3 +140,6 @@ migrations/
 
 # profile pics
 profile_images/
+
+# macbook thing
+.DS_Store

@@ -4,6 +4,10 @@ html{
     font-family: 'Nunito'
 }
 
+body {
+    margin-bottom: 88px;
+}
+
 .navbarHeader, .footer {
     background-color: #0f6797;
 }
@@ -15,7 +19,9 @@ html{
 
 .footer{
     font-size: 12px;
-    padding: 0px;
+    height: 88px;
+    bottom: 0;
+    position: relative;
 }
 
 .navbarBtns li, .OnlyPicsList {
