@@ -5,18 +5,49 @@
     Homepage
 {% endblock %}
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 {% block cssFile%}
-    <link rel="stylesheet" href="{% static 'css/index.css'%}" type="text/css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css"/>
+    <link rel="stylesheet" href="{% static 'css/index.css'%}" type="text/css"/>
 {% endblock %}
 
 {% block body_block%}
-<!-- Slideshow container -->
-<div id="stage" align="center">
-  <a href="1.jpg"><img src="{{ MEDIA_URL }}index/img1.jpg" width="400" height="270"></a>
-  <a href="2.jpg"><img src="{{ MEDIA_URL }}index/img2.jpg" width="400" height="270"></a>
-  <a href="3.jpg"><img src="{{ MEDIA_URL }}index/img3.jpg" width="400" height="270"></a>
+<div class="w3-container">
+  <h2>Slideshow Indicators</h2>
+  <p>Using images to indicate how many slides there are in the slideshow, and highlight the image the user is currently viewing.</p>
 </div>
+
+<div class="w3-content" style="max-width:1200px">
+  <img class="mySlides" src="{{MEDIA_URL}}index/img1.jpg" style="width:100%;display:none">
+  <img class="mySlides" src="{{MEDIA_URL}}index/img2.jpg" style="width:100%">
+  <img class="mySlides" src="{{MEDIA_URL}}index/img3.jpg" style="width:100%;display:none">
+
+  <div class="w3-row-padding w3-section">
+    <div class="w3-col s4">
+      <img class="demo w3-opacity w3-hover-opacity-off" src="{{MEDIA_URL}}index/img1.jpg" style="width:100%;cursor:pointer" onclick="currentDiv(1)">
+    </div>
+    <div class="w3-col s4">
+      <img class="demo w3-opacity w3-hover-opacity-off" src="{{MEDIA_URL}}index/img2.jpg" style="width:100%;cursor:pointer" onclick="currentDiv(2)">
+    </div>
+    <div class="w3-col s4">
+      <img class="demo w3-opacity w3-hover-opacity-off" src="{{MEDIA_URL}}index/img3.jpg" style="width:100%;cursor:pointer" onclick="currentDiv(3)">
+    </div>
+  </div>
+</div>
+
+<div style="margin-bottom: 100px; margin-top: 50px; align: center; text-align: center">
+    <div style="display:inline; padding-right: 30px; font-size: 30px;">
+        Start Shopping
+    </div>
+
+    <div style="display:inline; padding-left: 30px; font-size: 30px;">
+        Start Selling
+    </div>
+</div>
+
+
 {% block javascript %}
-<script src="{% static 'javascript/index.js'%}"></script>
+    <script src="{% static 'javascript/slideshow.js'%}"></script>
 {% endblock %}
 {% endblock %}
