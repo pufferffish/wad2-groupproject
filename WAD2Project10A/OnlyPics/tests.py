@@ -341,29 +341,23 @@ class OnlyPicsViewTests(TestCase):
         content = response.content.decode()
         self.assertTrue('<a href="/microsoft/to-auth-redirect/?next=/onlypics/upload">Log in</a>' in content)
 
+    def test_vbucks(self):
+        response = self.client.get(reverse('onlypics:vbucks'))
+        content = response.content.decode()
+        print(content)
+        self.assertTrue('csrfmiddlewaretoken' in content)
+
 
 class OnlyPicsLoginTests(TestCase):
     """
     A series of tests for checking the login functionality of OnlyPics.
     """
+    pass
 
-    def test_login_url_exists(self):
-        """
-        Checks to see if the new login view exists in the correct place, with the correct name.
-        """
-        pass
-        # url = ''
-        # try:
-        #     url = reverse('onlypics:microsoft:to-auth-redirect:?next=:onlypics:upload')
-        # except:
-        #     print("+++++")
-        #     pass
-        # print("====")
-        #
-        # print(url)
-        # self.assertEqual(url, 'onlypics/microsoft/to-auth-redirect/?next=/onlypics/upload',
-        #                  f"{FAILURE_HEADER}Have you created the rango:login URL mapping correctly? It should point to the new login() view, and have a URL of '/rango/login/' Remember the first part of the URL (/rango/) is handled by the project's urls.py module, and the second part (login/) is handled by the Rango app's urls.py module.{FAILURE_FOOTER}")
-        #
+
+"""
+user cannot see other users's private pictures
+"""
 
 
 class OnlyPicsFunctionTests(TestCase):
@@ -371,11 +365,84 @@ class OnlyPicsFunctionTests(TestCase):
     A series of tests to check function implemented correctly.
     """
 
-    def test_vbucks(self):
-        response = self.client.get(reverse('onlypics:vbucks'))
+    def test_user_account(self):
+        user = create_user_object()
+        self.client.login(username='testuser', password='testabc123')
+        response = self.client.get(reverse('onlypics:account'))
+        self.assertEqual(response.status_code, 200,
+                         f"{FAILURE_HEADER}We weren't greeted with a HTTP status code when attempting to edit profile when logged in. Check your edit_profile() view.{FAILURE_FOOTER}")
+
         content = response.content.decode()
         print(content)
-        self.assertTrue('csrfmiddlewaretoken' in content)
+        self.assertTrue('' in content,
+                        f"{FAILURE_HEADER}When edit profile (when logged in), we didn't see the expected page. Please check your edit profile() view.{FAILURE_FOOTER}")
+
+    def test_user_can_edit_profile(self):
+        """
+        user can change profile name
+        user can change profile icon
+        """
+        user = create_user_object()
+        self.client.login(username='testuser', password='testabc123')
+        response = self.client.get(reverse('onlypics:edit_profile'))
+        self.assertEqual(response.status_code, 200,
+                         f"{FAILURE_HEADER}We weren't greeted with a HTTP status code when attempting to edit profile when logged in. Check your edit_profile() view.{FAILURE_FOOTER}")
+
+        content = response.content.decode()
+        print(content)
+        self.assertTrue('' in content,
+                        f"{FAILURE_HEADER}When edit profile (when logged in), we didn't see the expected page. Please check your edit profile() view.{FAILURE_FOOTER}")
+
+    def test_user_can_post(self):
+        """
+        user can upload
+        """
+        user = create_user_object()
+        self.client.login(username='testuser', password='testabc123')
+        response = self.client.get(reverse('onlypics:upload'))
+        self.assertEqual(response.status_code, 200,
+                         f"{FAILURE_HEADER}We weren't greeted with a HTTP status code when attempting to edit profile when logged in. Check your edit_profile() view.{FAILURE_FOOTER}")
+
+        content = response.content.decode()
+        self.assertTrue('' in content,
+                        f"{FAILURE_HEADER}When edit profile (when logged in), we didn't see the expected page. Please check your edit profile() view.{FAILURE_FOOTER}")
+
+    def test_user_can_comment(self):
+        """
+        user can comment
+        """
+        user = create_user_object()
+        self.client.login(username='testuser', password='testabc123')
+        response = self.client.get(reverse('onlypics:upload'))
+
+    def test_user_can_add_tokens(self):
+        """
+        user can add tokens
+        """
+        user = create_user_object()
+        self.client.login(username='testuser', password='testabc123')
+        response = self.client.get(reverse('onlypics:add_tokens'))
+        self.assertEqual(response.status_code, 200,
+                         f"{FAILURE_HEADER}We weren't greeted with a HTTP status code when attempting to edit profile when logged in. Check your edit_profile() view.{FAILURE_FOOTER}")
+
+        content = response.content.decode()
+        self.assertTrue('' in content,
+                        f"{FAILURE_HEADER}When edit profile (when logged in), we didn't see the expected page. Please check your edit profile() view.{FAILURE_FOOTER}")
+
+    def test_user_can_buy(self):
+        """
+        user can buy
+        """
+        pass
+
+    def test_user_can_sell(self):
+        """
+        user can buy
+        """
+        pass
+
+    def test_user_can_look_private(self):
+        pass
 
 
 class OnlyPicsSessionPersistenceTests(TestCase):
