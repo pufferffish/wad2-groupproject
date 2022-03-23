@@ -1,6 +1,5 @@
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE',
-                      'WAD2Project10A.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'WAD2Project10A.settings')
 from datetime import datetime
 import django
 django.setup()
@@ -9,27 +8,26 @@ from django.core.files.uploadedfile import UploadedFile
 
 import random
 
-images = {'Nature':['Photoshoot 2', 'Photoshoot 3', 'Photoshoot 4', 'Photoshoot 5', 'Photoshoot 6', 'Photoshoot 7',
-                    'Photoshoot 8', 'Photoshoot 9', 'Photoshoot 10', 'Photoshoot 11', 'Photoshoot 12', 'Photoshoot 13'],
+images = {'Nature':['photoshoot2', 'photoshoot3', 'photoshoot4', 'photoshoot5', 'photoshoot6', 'photoshoot7',
+                    'photoshoot8', 'photoshoot9', 'photoshoot10', 'photoshoot11', 'photoshoot12', 'photoshoot13'],
           'Animals':['cat', 'dog'],
-          'Cities':['london', 'Paris'],
-          'Objects':['vase', 'Photoshoot 1']}
+          'Cities':['london', 'paris'],
+          'Objects':['vase', 'photoshoot1']}
 
 def read_images(images):
     user = UserInfo.objects.all()[0]
 
     for cat in images:
-        category = Category.objects.get(name=cat)
+        category, ignored = Category.objects.get_or_create(name=cat)
         for img in images[cat]:
+            file_path = os.path.join("populate_images", img + ".jpg")
             instance = Picture(
                 owner=user,
                 price=random.randint(0,100),
                 name=img,
                 tags=category,
                 createdAt=datetime.now(),
-                upload=UploadedFile(
-                    file=open('populate_images\\' + img + '.JPG', 'rb')
-                )
+                upload=UploadedFile(file=open(file_path, 'rb'))
             )
             instance.save()
 
