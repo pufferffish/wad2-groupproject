@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
 from OnlyPics.models import UserInfo, Picture, Category
-from OnlyPics.forms import UserInfoForm
+from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 import numpy as np
 
@@ -15,10 +15,22 @@ def get_comments_according_to_picture(picture):
 def redirect_to_index(request):
     return redirect('onlypics:index')
 
+def getMostPopularCategories():
+    categories = Category.objects.all()
+    dictionary = {}
+    for category in categories:
+        dictionary[category.name] = len(Picture.objects.filter(tags=category))
+
+    sortedDict = dict(sorted(dictionary.items(), key=lambda x: x[1], reverse=True))
+    topThreeCategories = list(sortedDict.keys())[:3]
+
+    return topThreeCategories
+
 def index(request):
-    top_five_most_liked_pictures = Picture.objects.all()
+    pictures = Picture.objects.all()
     context_dic = {}
-    context_dic['pics'] = top_five_most_liked_pictures
+    context_dic['pics'] = pictures
+    context_dic['topCats'] = getMostPopularCategories()
     return render(request, 'onlypics/index.html', context=context_dic)
 
 def explore(request):
@@ -27,11 +39,14 @@ def explore(request):
     context_dic = {}
     context_dic['pictures'] = picture_list
     context_dic['categories'] = categories
+    context_dic['topCats'] = getMostPopularCategories()
 
     return render(request, 'onlypics/explore.html', context=context_dic)
 
 def about(request):
-    return render(request, 'onlypics/about.html')
+    context_dic = {}
+    context_dic['topCats'] = getMostPopularCategories()
+    return render(request, 'onlypics/about.html', context=context_dic)
 
 @login_required
 def post_for_sale(request):
@@ -61,6 +76,7 @@ def calculate_tokens_gain(user):
 
 @login_required
 def add_tokens(request):
+    topCategories = getMostPopularCategories()
     INVALID_CAPTCHA_REASON = "invalidCaptcha"
     user = UserInfo.objects.get(user=request.user)
     if request.method == 'POST':
@@ -83,7 +99,7 @@ def add_tokens(request):
             error_message = "Invalid hCaptcha, Please try again."
         else:
             error_message = "Unknown error. Please try again."
-        return render(request, 'onlypics/add_tokens.html', {"gain":  gain, 'current_tokens': current_tokens, 'error_msg': error_message})
+        return render(request, 'onlypics/add_tokens.html', {"gain":  gain, 'current_tokens': current_tokens, 'error_msg': error_message, 'topCats':topCategories})
 
 # testing purpose
 def whoami(request):
@@ -95,10 +111,6 @@ def whoami(request):
         return HttpResponse(f"You are {user_info.nickname}")
     except UserInfo.DoesNotExist:
         return HttpResponse("You are logged in but there's no profile of you")
-
-@login_required
-def edit_profile(request):
-    return HttpResponse("Joke")
 
 @login_required
 def logout_user(request):
@@ -154,7 +166,6 @@ def search(request):
     context_dic['categories'] = categories
 
     return render(request, 'onlypics/explore.html', context=context_dic)
-
 def levenshteinDistanceDP(token1, token2):
     target = [k for k in token1]
     source = [k for k in token2]
@@ -191,13 +202,46 @@ def calcDictDistance(word):
         dictWordDist[wordDistance] = pic
         wordIdx = wordIdx + 1
 
-    closestWordsSorted = []
-    wordDetails = []
-    currWordDist = 0
     sortedDict = dict(sorted(dictWordDist.items(), key=lambda x: x[0]))
 
     return sortedDict.values()
 
-@login_required
 def account(request):
-    return render(request, 'onlypics/account.html')
+    user = request.user
+    user_info = UserInfo.objects.get(user=user)
+
+    pictures = Picture.objects.filter(owner=user_info)
+    len_of_pictures = len(pictures)
+
+    context_dic = {}
+    context_dic['pictures'] = pictures
+    context_dic['userInfo'] = user_info
+    context_dic['len_pics'] = len_of_pictures
+    context_dic['topCats'] = getMostPopularCategories()
+
+    return render(request, 'onlypics/account.html', context=context_dic)
+
+@login_required
+def edit_account(request):
+    userInfoForm = UpdateUserInfoForm()
+
+    if request.method == 'POST':
+        userInfoForm = UpdateUserInfoForm(request.POST, request.FILES, instance=request.user.userinfo)
+        if userInfoForm.is_valid():
+            info = userInfoForm.save(commit=False)
+            info.user = request.user
+            info.save()
+            return redirect('onlypics:index')
+        else:
+            print(form.errors)
+
+    return render(request, 'onlypics/edit_account.html', {'form':userInfoForm})
+
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        user = request.user
+        user.delete()
+        return redirect('onlypics:index')
+
+    return render(request, 'onlypics/delete_account.html')

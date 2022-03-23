@@ -7,7 +7,6 @@ app_name = "onlypics"
 urlpatterns = [
     path("", views.index, name="index"),
     path("whoami", views.whoami, name="whoami"),
-    path("edit_profile", views.edit_profile, name="edit_profile"),
     path("logout", views.logout_user, name="logout"),
     path("about", views.about, name='about'),
     path("home", views.index, name=''),
@@ -19,4 +18,6 @@ urlpatterns = [
     path("search", views.search, name='search'),
 
     path("account", views.account, name='account'),
+    path("edit_account", views.edit_account, name='edit_account'),
+    path("delete_account", views.delete_account, name='delete_account')
 ]

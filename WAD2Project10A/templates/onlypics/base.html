@@ -12,6 +12,7 @@
 
     <!-- this is an icon kit for the search icon && Bootstrap -->
     <script src="https://kit.fontawesome.com/a1a588f336.js" crossorigin="anonymous"></script>
+    <link href='https://fonts.googleapis.com/css?family=Bad Script' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/base.css'%}" type="text/css">
     {% block cssFile %}
@@ -23,7 +24,7 @@
     <div class="navbarHeader">
         <div class="fixed-container">
             <div class="row align-items-center">
-                <div class="col-md-2"><p>OnlyPics</p></div>
+                <div class="col-md-2"><a id="logo" href="{% url 'onlypics:index' %}">OnlyPics</a></div>
                 <div class="col-md-6">
                     <div class="navbar">
                         <ul class="navbarBtns">
@@ -80,9 +81,9 @@
         <!-- This will hold [The categories (ordered), about us sublinks, [privacy policy, T&Cs]]-->
         <div class="row" align="center">
             <div class="col-md-4">
-                {% if categories %}
-                    {% for c in category %}
-                        <li class="categories"><a href="#category"></a>category</li>
+                {% if topCats %}
+                    {% for c in topCats %}
+                        <li class="categories"><a href="#category"></a>{{ c }}</li>
                     {% endfor %}
                 {% else %}
                     <li class="categories">None</li>
