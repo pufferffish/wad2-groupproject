@@ -7,6 +7,8 @@
 
 {% block cssFile %}
     <link rel="stylesheet" href="{% static 'css/account.css'%}" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Alegreya Sans SC' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet'>
 {% endblock %}
 
 {% block body_block %}
@@ -14,20 +16,37 @@
       <div class="row">
         <div class="col-3 sticky">
           <div class="sidebar-section">
-            Sidebar Section
+              <div>
+                  {% if user.is_authenticated %}
+                    <img id="profile-picture" src="{{ MEDIA_URL }}{{ userInfo.pfp }}">
+                    <p id="account-name">{{ userInfo.nickname }}</p>
+                    <p class="account-info">Tokens: {{ userInfo.tokens }}</p>
+                    <p class="account-info">Pictures owned: {{ len_pics }}</p>
+                  {% else %}
+                    <p>This account does not exist</p>
+                  {% endif %}
+              </div>
+              <div>
+                  <a class="account-option" href="{% url 'onlypics:edit_account'%}">Edit Account</a>
+                  <a class="account-option" href="{% url 'onlypics:delete_account'%}">Delete Account</a>
+                  <a class="account-option" href="{% url 'onlypics:add_tokens'%}">Get the daily amount of tokens</a>
+              </div>
           </div>
         </div>
         <div class="col-9">
           <div class="content-section">
-              <div>
-                  Owned pictures
+              <div id="page-title">
+                  This is your photo library...
               </div>
-              <div class="picture-box">
-                  <img src="{{ MEDIA_URL }}index/img1.jpg" alt="Girl in a jacket" >
-              </div>
-              <div class="picture-box">
-                  <img src="{{ MEDIA_URL }}index/img1.jpg" alt="Girl in a jacket" >
-              </div>
+              {% if pictures %}
+                  {% for pic in pictures %}
+                      <div class="picture-box">
+                          <img class="owned-img" src="{{ MEDIA_URL }}{{pic.upload}}">
+                      </div>
+                  {% endfor %}
+              {% else %}
+                    <p>You dont own any pictures! Time to become an owner!</p>
+              {% endif %}
           </div>
         </div>
       </div>
