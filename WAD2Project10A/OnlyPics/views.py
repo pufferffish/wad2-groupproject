@@ -53,11 +53,13 @@ def index(request):
 def explore(request):
     picture_list = Picture.objects.all()
     categories = Category.objects.all()
+    comments = Comment.objects.all()
+
     context_dic = {}
     context_dic['pictures'] = picture_list
     context_dic['categories'] = categories
     context_dic['topCats'] = getMostPopularCategories()
-
+    context_dic['comments'] = comments
     return render(request, 'onlypics/explore.html', context=context_dic)
 
 def about(request):

@@ -95,4 +95,4 @@ class Comment(models.Model):
     made_at = models.DateTimeField()
 
     def __str__(self):
-        f"{str(self.owner)}: {str(self.text)}"
+        return f"{str(self.owner)}: {str(self.text)}"
