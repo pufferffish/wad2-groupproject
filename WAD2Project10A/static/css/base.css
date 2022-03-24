@@ -50,8 +50,27 @@ body {
 #logo{
     font-family: 'Bad Script';
     font-size: 40px;
-    margin-bottom: 0;
-    padding: 15px;
     text-decoration: none;
     color: inherit;
+}
+
+.footer-title{
+    margin-bottom: 3px;
+    margin-top: 5px;
+    font-size: 17px;
+    color: whitesmoke;
+    text-decoration: underline;
+}
+
+#footer-title-onlypics{
+    margin-bottom: 3px;
+    margin-top: 5px;
+    font-size: 17px;
+    color: whitesmoke;
+    font-family: 'Bad Script';
+}
+
+.footer-gradient {
+    background-color: red;
+    background-image: linear-gradient(red, yellow);
 }

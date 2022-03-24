@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
 from OnlyPics.models import UserInfo, Picture, Category
-from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm
+from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm, PostForSaleForm
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 import numpy as np
 
