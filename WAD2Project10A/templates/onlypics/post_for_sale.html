@@ -17,34 +17,55 @@
             </div>
         </div>  
 
-        <div class="container pt-3 my-3 border">
-            <div class="col-sm-11" align="left">
-                {{form.upload}}
-            </div>   
-            <div class="col-md-4" align="left">
-                <li class="postList">
-                    Name: {{form.name}}
-                </li>
-                <li class="postList">
-                    Created at: {{form.createdAt}}
-                </li>
-                <li class="postList">
-                    Price: {{form.price}}
-                </li>
-                <li class="postList">
-                    Category: {{form.tags}}
-                </li>
-                <li class="postList">
-                    Description: {{form.description}}
-                </li>
-            </div>  
-        </div>     
-
-        <div class="container border">
-            <div class="postForSaleFooter">
-                Post for sale
+        <form method="POST" enctype="multipart/form-data" action="{% url 'onlypics:post_for_sale'%}">
+        {% csrf_token %}
+        <div class="row container uploadForm">
+            <div class="border uploadPart">
+                <div align="left">
+                    <img id="pic" class="preview"/>
+                </div>
+                <div align="left">
+                    <input type="file" name="upload" accept="image/*" required="yes" id="upload" class="file-btn form-control">
+                </div>
+            </div>
+            <div class="border uploadPart">
+                <div class="flexbox" align="left">
+                    <div class="postList">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" min="0" required="yes" class="form-control">
+                    </div>
+                    <div class="postList">
+                        <label for="createdAt">Created At:</label>
+                        <input type="date" id="createdAt" name="createdAt" required="yes" class="form-control">
+                    </div>
+                    <div class="postList">
+                        <label for="forSale">For sale:</label>
+                        <input type="checkbox" id="forSale" name="forSale" onchange="toggleForSale(this)" checked/>
+                    </div>
+                    <div class="postList">
+                        <label for="price">Price:</label>
+                        <input type="number" id="price" name="price" min="0" value="0" required="yes" class="form-control">
+                    </div>
+                    <div class="postList">
+                        <label for="category">Category:</label>
+                        <select name="category" id="category" required="yes" class="form-control">
+                            {% for c in categories %}
+                                <option value="{{ c }}">{{ c }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div class="spacious-div">
+            <a style="color: #bd2130">{{ error_message }}</a>
+        </div>
+        <div class="spacious-div">
+            <input value="Post for sale" class="submit-btn btn btn-info" type="submit"></input>
+        </div>
+        </form>
     </div>
 
+    <script src="{% static 'javascript/post_for_sale.js'%}"></script>
 {% endblock %}
