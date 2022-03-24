@@ -59,7 +59,10 @@ def post_for_sale(request):
         else:
             print(form.errors)
 
-    return render(request, 'onlypics/post_for_sale.html', {'form':form})
+    context_dic = {}
+    context_dic["categories"] = Category.objects.all()
+    context_dic["form"] = form
+    return render(request, 'onlypics/post_for_sale.html', context_dic)
 
 @login_required
 def profile(request):
@@ -141,7 +144,7 @@ def upload(request):
     return render(request, 'onlypics/upload.html', {'form':form})
 
 def search(request):
-
+    user = request.user
     if user.is_authenticated:
         categories = Category.objects.all()
         disallowed_characters = "._! ,/[]()"
