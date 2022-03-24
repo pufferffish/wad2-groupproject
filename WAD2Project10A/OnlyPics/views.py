@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
-from OnlyPics.models import UserInfo, Picture, Category
-from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm
+from OnlyPics.models import UserInfo, Picture, Category, PictureVotes
+from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm, PostForSaleForm
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 import numpy as np
 
@@ -140,32 +140,32 @@ def upload(request):
         return redirect('onlypics:index')
     return render(request, 'onlypics/upload.html', {'form':form})
 
-@login_required
 def search(request):
-    categories = Category.objects.all()
-    disallowed_characters = "._! ,/[]()"
 
-    if 'search' in request.GET:
-        search_term = request.GET['search']
+    if user.is_authenticated:
+        categories = Category.objects.all()
+        disallowed_characters = "._! ,/[]()"
 
-    for character in disallowed_characters:
-        search_term = search_term.replace(character, "")
+        if 'search' in request.GET:
+            search_term = request.GET['search']
+        for character in disallowed_characters:
+            search_term = search_term.replace(character, "")
 
-    if (len(search_term) == 0):
-        context_dic_empty = {}
-        picture_list = Picture.objects.all()
+        if (len(search_term) == 0):
+            context_dic_empty = {}
+            picture_list = Picture.objects.all()
+            context_dic_empty['pictures'] = picture_list
+            context_dic_empty['categories'] = categories
+            return render(request, 'onlypics/explore.html', context=context_dic_empty)
 
-        context_dic_empty['pictures'] = picture_list
-        context_dic_empty['categories'] = categories
+        picture_list = calcDictDistance(search_term)
+        context_dic = {}
+        context_dic['pictures'] = picture_list
+        context_dic['categories'] = categories
+        return render(request, 'onlypics/explore.html', context=context_dic)
+    else:
+        redirect('onlypics:explore')
 
-        return render(request, 'onlypics/explore.html', context=context_dic_empty)
-
-    picture_list = calcDictDistance(search_term)
-    context_dic = {}
-    context_dic['pictures'] = picture_list
-    context_dic['categories'] = categories
-
-    return render(request, 'onlypics/explore.html', context=context_dic)
 def levenshteinDistanceDP(token1, token2):
     target = [k for k in token1]
     source = [k for k in token2]
@@ -209,8 +209,25 @@ def calcDictDistance(word):
 def account(request):
     user = request.user
     user_info = UserInfo.objects.get(user=user)
-
     pictures = Picture.objects.filter(owner=user_info)
+    pictureVotes = PictureVotes.objects.all()
+    positiveVotes = {}
+    negativeVotes = {}
+
+    for picVote in pictureVotes:
+        for pic in pictures:
+            if picVote.picture == pic:
+                if picVote.positive == True:
+                    if pic in positiveVotes.keys():
+                        positiveVotes[pic] += 1
+                    else:
+                        positiveVotes[pic] = 1
+                else:
+                    if pic in negativeVotes.keys():
+                        negativeVotes[pic] += 1
+                    else:
+                        negativeVotes[pic] = 1
+
     len_of_pictures = len(pictures)
 
     context_dic = {}
@@ -218,6 +235,8 @@ def account(request):
     context_dic['userInfo'] = user_info
     context_dic['len_pics'] = len_of_pictures
     context_dic['topCats'] = getMostPopularCategories()
+    context_dic['positiveVotes'] = positiveVotes
+    context_dic['negativeVotes'] = negativeVotes
 
     return render(request, 'onlypics/account.html', context=context_dic)
 

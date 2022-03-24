@@ -1,5 +1,7 @@
 {% extends 'onlypics/base.html' %}
-{% load staticfiles%}
+
+{% load staticfiles %}
+{% load onlypics_template_filters %}
 
 {% block title_block %}
     Account
@@ -7,8 +9,14 @@
 
 {% block cssFile %}
     <link rel="stylesheet" href="{% static 'css/account.css'%}" type="text/css">
+
+<!-- Fonts access -->
     <link href='https://fonts.googleapis.com/css?family=Alegreya Sans SC' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet'>
+
+<!-- Download icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 {% endblock %}
 
 {% block body_block %}
@@ -43,6 +51,14 @@
                       <div class="picture-box">
                           <img class="owned-img" src="{{ MEDIA_URL }}{{pic.upload}}">
                       </div>
+                        <div id="content">
+                            <p class="info-explore-picture">Likes: {{ positiveVotes|picVoteValue:pic }}</p>
+                            <p class="info-explore-picture">Dislikes: {{ negativeVotes|picVoteValue:pic }}</p>
+                            <a href="{{ MEDIA_URL }}{{pic.upload}}" download="{{pic.name}}">
+                                <button class="btn download-button"><i class="fa fa-download"></i> Download</button>
+                            </a>
+                        </div>
+                        <div id="delimiter"></div>
                   {% endfor %}
               {% else %}
                     <p>You dont own any pictures! Time to become an owner!</p>
