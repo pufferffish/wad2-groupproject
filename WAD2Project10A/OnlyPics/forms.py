@@ -55,15 +55,3 @@ class UpdateUserInfoForm(forms.ModelForm):
     class Meta:
         model = UserInfo
         fields = ('nickname', 'pfp')
-
-class PostForSaleForm(forms.ModelForm):
-    name = forms.CharField(max_length=100)
-    price = forms.IntegerField()
-    createdAt = forms.DateTimeField()
-    tags = forms.CharField()
-    description = forms.CharField()
-    upload = forms.ImageField();
-
-    class Meta:
-        model = Picture
-        fields = ('name','price','createdAt','tags','description','upload')

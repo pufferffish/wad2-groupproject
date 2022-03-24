@@ -17,7 +17,7 @@
             </div>
         </div>  
 
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" enctype="multipart/form-data" action="{% url 'onlypics:post_for_sale'%}">
         {% csrf_token %}
         <div class="row container uploadForm">
             <div class="border uploadPart">
@@ -58,7 +58,10 @@
             </div>
         </div>
 
-        <div>
+        <div class="spacious-div">
+            <a style="color: #bd2130">{{ error_message }}</a>
+        </div>
+        <div class="spacious-div">
             <input value="Post for sale" class="submit-btn btn btn-info" type="submit"></input>
         </div>
         </form>

@@ -3,9 +3,26 @@ from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
 from OnlyPics.models import UserInfo, Picture, Category, PictureVotes
-from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm, PostForSaleForm
+from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 import numpy as np
+import io
+from PIL import Image
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
+
+INVALID_CAPTCHA_REASON = "invalidCaptcha"
+INVALID_PICTURE_REASON = "invalidPicture"
+
+def resolve_error_message(error_reason):
+    if error_reason == None:
+        return ""
+    elif error_reason == INVALID_CAPTCHA_REASON:
+        return "Invalid hCaptcha. Please try again."
+    elif error_reason == INVALID_PICTURE_REASON:
+        return "You have uploaded an invalid picture. Please try again."
+    else:
+        return "Unknown error. Please try again."
 
 #to be used in the template
 def get_comments_according_to_picture(picture):
@@ -48,28 +65,40 @@ def about(request):
     context_dic['topCats'] = getMostPopularCategories()
     return render(request, 'onlypics/about.html', context=context_dic)
 
+# convert to jpeg and ensure file is a picture
+def image_reformat(image):
+    img_io = io.BytesIO()
+    img = Image.open(image)
+    img.save(img_io, format="PNG")
+    new_pic = InMemoryUploadedFile(img_io, 'ImageField', image.name, 'JPEG', sys.getsizeof(img_io), None)
+    return new_pic
+
 @login_required
 def post_for_sale(request):
-    form = PostForSaleForm()
     if request.method == 'POST':
-        user = UserInfo.objects.get(user=request.user)
-        query = request.POST
-        picture = Picture()
-        picture.owner = user
-        if query['forSale'] == 'on':
-            picture.price = int(query['price'])
-        else:
-            picture.price = -1
-        picture.tags = Category.objects.get(name=query['category'])
-        picture.createdAt = query['createdAt']
-        image = request.FILES['upload']
-        picture.upload.save(image.name, image)
-        picture.save()
-        return redirect('onlypics:account')
+        try:
+            user = UserInfo.objects.get(user=request.user)
+            query = request.POST
+            picture = Picture()
+            picture.owner = user
+            if query['forSale'] == 'on':
+                picture.price = int(query['price'])
+            else:
+                picture.price = -1
+            picture.tags = Category.objects.get(name=query['category'])
+            picture.createdAt = query['createdAt']
+            image = request.FILES['upload']
+            image = image_reformat(image)
+            picture.upload.save(image.name, image)
+            picture.save()
+            return redirect('onlypics:account')
+        except Exception as e:
+            print(e)
+            return redirect(request.build_absolute_uri() + "?error=" + INVALID_PICTURE_REASON)
 
     context_dic = {}
     context_dic["categories"] = Category.objects.all()
-    context_dic["form"] = form
+    context_dic["error_message"] = resolve_error_message(request.GET.get("error", None))
     return render(request, 'onlypics/post_for_sale.html', context_dic)
 
 @login_required
@@ -103,42 +132,15 @@ def add_tokens(request):
     else:
         gain = calculate_tokens_gain(user)
         current_tokens = user.tokens
-        error_reason = request.GET.get("error", None)
-        if error_reason == None:
-            error_message = ""
-        elif error_reason == INVALID_CAPTCHA_REASON:
-            error_message = "Invalid hCaptcha, Please try again."
-        else:
-            error_message = "Unknown error. Please try again."
-        return render(request, 'onlypics/add_tokens.html', {"gain":  gain, 'current_tokens': current_tokens, 'error_msg': error_message, 'topCats':topCategories})
+        error_message = resolve_error_message(request.GET.get("error", None))
+        context_dic = {"gain":  gain, 'current_tokens': current_tokens, 'error_msg': error_message, 'topCats': topCategories}
+        return render(request, 'onlypics/add_tokens.html', context_dic)
 
 @login_required
 def logout_user(request):
     if request.user.is_authenticated:
         logout(request)
     return redirect('onlypics:index')
-
-@login_required
-def upload(request):
-    form = UserInfoForm()
-    user = request.user
-    try:
-        user_info = UserInfo.objects.get(user=user)
-    except UserInfo.DoesNotExist:
-        if request.method == 'POST':
-            form = UserInfoForm(request.POST, request.FILES)
-            if form.is_valid():
-                if user:
-                    user_info = form.save(commit=False)
-                    user_info.user = user
-                    user_info.save()
-
-                    return redirect('onlypics:index')
-            else:
-                print(form.errors)
-    else:
-        return redirect('onlypics:index')
-    return render(request, 'onlypics/upload.html', {'form':form})
 
 def search(request):
     user = request.user
@@ -183,6 +185,7 @@ def levenshteinDistanceDP(token1, token2):
                 distances[row][column] = distances[row - 1][column-1]
 
     return distances[len(source) - 1][len(target) - 1]
+
 def calcDictDistance(word):
     pictures = Picture.objects.all()
     disallowed_characters = "._! ,/[]()"
@@ -245,16 +248,40 @@ def edit_account(request):
     userInfoForm = UpdateUserInfoForm()
 
     if request.method == 'POST':
-        userInfoForm = UpdateUserInfoForm(request.POST, request.FILES, instance=request.user.userinfo)
-        if userInfoForm.is_valid():
+        try:
+            userInfoForm = UpdateUserInfoForm(request.POST, request.FILES, instance=request.user.userinfo)
+            assert userInfoForm.is_valid()
             info = userInfoForm.save(commit=False)
             info.user = request.user
             info.save()
-            return redirect('onlypics:index')
-        else:
-            print(form.errors)
+            return redirect('onlypics:account')
+        except:
+            return redirect(request.build_absolute_uri() + "?error=" + INVALID_PICTURE_REASON)
 
-    return render(request, 'onlypics/edit_account.html', {'form':userInfoForm})
+    error_message = resolve_error_message(request.GET.get("error", None))
+    return render(request, 'onlypics/edit_account.html', context={'form': userInfoForm, 'error_message': error_message})
+
+@login_required
+def upload(request):
+    form = UserInfoForm()
+    user = request.user
+    try:
+        user_info = UserInfo.objects.get(user=user)
+        return redirect('onlypics:index')
+    except UserInfo.DoesNotExist:
+        if request.method == 'POST':
+            try:
+                form = UserInfoForm(request.POST, request.FILES)
+                assert form.is_valid()
+                assert user
+                user_info = form.save(commit=False)
+                user_info.user = user
+                user_info.save()
+                return redirect('onlypics:index')
+            except:
+                return redirect(request.build_absolute_uri() + "?error=" + INVALID_PICTURE_REASON)
+    error_message = resolve_error_message(request.GET.get("error", None))
+    return render(request, 'onlypics/upload.html', context={'form': form, 'error_message': error_message})
 
 @login_required
 def delete_account(request):
