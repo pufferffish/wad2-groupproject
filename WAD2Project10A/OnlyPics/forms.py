@@ -57,7 +57,7 @@ class UpdateUserInfoForm(forms.ModelForm):
         fields = ('nickname', 'pfp')
 
 class PostForSaleForm(forms.ModelForm):
-    name = forms.CharField(max_length=100)    
+    name = forms.CharField(max_length=100)
     price = forms.IntegerField()
     createdAt = forms.DateTimeField()
     tags = forms.CharField()
@@ -66,4 +66,4 @@ class PostForSaleForm(forms.ModelForm):
 
     class Meta:
         model = Picture
-        fields = ('name','price','createdAt','tags','description')
+        fields = ('name','price','createdAt','tags','description','upload')

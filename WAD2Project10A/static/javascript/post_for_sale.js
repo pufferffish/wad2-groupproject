@@ -1,4 +1,4 @@
-const uploadButton = document.getElementById("id_upload")
+const uploadButton = document.getElementById("upload")
 const priceInput = document.getElementById("price")
 const picPreview = document.getElementById("pic")
 

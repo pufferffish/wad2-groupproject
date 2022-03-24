@@ -58,7 +58,7 @@ class Picture(models.Model):
     # Use negative number to denote as not for sale
     price = models.IntegerField(default = -1)
     # The name of the picture
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
     # The tags / categories which the picture belong to
     # Store the tags in such format: 'tag1;tag2;tag3;'
     # It's a workaround since django with sqlite doesn't support storing array

@@ -52,12 +52,20 @@ def about(request):
 def post_for_sale(request):
     form = PostForSaleForm()
     if request.method == 'POST':
-        form = PostForSaleForm(request.POST)
-        if form.is_valid():
-            form.save(commit=True)
-            return redirect('onlypics:index')
+        user = UserInfo.objects.get(user=request.user)
+        query = request.POST
+        picture = Picture()
+        picture.owner = user
+        if query['forSale'] == 'on':
+            picture.price = int(query['price'])
         else:
-            print(form.errors)
+            picture.price = -1
+        picture.tags = Category.objects.get(name=query['category'])
+        picture.createdAt = query['createdAt']
+        image = request.FILES['upload']
+        picture.upload.save(image.name, image)
+        picture.save()
+        return redirect('onlypics:account')
 
     context_dic = {}
     context_dic["categories"] = Category.objects.all()
@@ -103,17 +111,6 @@ def add_tokens(request):
         else:
             error_message = "Unknown error. Please try again."
         return render(request, 'onlypics/add_tokens.html', {"gain":  gain, 'current_tokens': current_tokens, 'error_msg': error_message, 'topCats':topCategories})
-
-# testing purpose
-def whoami(request):
-    if not request.user.is_authenticated:
-        return HttpResponse(f"You are not logged in")
-    user = request.user
-    try:
-        user_info = UserInfo.objects.get_or_create(user=user, tokens=50)[0]
-        return HttpResponse(f"You are {user_info.nickname}")
-    except UserInfo.DoesNotExist:
-        return HttpResponse("You are logged in but there's no profile of you")
 
 @login_required
 def logout_user(request):
