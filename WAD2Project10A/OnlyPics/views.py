@@ -169,6 +169,11 @@ def search(request):
         redirect('onlypics:explore')
 
 def levenshteinDistanceDP(token1, token2):
+    if token1 == "":
+        return len(token2)
+    if token2 == "":
+        return len(token1)
+
     target = [k for k in token1]
     source = [k for k in token2]
 
