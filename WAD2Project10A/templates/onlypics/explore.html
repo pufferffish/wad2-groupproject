@@ -7,18 +7,19 @@
 
 {% block cssFile %}
     <link rel="stylesheet" href="{% static 'css/explore.css'%}" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet'>
 {% endblock %}
 
 {% block body_block %}
 <div class="container" id="containerId">
     <div class="row content-text">
-        <div class="col-md-2">
+        <div class="col-md-2" style="border-right: 1px solid grey;">
             <div id="sidebar">
-                <p><strong>Popular Categories</strong></p>
+                <p style="font-size: 25px; margin-bottom: 40px;"><strong>Popular Categories</strong></p>
                 {% if categories %}
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group list-group-flush" >
                         {% for c in categories %}
-                          <li class="list-group-item">{{ c.name }}</li>
+                          <li class="list-group-item" style="font-size: 20px;">{{ c.name }}</li>
                         {% endfor %}
                     </ul>
                 {% else %}
@@ -28,13 +29,43 @@
                 {% endif %}
             </div>
         </div>
-        <div class="col-md-10 content">
-            <p class="popCatText">pics go here</p>
-            <div id="stage" align="center">
-                {% for picture in pictures %}
-                    <a><img src="{{ MEDIA_URL }}{{picture.upload}}" width="400" height="270"></a>
-                {% endfor %}
-
+        <div class="col-md-10">
+            <div class="content">
+                    {% for picture in pictures %}
+                        <div class="picture-box">
+                            <img class="explore-img" src="{{ MEDIA_URL }}{{picture.upload}}" >
+                            <div id="info-picture-div">
+                                <div style="margin-bottom: 15px; margin-top: 15px;">
+                                    <h3 class="div-buy div-buy-text">Name: {{ picture.name }}</h3>
+                                    <h3 class="div-buy div-buy-text">Tokens: {{ picture.price }}</h3>
+                                    <button type="button" class="btn btn-outline-primary div-buy div-buy-button" >Buy</button>
+                                </div>
+                                <div id="delimiter1"></div>
+                                <div class="div-button-text">
+                                    <button type="button" class="btn btn-outline-secondary div-box-button">Like</button>
+                                    <button type="button" class="btn btn-outline-secondary div-box-button">Dislike</button>
+                                </div>
+                                <div id="delimiter2"></div>
+                                <div style="height: 30%">
+                                    <p style="font-size: 20px; text-decoration: underline;">Comments:</p>
+                                    <div class="scrollable">
+                                        {% for comment in comments %}
+                                        {% if picture == comment.picture %}
+                                        <p style="float: left; margin-left: 20px;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
+                                        {% else %}
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <div>
+                                        <form action="/action_page.php">
+                                          <input type="text" id="fname" class="input-comment" name="fname" placeholder="Make a comment">
+                                          <input type="submit" value="Submit">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
             </div>
         </div>
     </div>

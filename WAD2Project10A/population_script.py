@@ -15,7 +15,7 @@ images = {'Nature':['photoshoot2', 'photoshoot3', 'photoshoot4', 'photoshoot5', 
           'Objects':['vase', 'photoshoot1']}
 
 def read_images(images):
-    user = UserInfo.objects.all()[0]
+    user = UserInfo.objects.all()[1]
 
     for cat in images:
         category, ignored = Category.objects.get_or_create(name=cat)

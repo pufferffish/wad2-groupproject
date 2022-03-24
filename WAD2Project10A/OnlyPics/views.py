@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
-from OnlyPics.models import UserInfo, Picture, Category, PictureVotes
+from OnlyPics.models import UserInfo, Picture, Category, PictureVotes, Comment
 from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm, PostForSaleForm
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 import numpy as np
@@ -36,11 +36,13 @@ def index(request):
 def explore(request):
     picture_list = Picture.objects.all()
     categories = Category.objects.all()
+    comments = Comment.objects.all()
+
     context_dic = {}
     context_dic['pictures'] = picture_list
     context_dic['categories'] = categories
     context_dic['topCats'] = getMostPopularCategories()
-
+    context_dic['comments'] = comments
     return render(request, 'onlypics/explore.html', context=context_dic)
 
 def about(request):
