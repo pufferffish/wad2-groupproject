@@ -17,6 +17,10 @@ body {
     font-size: 25px;
 }
 
+.input-group input{
+    width: 300px;
+}
+
 .footer{
     font-size: 12px;
     height: 88px;
