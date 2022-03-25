@@ -42,8 +42,11 @@
                                 </div>
                                 <div id="delimiter1"></div>
                                 <div class="div-button-text">
-                                    <button type="submit" name="like-button" class="btn btn-outline-secondary div-box-button">Like</button>
-                                    <button type="submit" name="dislike-button" class="btn btn-outline-secondary div-box-button">Dislike</button>
+                                    <form method="POST" id="like-form">
+                                        {% csrf_token %}
+                                        <button type="submit" id="like-button" name="like-button" class="btn btn-outline-secondary div-box-button">Like</button>
+                                        <button type="submit" id="dislike-button" name="dislike-button" class="btn btn-outline-secondary div-box-button">Dislike</button>
+                                    </form>
                                 </div>
                                 <div id="delimiter2"></div>
                                 <div style="height: 30%">
@@ -51,7 +54,9 @@
                                     <div class="scrollable">
                                         {% for comment in comments %}
                                             {% if picture == comment.picture %}
-                                                <p style="float: left; margin-left: 20px;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
+                                                    <div style="display: flex;" id="comment-section">
+                                                        <p style="float: left; margin-left: 20px;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
+                                                    </div>
                                             {% else %}
                                             {% endif %}
                                         {% endfor %}
@@ -73,6 +78,7 @@
 </div>
 {% block javaScript %}
     <script src="{% static 'javascript/post_comment.js'%}"></script>
+<script src="{% static 'javascript/like_dislike.js'%}"></script>
 {% endblock %}
 {% endblock %}
 

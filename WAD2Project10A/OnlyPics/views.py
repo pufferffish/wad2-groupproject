@@ -346,11 +346,31 @@ def post_comment(request, picture_name):
             instance.save()
 
             user_nickname = {"user_nickname":instance.owner.nickname}
-            ser_instance = serializers.serialize('json', [instance,])
+            comment_text = {"comment_text":instance.text}
 
-            return JsonResponse({"instance": ser_instance, "nickname":user_nickname}, status=200)
+            return JsonResponse({"comment_text": comment_text, "user_nickname":user_nickname}, status=200)
         else:
             return JsonResponse({'error': form.errors}, status=400)
 
     return JsonResponse({"error": ""}, status=400)
+
+@login_required
+def like_picture(request):
+    user = UserInfo.objects.get(user=request.user)
+    picture = Picture.objects.get(name="tree")
+    liked_disliked = True
+    if request.method == 'POST' and request.is_ajax:
+        if request.POST.get('like-button'):
+            liked_disliked = True
+        elif request.POST.get('dislike-button'):
+            like_disliked = False
+
+        PictureVotes.objects.create(user=user, picture=picture, positive=liked_disliked)
+
+        like_result = {"like_dislike": liked_disliked}
+        return JsonResponse({"like_dislike": like_result})
+
+    return JsonResponse({"error": ""})
+
+
 
