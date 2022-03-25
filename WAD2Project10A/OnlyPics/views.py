@@ -353,3 +353,4 @@ def post_comment(request, picture_name):
             return JsonResponse({'error': form.errors}, status=400)
 
     return JsonResponse({"error": ""}, status=400)
+
