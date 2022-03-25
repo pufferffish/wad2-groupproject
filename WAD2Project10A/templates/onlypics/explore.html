@@ -42,24 +42,25 @@
                                 </div>
                                 <div id="delimiter1"></div>
                                 <div class="div-button-text">
-                                    <button type="button" class="btn btn-outline-secondary div-box-button">Like</button>
-                                    <button type="button" class="btn btn-outline-secondary div-box-button">Dislike</button>
+                                    <button type="submit" name="like-button" class="btn btn-outline-secondary div-box-button">Like</button>
+                                    <button type="submit" name="dislike-button" class="btn btn-outline-secondary div-box-button">Dislike</button>
                                 </div>
                                 <div id="delimiter2"></div>
                                 <div style="height: 30%">
                                     <p style="font-size: 20px; text-decoration: underline;">Comments:</p>
                                     <div class="scrollable">
                                         {% for comment in comments %}
-                                        {% if picture == comment.picture %}
-                                        <p style="float: left; margin-left: 20px;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
-                                        {% else %}
-                                        {% endif %}
+                                            {% if picture == comment.picture %}
+                                                <p style="float: left; margin-left: 20px;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
+                                            {% else %}
+                                            {% endif %}
                                         {% endfor %}
                                     </div>
                                     <div>
-                                        <form action="/action_page.php">
-                                          <input type="text" id="fname" class="input-comment" name="fname" placeholder="Make a comment">
-                                          <input type="submit" value="Submit">
+                                        <form action="{% url 'onlypics:post_comment' picture.name %}" data-url="{% url 'onlypics:post_comment' picture.name %}" method="POST" id="post-comment-form">
+                                            {% csrf_token %}
+                                            {{ form }}
+                                            <input type="submit" value="Submit"/>
                                         </form>
                                     </div>
                                 </div>
@@ -70,5 +71,9 @@
         </div>
     </div>
 </div>
-
+{% block javaScript %}
+    <script src="{% static 'javascript/post_comment.js'%}"></script>
 {% endblock %}
+{% endblock %}
+
+

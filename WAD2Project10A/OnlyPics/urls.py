@@ -18,5 +18,7 @@ urlpatterns = [
 
     path("account", views.account, name='account'),
     path("edit_account", views.edit_account, name='edit_account'),
-    path("delete_account", views.delete_account, name='delete_account')
+    path("delete_account", views.delete_account, name='delete_account'),
+
+    path("post_comment/<str:picture_name>", views.post_comment, name='post_comment'),
 ]
