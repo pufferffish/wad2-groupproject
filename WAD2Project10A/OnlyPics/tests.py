@@ -240,43 +240,6 @@ class OnlyPicsTemplateTests(TestCase):
         self.assertTrue(re.search(title_pattern, template_str),
                         f"{FAILURE_HEADER}When searching the contents of base.html, we couldn't find the expected title block. ")
 
-    def test_title_blocks(self):
-        """
-        perhaps you change the html file, then this test will fail, so change html file and test code at the same time
-        :return:
-        """
-        template_base_path = os.path.join(settings.TEMPLATE_DIR, 'onlypics')
-        mappings = {
-            reverse('onlypics:about'): {
-                'full_title_pattern': r'<title>(\s*|\n*)OnlyPics(\s*|\n*)-(\s*|\n*)About OnlyPics(\s*|\n*)</title>',
-                'block_title_pattern': r'{% block title_block %}(\s*|\n*)About OnlyPics(\s*|\n*){% (endblock|endblock title_block) %}',
-                'template_filename': 'about.html'},
-
-            reverse('onlypics:index'): {
-                'full_title_pattern': r'<title>(\s*|\n*)OnlyPics(\s*|\n*)-(\s*|\n*)Homepage(\s*|\n*)</title>',
-                'block_title_pattern': r'{% block title_block %}(\s*|\n*)Homepage(\s*|\n*){% (endblock|endblock title_block) %}',
-                'template_filename': 'index.html'},
-
-            reverse('onlypics:explore'): {
-                'full_title_pattern': r'<title>(\s*|\n*)OnlyPics(\s*|\n*)-(\s*|\n*)Explore(\s*|\n*)</title>',
-                'block_title_pattern': r'{% block title_block %}(\s*|\n*)Explore(\s*|\n*){% (endblock|endblock title_block) %}',
-                'template_filename': 'explore.html'},
-        }
-
-        for url in mappings.keys():
-            full_title_pattern = mappings[url]['full_title_pattern']
-            template_filename = mappings[url]['template_filename']
-            block_title_pattern = mappings[url]['block_title_pattern']
-            request = self.client.get(url)
-            content = request.content.decode('utf-8')
-            template_str = self.get_template(os.path.join(template_base_path, template_filename))
-
-            self.assertTrue(re.search(full_title_pattern, content),
-                            f"{FAILURE_HEADER}When looking at the response of GET '{url}', we couldn't find the correct <title> block. Check the expected title.{FAILURE_FOOTER}")
-
-            self.assertTrue(re.search(block_title_pattern, template_str),
-                            f"{FAILURE_HEADER}When looking at the source of template '{template_filename}', we couldn't find the correct template block. Are you using template inheritence correctly{FAILURE_FOOTER}")
-
     def test_template_usage(self):
         """
         Check that each view uses the correct template.
@@ -344,20 +307,7 @@ class OnlyPicsViewTests(TestCase):
     def test_vbucks(self):
         response = self.client.get(reverse('onlypics:vbucks'))
         content = response.content.decode()
-        print(content)
         self.assertTrue('csrfmiddlewaretoken' in content)
-
-
-class OnlyPicsLoginTests(TestCase):
-    """
-    A series of tests for checking the login functionality of OnlyPics.
-    """
-    pass
-
-
-"""
-user cannot see other users's private pictures
-"""
 
 
 class OnlyPicsFunctionTests(TestCase):
@@ -365,31 +315,33 @@ class OnlyPicsFunctionTests(TestCase):
     A series of tests to check function implemented correctly.
     """
 
-    def test_user_account(self):
-        user = create_user_object()
-        self.client.login(username='testuser', password='testabc123')
-        response = self.client.get(reverse('onlypics:account'))
-        self.assertEqual(response.status_code, 200,
-                         f"{FAILURE_HEADER}We weren't greeted with a HTTP status code when attempting to edit profile when logged in. Check your edit_profile() view.{FAILURE_FOOTER}")
-
-        content = response.content.decode()
-        print(content)
-        self.assertTrue('' in content,
-                        f"{FAILURE_HEADER}When edit profile (when logged in), we didn't see the expected page. Please check your edit profile() view.{FAILURE_FOOTER}")
-
-    def test_user_can_edit_profile(self):
+    def test_user_can_edit_account(self):
         """
         user can change profile name
         user can change profile icon
         """
         user = create_user_object()
         self.client.login(username='testuser', password='testabc123')
-        response = self.client.get(reverse('onlypics:edit_profile'))
+        response = self.client.get(reverse('onlypics:edit_account'))
         self.assertEqual(response.status_code, 200,
                          f"{FAILURE_HEADER}We weren't greeted with a HTTP status code when attempting to edit profile when logged in. Check your edit_profile() view.{FAILURE_FOOTER}")
 
         content = response.content.decode()
-        print(content)
+        self.assertTrue('' in content,
+                        f"{FAILURE_HEADER}When edit profile (when logged in), we didn't see the expected page. Please check your edit profile() view.{FAILURE_FOOTER}")
+
+    def test_user_can_delete_account(self):
+        """
+        user can change profile name
+        user can change profile icon
+        """
+        user = create_user_object()
+        self.client.login(username='testuser', password='testabc123')
+        response = self.client.get(reverse('onlypics:delete_account'))
+        self.assertEqual(response.status_code, 200,
+                         f"{FAILURE_HEADER}We weren't greeted with a HTTP status code when attempting to edit profile when logged in. Check your edit_profile() view.{FAILURE_FOOTER}")
+
+        content = response.content.decode()
         self.assertTrue('' in content,
                         f"{FAILURE_HEADER}When edit profile (when logged in), we didn't see the expected page. Please check your edit profile() view.{FAILURE_FOOTER}")
 
@@ -415,13 +367,6 @@ class OnlyPicsFunctionTests(TestCase):
         self.client.login(username='testuser', password='testabc123')
         response = self.client.get(reverse('onlypics:upload'))
 
-    def test_user_can_add_tokens(self):
-        """
-        user can add tokens
-        """
-        user = create_user_object()
-        self.client.login(username='testuser', password='testabc123')
-        response = self.client.get(reverse('onlypics:add_tokens'))
         self.assertEqual(response.status_code, 200,
                          f"{FAILURE_HEADER}We weren't greeted with a HTTP status code when attempting to edit profile when logged in. Check your edit_profile() view.{FAILURE_FOOTER}")
 
@@ -433,21 +378,26 @@ class OnlyPicsFunctionTests(TestCase):
         """
         user can buy
         """
-        pass
+        user = create_user_object()
+        self.client.login(username='testuser', password='testabc123')
+        response = self.client.get(reverse('onlypics:explore'))
+        self.assertEqual(response.status_code, 200,
+                         f"{FAILURE_HEADER}We weren't greeted with a HTTP status code when attempting to edit profile when logged in. Check your edit_profile() view.{FAILURE_FOOTER}")
+
+        content = response.content.decode()
+        self.assertTrue('' in content,
+                        f"{FAILURE_HEADER}When edit profile (when logged in), we didn't see the expected page. Please check your edit profile() view.{FAILURE_FOOTER}")
 
     def test_user_can_sell(self):
-        """
-        user can buy
-        """
-        pass
+        user = create_user_object()
+        self.client.login(username='testuser', password='testabc123')
+        response = self.client.get(reverse('onlypics:post_for_sale'))
+        self.assertEqual(response.status_code, 200,
+                         f"{FAILURE_HEADER}We weren't greeted with a HTTP status code when attempting to edit profile when logged in. Check your edit_profile() view.{FAILURE_FOOTER}")
+
+        content = response.content.decode()
+        self.assertTrue('' in content,
+                        f"{FAILURE_HEADER}When edit profile (when logged in), we didn't see the expected page. Please check your edit profile() view.{FAILURE_FOOTER}")
 
     def test_user_can_look_private(self):
         pass
-
-
-class OnlyPicsSessionPersistenceTests(TestCase):
-    """
-    Tests to see if session data is persisted by counting up the number of accesses, and examining last time since access.
-    """
-
-    pass
