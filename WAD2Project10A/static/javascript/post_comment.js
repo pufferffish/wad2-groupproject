@@ -1,3 +1,10 @@
+function escapeHtml(html){
+  var text = document.createTextNode(html);
+  var p = document.createElement('p');
+  p.appendChild(text);
+  return p.innerHTML;
+}
+
 $(document).ready(function() {
     $('[picture-form]').submit(function(event){
         event.preventDefault();
@@ -14,8 +21,10 @@ $(document).ready(function() {
             success: function (response) {
                 event.target.reset();
                 console.log(response);
-                var nickname = response["nickname"];
-                var text = response["text"];
+                var nickname = escapeHtml(response["nickname"]);
+                var text = escapeHtml(response["text"]);
+                var p = document.createElement("p")
+                p.style = "float: left; margin-left: 20px;";
                 $("#comment-" + response["uuid"]).append(
                     `<p style="float: left; margin-left: 20px;"><strong>${nickname}</strong> : ${text}</p>`
                 );
