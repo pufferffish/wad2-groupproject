@@ -101,6 +101,7 @@ def post_for_sale(request):
                 picture.price = -1
             picture.tags = Category.objects.get(name=query['category'])
             picture.createdAt = query['createdAt']
+            picture.name = query['name']
             image = request.FILES['upload']
             image = image_reformat(image)
             picture.upload.save(image.name, image)
