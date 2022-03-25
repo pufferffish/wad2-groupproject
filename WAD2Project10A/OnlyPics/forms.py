@@ -1,7 +1,7 @@
 from django import forms
 from OnlyPics.models import UserInfo
 from django.contrib.auth.models import User
-from OnlyPics.models import Picture
+from OnlyPics.models import Picture, Comment
 
 class UserInfoForm(forms.ModelForm):
     nickname = forms.CharField(
@@ -67,3 +67,18 @@ class PostForSaleForm(forms.ModelForm):
     class Meta:
         model = Picture
         fields = ('name','price','createdAt','tags','description')
+
+class PostCommentForm(forms.ModelForm):
+    text = forms.CharField(max_length = 200,
+                           widget=forms.widgets.TextInput(
+                               attrs={
+                                   'placeholder': 'Make a comment',
+                                   'class': 'input-comment',
+                               }),
+                           label=''
+                           )
+
+    class Meta:
+        model = Comment
+        fields = ('text',)
+

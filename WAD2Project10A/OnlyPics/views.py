@@ -2,9 +2,14 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
+from django.core import serializers
+from django.http import JsonResponse
+
 from OnlyPics.models import UserInfo, Picture, Category, PictureVotes, Comment
-from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm, PostForSaleForm
+from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm, PostForSaleForm, PostCommentForm
 from OnlyPics.hcaptcha import verify_hcaptcha_request
+
+from datetime import datetime
 import numpy as np
 
 #to be used in the template
@@ -38,11 +43,15 @@ def explore(request):
     categories = Category.objects.all()
     comments = Comment.objects.all()
 
+    form = PostCommentForm()
+
     context_dic = {}
     context_dic['pictures'] = picture_list
     context_dic['categories'] = categories
     context_dic['topCats'] = getMostPopularCategories()
     context_dic['comments'] = comments
+    context_dic['form'] = form
+
     return render(request, 'onlypics/explore.html', context=context_dic)
 
 def about(request):
@@ -140,11 +149,12 @@ def upload(request):
                 print(form.errors)
     else:
         return redirect('onlypics:index')
+
     return render(request, 'onlypics/upload.html', {'form':form})
 
 def search(request):
-
-    if user.is_authenticated:
+    search_term = ""
+    if request.user.is_authenticated:
         categories = Category.objects.all()
         disallowed_characters = "._! ,/[]()"
 
@@ -266,3 +276,23 @@ def delete_account(request):
         return redirect('onlypics:index')
 
     return render(request, 'onlypics/delete_account.html')
+
+@login_required
+def post_comment(request, picture_name):
+    if request.method == 'POST' and request.is_ajax:
+        form = PostCommentForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.owner = UserInfo.objects.get(user=request.user)
+            instance.picture = Picture.objects.get(name=picture_name)
+            instance.made_at = datetime.now()
+            instance.save()
+
+            user_nickname = {"user_nickname":instance.owner.nickname}
+            ser_instance = serializers.serialize('json', [instance,])
+
+            return JsonResponse({"instance": ser_instance, "nickname":user_nickname}, status=200)
+        else:
+            return JsonResponse({'error': form.errors}, status=400)
+
+    return JsonResponse({"error": ""}, status=400)
