@@ -26,6 +26,9 @@ def explore(request):
 
     return render(request, 'onlypics/explore.html', context=context_dic)
 
+def sale(request):
+    return render(request, 'onlypics/post_for_sale.html')
+
 def about(request):
     return render(request, 'onlypics/about.html')
 

@@ -28,6 +28,12 @@ html{
     text-decoration: none;
 }
 
+.navbarBtns a:hover, .aboutUsList a:hover {
+    color: white;
+    padding: 5px;
+    text-decoration: none;
+}
+
 .categories, .OnlyPicsList a{
     color: white;
     text-decoration: none;

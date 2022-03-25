@@ -1,6 +1,9 @@
-#sidebar {
+.sidebar {
     position: sticky;
-    border-right: 1px solid black;
+    border-left: 6px solid black;
+    height: 500px;
+    position:absolute;
+    left: 50%;
 }
 .container{
     max-width: 100%;
