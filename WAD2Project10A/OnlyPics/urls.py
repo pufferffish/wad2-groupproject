@@ -6,7 +6,6 @@ app_name = "onlypics"
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("whoami", views.whoami, name="whoami"),
     path("logout", views.logout_user, name="logout"),
     path("about", views.about, name='about'),
     path("home", views.index, name=''),
