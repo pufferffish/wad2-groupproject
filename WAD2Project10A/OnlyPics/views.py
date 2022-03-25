@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
+
 from django.core import serializers
 from django.http import JsonResponse
 
 from OnlyPics.models import UserInfo, Picture, Category, PictureVotes, Comment
 from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm, PostForSaleForm, PostCommentForm
+
 
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 
