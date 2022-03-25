@@ -12,3 +12,4 @@ urllib3==1.25.3
 django_microsoft_auth==2.4.1
 django-resized==0.3.11
 numpy==1.22.3
+Faker==13.3.3
