@@ -2,16 +2,12 @@ from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout
-<<<<<<< HEAD
 from django.core import serializers
 from django.http import JsonResponse
 
 from OnlyPics.models import UserInfo, Picture, Category, PictureVotes, Comment
 from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm, PostForSaleForm, PostCommentForm
-=======
-from OnlyPics.models import UserInfo, Picture, Category, PictureVotes
-from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm
->>>>>>> ec89f7494a019342a822a3a97bd5753b5f9904f5
+
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 
 from datetime import datetime
