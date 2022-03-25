@@ -18,9 +18,7 @@ from django.urls import path, include
 from OnlyPics import views
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.sites.models import Site
 
-hosted_site = Site.objects.all()[0]
 
 urlpatterns = [
     path('', views.redirect_to_index, name="index"),
@@ -29,6 +27,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-if "pythonanywhere" in hosted_site.domain:
-    from WAD2Project10A import github
-    urlpatterns.append(path('github_web_hook', github.update))
+try:
+    from django.contrib.sites.models import Site
+    hosted_site = Site.objects.all()[0]
+    if "pythonanywhere" in hosted_site.domain:
+        from WAD2Project10A import github
+        urlpatterns.append(path('github_web_hook', github.update))
+except:
+    pass

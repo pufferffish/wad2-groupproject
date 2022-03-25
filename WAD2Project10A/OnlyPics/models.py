@@ -3,6 +3,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django_resized import ResizedImageField
 import string
+import uuid
 
 import time
 import random
@@ -67,6 +68,8 @@ class Picture(models.Model):
     createdAt = models.DateTimeField(null=True)
     # The uploaded picture
     upload = models.ImageField(upload_to ='uploads/')
+    # The UUID to identify the picture
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     def __str__(self):
         return self.name
