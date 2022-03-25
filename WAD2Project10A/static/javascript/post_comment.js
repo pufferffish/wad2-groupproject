@@ -1,19 +1,23 @@
 $(document).ready(function() {
-    $('#post-comment-form').submit(function (e){
-        e.preventDefault();
-        var endpoint = $("#post-comment-form").attr("data-url");
+    $('[picture-form]').submit(function(event){
+        event.preventDefault();
+        var data = new FormData(event.target);
+        console.log(data);
         $.ajax({
             type: 'POST',
-            url: endpoint,
-            data: $(this).serialize(),
+            url: '/onlypics/post_comment',
+            enctype: 'multipart/form-data',
+            cache: false,
+            processData: false,
+            contentType: false,
+            data: data,
             success: function (response) {
-                $("#post-comment-form").trigger('reset');
-                var instance = JSON.parse(response["instance"]);
-                var nickname = JSON.stringify(response["nickname"]);
-                var parsed = JSON.parse(nickname)
-                var fields = instance[0]["fields"];
-                $(".scrollable").append(
-                    `<p style="float: left; margin-left: 20px;"><strong>${parsed['user_nickname']}</strong> : ${fields['text']}</p>`
+                event.target.reset();
+                console.log(response);
+                var nickname = response["nickname"];
+                var text = response["text"];
+                $("#comment-" + response["uuid"]).append(
+                    `<p style="float: left; margin-left: 20px;"><strong>${nickname}</strong> : ${text}</p>`
                 );
             },
             error: function (response) {
@@ -21,5 +25,6 @@ $(document).ready(function() {
                 alert("An error occured!")
             }
         });
+        return false;
     });
 });

@@ -48,7 +48,7 @@
                                 <div id="delimiter2"></div>
                                 <div style="height: 30%">
                                     <p style="font-size: 20px; text-decoration: underline;">Comments:</p>
-                                    <div class="scrollable">
+                                    <div class="scrollable" id="comment-{{ picture.id }}">
                                         {% for comment in comments %}
                                             {% if picture == comment.picture %}
                                                 <p style="float: left; margin-left: 20px;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
@@ -57,10 +57,11 @@
                                         {% endfor %}
                                     </div>
                                     <div>
-                                        <form action="{% url 'onlypics:post_comment' picture.id %}" data-url="{% url 'onlypics:post_comment' picture.id %}" method="POST" id="post-comment-form">
+                                        <form picture-form>
                                             {% csrf_token %}
                                             {{ form }}
-                                            <input type="submit" value="Submit"/>
+                                            <input type="hidden" name="picture_uuid" value="{{ picture.id }}"/>
+                                            <input type="submit" class="btn btn-outline-secondary" value="Submit"/>
                                         </form>
                                     </div>
                                 </div>

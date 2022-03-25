@@ -335,21 +335,19 @@ def delete_account(request):
     return render(request, 'onlypics/delete_account.html')
 
 @login_required
-def post_comment(request, picture_uuid):
+def post_comment(request):
     if request.method == 'POST' and request.is_ajax:
-        form = PostCommentForm(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
+        try:
+            data = request.POST
+            uuid = data['picture_uuid']
+            instance = Comment()
             instance.owner = UserInfo.objects.get(user=request.user)
-            instance.picture = Picture.objects.get(id=picture_uuid)
+            instance.text = data['text']
+            instance.picture = Picture.objects.get(id=uuid)
             instance.made_at = datetime.now()
             instance.save()
-
-            user_nickname = {"user_nickname":instance.owner.nickname}
-            ser_instance = serializers.serialize('json', [instance,])
-
-            return JsonResponse({"instance": ser_instance, "nickname":user_nickname}, status=200)
-        else:
+            return JsonResponse({"nickname": instance.owner.nickname, "text": instance.text, "uuid": uuid}, status=200)
+        except:
             return JsonResponse({'error': form.errors}, status=400)
 
     return JsonResponse({"error": ""}, status=400)
