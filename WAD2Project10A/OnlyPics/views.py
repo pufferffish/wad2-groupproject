@@ -331,7 +331,6 @@ def delete_account(request):
         return redirect('onlypics:index')
 
     return render(request, 'onlypics/delete_account.html')
-<<<<<<< HEAD
 
 @login_required
 def post_comment(request, picture_name):
@@ -352,5 +351,3 @@ def post_comment(request, picture_name):
             return JsonResponse({'error': form.errors}, status=400)
 
     return JsonResponse({"error": ""}, status=400)
-=======
->>>>>>> ec89f7494a019342a822a3a97bd5753b5f9904f5
