@@ -335,13 +335,13 @@ def delete_account(request):
     return render(request, 'onlypics/delete_account.html')
 
 @login_required
-def post_comment(request, picture_name):
+def post_comment(request, picture_uuid):
     if request.method == 'POST' and request.is_ajax:
         form = PostCommentForm(request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.owner = UserInfo.objects.get(user=request.user)
-            instance.picture = Picture.objects.get(name=picture_name)
+            instance.picture = Picture.objects.get(id=picture_uuid)
             instance.made_at = datetime.now()
             instance.save()
 

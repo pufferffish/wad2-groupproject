@@ -62,7 +62,7 @@
                                         {% endfor %}
                                     </div>
                                     <div>
-                                        <form action="{% url 'onlypics:post_comment' picture.name %}" data-url="{% url 'onlypics:post_comment' picture.name %}" method="POST" id="post-comment-form">
+                                        <form action="{% url 'onlypics:post_comment' picture.id %}" data-url="{% url 'onlypics:post_comment' picture.id %}" method="POST" id="post-comment-form">
                                             {% csrf_token %}
                                             {{ form }}
                                             <input type="submit" value="Submit"/>
