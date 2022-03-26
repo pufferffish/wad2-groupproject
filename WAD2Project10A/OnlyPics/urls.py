@@ -20,6 +20,6 @@ urlpatterns = [
     path("edit_account", views.edit_account, name='edit_account'),
     path("delete_account", views.delete_account, name='delete_account'),
 
-    path("post_comment/<str:picture_uuid>", views.post_comment, name='post_comment'),
+    path("post_comment", views.post_comment, name='post_comment'),
     path("like_picture", views.like_picture, name='like_picture'),
 ]

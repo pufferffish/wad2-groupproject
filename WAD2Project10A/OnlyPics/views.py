@@ -100,6 +100,7 @@ def post_for_sale(request):
                 picture.price = -1
             picture.tags = Category.objects.get(name=query['category'])
             picture.createdAt = query['createdAt']
+            picture.name = query['name']
             image = request.FILES['upload']
             image = image_reformat(image)
             picture.upload.save(image.name, image)
@@ -334,21 +335,20 @@ def delete_account(request):
     return render(request, 'onlypics/delete_account.html')
 
 @login_required
-def post_comment(request, picture_uuid):
+def post_comment(request):
     if request.method == 'POST' and request.is_ajax:
-        form = PostCommentForm(request.POST)
-        if form.is_valid():
-            instance = form.save(commit=False)
+        try:
+            data = request.POST
+            uuid = data['picture_uuid']
+            instance = Comment()
             instance.owner = UserInfo.objects.get(user=request.user)
-            instance.picture = Picture.objects.get(id=picture_uuid)
+            instance.text = data['text']
+            instance.picture = Picture.objects.get(id=uuid)
             instance.made_at = datetime.now()
             instance.save()
 
-            user_nickname = {"user_nickname":instance.owner.nickname}
-            comment_text = {"comment_text":instance.text}
-
-            return JsonResponse({"comment_text": comment_text, "user_nickname":user_nickname}, status=200)
-        else:
+            return JsonResponse({"nickname": instance.owner.nickname, "text": instance.text, "uuid": uuid}, status=200)
+        except:
             return JsonResponse({'error': form.errors}, status=400)
 
     return JsonResponse({"error": ""}, status=400)
