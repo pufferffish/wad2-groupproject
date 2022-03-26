@@ -42,10 +42,11 @@
                                 </div>
                                 <div id="delimiter1"></div>
                                 <div class="div-button-text">
-                                    <form method="POST" id="like-form">
+                                    <form like-form>
                                         {% csrf_token %}
-                                        <button type="submit" id="like-button" name="like-button" class="btn btn-outline-secondary div-box-button">Like</button>
-                                        <button type="submit" id="dislike-button" name="dislike-button" class="btn btn-outline-secondary div-box-button">Dislike</button>
+                                        <input type="hidden" name="picture_uuid" value="{{ picture.id }}"/>
+                                        <button type="submit" name="likeButton" value="true" id="likeButton" class="btn btn-outline-secondary div-box-button">Like</button>
+                                        <button type="submit" name="dislikeButton" value="false" id="dislikeButton" class="btn btn-outline-secondary div-box-button">Dislike</button>
                                     </form>
                                 </div>
                                 <div id="delimiter2"></div>

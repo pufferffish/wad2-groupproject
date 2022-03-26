@@ -21,4 +21,5 @@ urlpatterns = [
     path("delete_account", views.delete_account, name='delete_account'),
 
     path("post_comment/<str:picture_uuid>", views.post_comment, name='post_comment'),
+    path("like_picture", views.like_picture, name='like_picture'),
 ]

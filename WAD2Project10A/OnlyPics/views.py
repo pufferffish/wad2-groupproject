@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from OnlyPics.models import UserInfo, Picture, Category, PictureVotes, Comment
 from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm, PostForSaleForm, PostCommentForm
 
-
+from django.views.decorators.csrf import csrf_exempt
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 
 from datetime import datetime
@@ -355,22 +355,25 @@ def post_comment(request, picture_uuid):
     return JsonResponse({"error": ""}, status=400)
 
 @login_required
+@csrf_exempt
 def like_picture(request):
-    user = UserInfo.objects.get(user=request.user)
-    picture = Picture.objects.get(name="tree")
-    liked_disliked = True
     if request.method == 'POST' and request.is_ajax:
-        if request.POST.get('like-button'):
-            liked_disliked = True
-        elif request.POST.get('dislike-button'):
-            like_disliked = False
+        data = request.POST
+        uuid = data['picture_uuid']
+        instance = PictureVotes()
+        instance.user = UserInfo.objects.get(user=request.user)
+        instance.picture = Picture.objects.get(id=uuid)
+        if data.get("likeButton"):
+            instance.positive = True
+        elif data.get("dislikeButton"):
+            instance.positive = False
 
-        PictureVotes.objects.create(user=user, picture=picture, positive=liked_disliked)
+        instance.save()
 
-        like_result = {"like_dislike": liked_disliked}
-        return JsonResponse({"like_dislike": like_result})
+        like_result = instance.positive
+        return JsonResponse({"like_result": like_result, "uuid": uuid}, status=200)
 
-    return JsonResponse({"error": ""})
+    return JsonResponse({"error": ""}, status=400)
 
 
 
