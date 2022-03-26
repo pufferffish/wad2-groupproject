@@ -37,8 +37,8 @@
                             <div id="info-picture-div">
                                 <div style="margin-bottom: 15px; margin-top: 15px;">
                                     <h3 class="div-buy div-buy-text">Name: {{ picture.name }}</h3>
-                                    <h3 class="div-buy div-buy-text">Tokens: {{ picture.price }}</h3>
-                                    <button type="button" class="btn btn-outline-primary div-buy div-buy-button" >Buy</button>
+                                    <h3 class="div-buy div-buy-text">Owner: {{ picture.owner }}</h3><br/>
+                                    <h3 class="div-buy div-buy-text">Price: <span style="color: blue; ">{{ picture.price }} tokens</span></h3>
                                 </div>
                                 <div id="delimiter1"></div>
                                 <div >
@@ -46,13 +46,14 @@
                                         {% csrf_token %}
                                         <input type="hidden" name="picture_uuid" value="{{ picture.id }}"/>
                                         <button type="submit" name="likeButton" value="true" id="likeButton-{{picture.id}}" class="btn btn-outline-secondary div-box-button">Like</button>
+                                        <button type="button" class="btn btn-outline-primary div-buy div-buy-button" >Buy</button>
                                         <button type="submit" name="dislikeButton" value="false" id="dislikeButton-{{picture.id}}" class="btn btn-outline-secondary div-box-button">Dislike</button>
                                         <p class="haveVoted" id="haveVoted-{{picture.id}}" ></p>
                                     </form>
                                 </div>
                                 <div id="delimiter2"></div>
                                 <div style="height: 30%">
-                                    <p style="font-size: 20px; text-decoration: underline;">Comments:</p>
+                                    <p style="font-size: 20px; text-decoration: underline; margin-bottom: 0;">Comments:</p>
                                     <div class="scrollable" id="comment-{{ picture.id }}">
                                         {% for comment in comments %}
                                             {% if picture == comment.picture %}
