@@ -42,8 +42,13 @@
                                 </div>
                                 <div id="delimiter1"></div>
                                 <div class="div-button-text">
-                                    <button type="submit" name="like-button" class="btn btn-outline-secondary div-box-button">Like</button>
-                                    <button type="submit" name="dislike-button" class="btn btn-outline-secondary div-box-button">Dislike</button>
+                                    <form like-form>
+                                        {% csrf_token %}
+                                        <input type="hidden" name="picture_uuid" value="{{ picture.id }}"/>
+                                        <button type="submit" name="likeButton" value="true" id="likeButton + {{ picture.id }}" class="btn btn-outline-secondary div-box-button">Like</button>
+                                        <button type="submit" name="dislikeButton" value="false" id="dislikeButton + {{ picture.id }}" class="btn btn-outline-secondary div-box-button">Dislike</button>
+                                        <a id="haveVoted"></a>
+                                    </form>
                                 </div>
                                 <div id="delimiter2"></div>
                                 <div style="height: 30%">
@@ -51,7 +56,9 @@
                                     <div class="scrollable" id="comment-{{ picture.id }}">
                                         {% for comment in comments %}
                                             {% if picture == comment.picture %}
-                                                <p style="float: left; margin-left: 20px;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
+                                                    <div style="display: flex;" id="comment-section">
+                                                        <p style="float: left; margin-left: 20px;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
+                                                    </div>
                                             {% else %}
                                             {% endif %}
                                         {% endfor %}
@@ -74,6 +81,7 @@
 </div>
 {% block javaScript %}
     <script src="{% static 'javascript/post_comment.js'%}"></script>
+<script src="{% static 'javascript/like_dislike.js'%}"></script>
 {% endblock %}
 {% endblock %}
 

@@ -9,7 +9,6 @@ from django.http import JsonResponse
 from OnlyPics.models import UserInfo, Picture, Category, PictureVotes, Comment
 from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm, PostForSaleForm, PostCommentForm
 
-
 from OnlyPics.hcaptcha import verify_hcaptcha_request
 
 from datetime import datetime
@@ -347,9 +346,42 @@ def post_comment(request):
             instance.picture = Picture.objects.get(id=uuid)
             instance.made_at = datetime.now()
             instance.save()
+
             return JsonResponse({"nickname": instance.owner.nickname, "text": instance.text, "uuid": uuid}, status=200)
         except:
             return JsonResponse({'error': form.errors}, status=400)
 
     return JsonResponse({"error": ""}, status=400)
+
+@login_required
+def like_picture(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST' and request.is_ajax:
+            try:
+                data = request.POST
+                uuid = data['picture_uuid']
+                user_info = UserInfo.objects.get(user=request.user)
+                picture = Picture.objects.get(id=uuid)
+
+                instance = PictureVotes()
+                instance.user = user_info
+                instance.picture = picture
+                if data.get("likeButton"):
+                    instance.positive = True
+                elif data.get("dislikeButton"):
+                    instance.positive = False
+
+                like_result = instance.positive
+                instance.save()
+
+                return JsonResponse({"like_result": like_result, "uuid": uuid}, status=200)
+            except:
+                error_message = "You have already voted for this picture with "
+                existing_like_result = PictureVotes.objects.get(user=user_info, picture=picture)
+                return JsonResponse({"error": error_message, "like_result": existing_like_result.positive}, status=200)
+
+
+        return JsonResponse({"error": ""}, status=400)
+
+
 
