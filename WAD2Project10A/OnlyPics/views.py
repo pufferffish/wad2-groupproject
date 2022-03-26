@@ -376,9 +376,9 @@ def like_picture(request):
 
                 return JsonResponse({"like_result": like_result, "uuid": uuid}, status=200)
             except:
-                error_message = "You have already voted for this picture with "
+                error_message = "You have already "
                 existing_like_result = PictureVotes.objects.get(user=user_info, picture=picture)
-                return JsonResponse({"error": error_message, "like_result": existing_like_result.positive}, status=200)
+                return JsonResponse({"error": error_message, "like_result": existing_like_result.positive, "uuid": uuid}, status=200)
 
 
         return JsonResponse({"error": ""}, status=400)

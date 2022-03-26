@@ -41,13 +41,13 @@
                                     <button type="button" class="btn btn-outline-primary div-buy div-buy-button" >Buy</button>
                                 </div>
                                 <div id="delimiter1"></div>
-                                <div class="div-button-text">
-                                    <form like-form>
+                                <div >
+                                    <form like-form class="div-button-text">
                                         {% csrf_token %}
                                         <input type="hidden" name="picture_uuid" value="{{ picture.id }}"/>
-                                        <button type="submit" name="likeButton" value="true" id="likeButton + {{ picture.id }}" class="btn btn-outline-secondary div-box-button">Like</button>
-                                        <button type="submit" name="dislikeButton" value="false" id="dislikeButton + {{ picture.id }}" class="btn btn-outline-secondary div-box-button">Dislike</button>
-                                        <a id="haveVoted"></a>
+                                        <button type="submit" name="likeButton" value="true" id="likeButton-{{picture.id}}" class="btn btn-outline-secondary div-box-button">Like</button>
+                                        <button type="submit" name="dislikeButton" value="false" id="dislikeButton-{{picture.id}}" class="btn btn-outline-secondary div-box-button">Dislike</button>
+                                        <p class="haveVoted" id="haveVoted-{{picture.id}}" ></p>
                                     </form>
                                 </div>
                                 <div id="delimiter2"></div>
