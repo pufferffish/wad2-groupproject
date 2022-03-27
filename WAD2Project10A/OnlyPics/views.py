@@ -85,6 +85,7 @@ def explore(request):
     context_dic['comments'] = comments
     context_dic['form'] = form
     context_dic['forbidden_pics'] = forbidden_pics
+    context_dic['not_logged_in'] = user_info == None
 
     return render(request, 'onlypics/explore.html', context=context_dic)
 
