@@ -36,10 +36,18 @@ body {
     font-size: 18px;
 }
 
-.navbarBtns a, .aboutUsList a {
+.navbarBtns a, .footerList a {
     color: white;
-    padding: 20px;
     text-decoration: none;
+}
+
+.navbarBtns a {
+    padding: 20px;
+}
+
+
+.footerList -> a {
+    padding: 0px;
 }
 
 .categories, .OnlyPicsList a{
@@ -47,7 +55,7 @@ body {
     text-decoration: none;
 }
 
-.categories, .aboutUsList{
+.categories, .footerList{
     list-style-type: none;
 }
 
