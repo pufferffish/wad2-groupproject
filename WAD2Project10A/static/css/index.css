@@ -1,0 +1,22 @@
+.div-button-text {
+    margin-bottom: 100px;
+    margin-top: 100px;
+    text-align: center;
+}
+
+.div-button-text .div-box-button {
+    display:inline;
+    padding-right: 30px;
+}
+.div-button {
+    font-size: 40px;
+    border-radius: 35px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+#main-text {
+    font-family: 'Kalam';
+    font-size: 20px;
+    padding: 45px;
+}

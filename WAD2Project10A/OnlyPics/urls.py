@@ -6,9 +6,26 @@ app_name = "onlypics"
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("whoami", views.whoami, name="whoami"),
-    path("edit_profile", views.edit_profile, name="edit_profile"),
     path("logout", views.logout_user, name="logout"),
     path("vbucks", views.vbucks, name="vbucks"),
-    path("base", views.base, name="base")
+    path("base", views.base, name="base"),
+    path("about", views.about, name='about'),
+    path("home", views.index, name=''),
+    path("post_for_sale", views.post_for_sale, name='post_for_sale'),
+    path("add_tokens", views.add_tokens, name='add_tokens'),
+    path("explore", views.explore, name='explore'),
+    path("upload", views.upload, name='upload'),
+    path("search", views.search, name='search'),
+
+    path("account", views.account, name='account'),
+    path("edit_account", views.edit_account, name='edit_account'),
+    path("delete_account", views.delete_account, name='delete_account'),
+
+    path("post_comment", views.post_comment, name='post_comment'),
+    path("like_picture", views.like_picture, name='like_picture'),
+
+    path("buy_picture", views.buy_picture, name='buy_picture'),
+    path("privacy", views.privacy_policy, name='privacy'),
+    path("tos", views.terms_and_conditions, name='tos'),
+
 ]

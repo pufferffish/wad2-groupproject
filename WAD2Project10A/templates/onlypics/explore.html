@@ -1,0 +1,111 @@
+{% extends 'onlypics/base.html' %}
+{% load staticfiles%}
+
+{% block title_block %}
+    Explore
+{% endblock %}
+
+{% block cssFile %}
+    <link rel="stylesheet" href="{% static 'css/explore.css'%}" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet'>
+{% endblock %}
+
+{% block body_block %}
+<div class="container" id="containerId">
+    <div class="row content-text">
+        <div class="col-md-2" style="border-right: 1px solid grey;">
+            <div id="sidebar">
+                <p style="font-size: 25px; margin-bottom: 40px;"><strong>Popular Categories</strong></p>
+                {% if categories %}
+                    <ul class="list-group list-group-flush" >
+                        <li class="list-group-item" style="font-size: 20px;">
+                            <a class="normal-href" href="{% url 'onlypics:explore' %}">All</a>
+                        </li>
+                        {% for c in categories %}
+                        <li class="list-group-item" style="font-size: 20px;">
+                            <a class="normal-href" href="{% url 'onlypics:explore' %}?filter={{ c.name }}">{{ c.name }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">No categories present!</li>
+                        <ul/>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="content">
+                    {% for picture in pictures %}
+                        {% if picture.price != -1 %}
+                            <div class="picture-box">
+                                <img class="explore-img" src="{{ MEDIA_URL }}{{picture.upload}}" >
+                                <div id="info-picture-div">
+                                    <div style="height: 30%;">
+                                        <h3 class="div-buy div-buy-text">Name: {{ picture.name }}</h3>
+                                        <h3 class="div-buy div-buy-text">Owner: {{ picture.owner }}</h3><br/>
+                                        <h3 class="div-buy div-buy-text">Price: <span style="color: blue; ">{{ picture.price }} tokens</span></h3>
+                                        {% if user.is_authenticated %}
+                                            <h6>(Available tokens: {{user_info.tokens}})</h6>
+                                        {% else %}
+                                        {% endif %}
+                                    </div>
+
+                                    {% if not not_logged_in %}
+                                    <form like-form class="div-button-text">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="picture_uuid" name="picture_uuid" value="{{ picture.id }}"/>
+                                        <button type="submit" name="likeButton" value="true" id="likeButton-{{picture.id}}"
+                                            class="{% if picture in liked_pics %}voted-btn{% endif %} btn btn-outline-secondary div-box-button">Like</button>
+                                        <button type="button" onclick="buyPicture('{{ picture.id }}')"
+                                            {% if picture in forbidden_pics %} disabled=true {% endif %}
+                                            class="btn btn-outline-primary div-buy div-buy-button">Buy</button>
+                                        <button type="submit" name="dislikeButton" value="false" id="dislikeButton-{{picture.id}}"
+                                            class="{% if picture in disliked_pics %}voted-btn{% endif %} btn btn-outline-secondary div-box-button">Dislike</button>
+                                        <p class="haveVoted" id="haveVoted-{{picture.id}}" ></p>
+                                    </form>
+                                    {% endif %}
+
+
+                                    {% if not_logged_in %}
+                                    <div style="height: 90%">
+                                    {% else %}
+                                    <div style="height: 50%">
+                                    {% endif %}
+                                        <div class="scrollable" id="comment-{{ picture.id }}">
+                                            <p style="font-size: 1.5vw; height: 10%; text-decoration: underline;">Comments:</p>
+                                            {% for comment in comments %}
+                                                {% if picture == comment.picture %}
+                                                        <div style="display: flex;" id="comment-section">
+                                                            <p style="float: left; margin-left: 20px; margin-bottom: 0;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
+                                                        </div>
+                                                {% else %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        {% if not not_logged_in %}
+                                        <form picture-form style="height: 20%">
+                                            {% csrf_token %}
+                                            {{ form }}
+                                            <input type="hidden" name="picture_uuid" value="{{ picture.id }}"/>
+                                            <input type="submit" class="btn btn-outline-secondary submit-comment_btn" value="Submit"/>
+                                        </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                        {% endif %}
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% block javaScript %}
+    <script src="{% static 'javascript/post_comment.js'%}"></script>
+    <script src="{% static 'javascript/like_dislike.js'%}"></script>
+    <script src="{% static 'javascript/buy_picture.js'%}"></script>
+{% endblock %}
+{% endblock %}
+
+

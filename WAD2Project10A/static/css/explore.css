@@ -1,0 +1,140 @@
+#sidebar {
+    position: sticky;
+}
+.container{
+    max-width: 100%;
+    padding: 20px;
+}
+.content-text{
+    text-align: center;
+}
+
+.content{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.picture-box{
+  margin: 15px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: left;
+  width: 100%;
+  height: 400px;
+}
+
+#info-picture-div{
+    width: 100%;
+    border: 1px solid grey;
+    border-radius: 25px;
+    box-shadow: 5px 10px 18px #888888;
+}
+
+.explore-img{
+  padding: 10px;
+  border-radius: 20px;
+  height: 100%;
+  max-height: 100%;
+}
+
+.div-box-button{
+    display:inline;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10px;
+    width: 150px;
+    max-width: 25%;
+    height: 50px;
+    font-size: 1vw;
+    text-align: center;
+    border-radius: 35px;
+}
+
+.div-button-text{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 20%;
+    border-bottom: 1px solid darkslategrey;
+    border-top: 1px solid darkslategray;
+}
+
+.div-buy{
+    display:inline;
+    width: 15%;
+    max-width: 15%;
+    height: 50px;
+    font-size: 1.5vm;
+    border-radius: 35px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.div-buy-button{
+    width: 150px;
+    max-width: 25%;
+    font-size: 1.5vw;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.div-buy-text{
+    font-family: 'Kalam';
+    font-size: 2vw;
+}
+
+.scrollable{
+    display: flex;
+    flex-direction: column;
+    max-height: 75%;
+    height: 80%;
+    overflow: auto;
+}
+
+.input-comment{
+    border-radius: 15px;
+    min-width: 60%;
+    width: 70%;
+    height: 35px;
+    float: left;
+    margin-left: 10px;
+}
+
+#comment-section{
+    display: block;
+}
+
+p.haveVoted{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+button a{
+    text-decoration: none;
+    color: inherit;
+}
+
+button a:hover{
+    text-decoration: none;
+    color: inherit;
+}
+
+.normal-href {
+    color: black;
+    text-decoration: none;
+}
+
+.submit-comment_btn{
+    width: 20%;
+    min-width: 2vw;
+    font-size: 0.8vw;
+}
+
+.voted-btn {
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}

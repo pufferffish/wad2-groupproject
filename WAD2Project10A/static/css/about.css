@@ -1,0 +1,9 @@
+.aboutUsHeader, .FAQHeader, .contactHeader{
+    margin-top: 5%;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+ .githubLink a{
+    text-decoration: none;
+}

@@ -1,0 +1,81 @@
+{% extends 'onlypics/base.html' %}
+
+{% load staticfiles %}
+{% load onlypics_template_filters %}
+
+{% block title_block %}
+    Account
+{% endblock %}
+
+{% block cssFile %}
+    <link rel="stylesheet" href="{% static 'css/account.css'%}" type="text/css">
+
+<!-- Fonts access -->
+    <link href='https://fonts.googleapis.com/css?family=Alegreya Sans SC' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Kalam' rel='stylesheet'>
+
+<!-- Download icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+{% endblock %}
+
+{% block body_block %}
+<div class="container-fluid">
+      <div class="row">
+        <div class="col-3 sticky">
+          <div class="sidebar-section">
+              <div>
+                  {% if user.is_authenticated %}
+                    <img id="profile-picture" src="{{ MEDIA_URL }}{{ userInfo.pfp }}">
+                    <p id="account-name">{{ userInfo.nickname }}</p>
+                    <p class="account-info">Tokens: {{ userInfo.tokens }}</p>
+                    <p class="account-info">Pictures owned: {{ len_pics }}</p>
+                  {% else %}
+                    <p>This account does not exist</p>
+                  {% endif %}
+              </div>
+              <div>
+                  <div><a class="account-option" href="{% url 'onlypics:edit_account'%}">Edit Account</a></div>
+                  <div><a class="account-option" href="{% url 'onlypics:delete_account'%}">Delete Account</a></div>
+                  <div><a class="account-option" href="{% url 'onlypics:post_for_sale'%}">Sell pictures</a></div>
+                  <div><a class="account-option" href="{% url 'onlypics:add_tokens'%}">Get the daily amount of tokens</a></div>
+              </div>
+          </div>
+        </div>
+        <div class="col-9">
+          <div class="content-section">
+              <div id="page-title">
+                  This is your photo library...
+              </div>
+              {% if pictures %}
+                  {% for pic in pictures %}
+              <p style="margin-top: 15px; margin-bottom: 0; font-size: 25px;">Picture name: <strong>{{pic.name}}</strong></p>
+                      <div class="picture-box">
+                          <img class="owned-img" src="{{ MEDIA_URL }}{{pic.upload}}">
+                      </div>
+                        <div id="content">
+                            <p class="info-explore-picture">Likes: {{ positiveVotes|picVoteValue:pic }}</p>
+                            <p class="info-explore-picture">Dislikes: {{ negativeVotes|picVoteValue:pic }}</p>
+                            {% if pic.price >= 0 %}
+                            <p class="info-explore-picture">Price: {{ pic.price }}</p>
+                            {% endif %}
+                            <a href="{% url 'onlypics:post_for_sale' %}?picture={{ pic.id }}">
+                                <button style="margin-left: 10px" class="btn download-button"><i class="fa fa-pencil"></i> Edit</button>
+                            </a>
+                            <a href="{{ MEDIA_URL }}{{pic.upload}}" download="{{pic.name}}">
+                                <button style="margin-left: 10px" class="btn download-button"><i class="fa fa-download"></i> Download</button>
+                            </a>
+                        </div>
+                        <div id="delimiter"></div>
+                  {% endfor %}
+              {% else %}
+                    <p>You dont own any pictures! Time to become an owner!</p>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+</div>
+{% endblock %}
+
+{% block javaScript %}
+{% endblock %}

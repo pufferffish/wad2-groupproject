@@ -2,26 +2,33 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from django_resized import ResizedImageField
+import string
+import uuid
 
 import time
 import random
 
-def random():
-    t = time.time() - 1645000000
-    return (t << 8) | random.randint(0, 255)
+def random_string():
+    letters = string.ascii_lowercase
+    random_string = ''.join(random.choice(letters) for i in range(10))
+    random_string.capitalize()
+    #t = time.time() - 1645000000
+    #return (t << 8) | random.randint(0, 255)
+    return random_string
 
 def random_username():
     return f"user{str(random())}"
 
 class UserInfo(models.Model):
+    NICKNAME_MAX_LENGTH = 32
     # The underlying django user
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # The name which is shown on the website, since user.username is the microsoft email
-    nickname = models.CharField(max_length=32, default=random_username)
+    nickname = models.CharField(max_length=NICKNAME_MAX_LENGTH, default="")
     # The amount of tokens / money the user have
     tokens = models.PositiveIntegerField(default = 0)
     # The profile picture
-    pfp = ResizedImageField(size=[500,500], force_format='JPG', upload_to='profile_images')
+    pfp = ResizedImageField(size=[500,500], upload_to='profile_images/', blank=True)
 
     class Meta:
         constraints = [
@@ -40,6 +47,7 @@ class Category(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['name'], name='unique_name'),
         ]
+        verbose_name_plural = 'Categories'
 
     def __str__(self):
         return self.name
@@ -57,9 +65,15 @@ class Picture(models.Model):
     # It's a workaround since django with sqlite doesn't support storing array
     tags = models.ForeignKey(Category, on_delete=models.CASCADE)
     # when the picture was first created
-    createdAt = models.DateTimeField()
+    createdAt = models.DateTimeField(null=True)
     # The uploaded picture
     upload = models.ImageField(upload_to ='uploads/')
+    # The UUID to identify the picture
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    @property
+    def day_created_at(self):
+        return self.createdAt.date().strftime('%Y-%m-%d')
 
     def __str__(self):
         return self.name
@@ -70,10 +84,15 @@ class PictureVotes(models.Model):
     # The picture which the vote is casted on
     picture = models.ForeignKey(Picture, on_delete=models.CASCADE)
     # Whether the vote is positive (a like) or negative (a dislike)
-    positive = models.BooleanField()
+    positive = models.BooleanField(default = True)
 
     class Meta:
         unique_together = [ 'user', 'picture' ]
+        verbose_name_plural = 'PictureVotes'
+
+    def __str__(self):
+        return f"{self.user} voted for {self.picture} with {self.positive}"
+
 
 class Comment(models.Model):
     # The user who made the comment
@@ -86,4 +105,4 @@ class Comment(models.Model):
     made_at = models.DateTimeField()
 
     def __str__(self):
-        f"{str(self.owner)}: {str(self.text)}"
+        return f"{str(self.owner)}: {str(self.text)}"

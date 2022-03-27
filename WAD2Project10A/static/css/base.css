@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+html{
+    font-family: 'Nunito'
+}
+
+body {
+    margin-bottom: 88px;
+}
+
+.navbarHeader, .footer {
+    background-color: #0f6797;
+}
+
+.navbarHeader p{
+    text-align: center;
+    font-size: 25px;
+}
+
+.input-group input{
+    width: 100%;
+}
+
+.footer{
+    font-size: 12px;
+    height: 88px;
+    bottom: 0;
+    position: relative;
+}
+
+.navbarBtns li, .OnlyPicsList {
+    display: inline;
+}
+
+.navbarBtns {
+    font-size: 18px;
+}
+
+.navbarBtns a, .footerList a {
+    color: white;
+    text-decoration: none;
+}
+
+.navbarBtns a {
+    padding: 10px;
+    font-size: 1.25vw;
+}
+
+.footerList -> a {
+    padding: 0px;
+}
+
+.categories, .OnlyPicsList a{
+    color: white;
+    text-decoration: none;
+}
+
+.categories, .footerList{
+    list-style-type: none;
+}
+
+#logo{
+    font-family: 'Bad Script';
+    font-size: 40px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.footer-title{
+    margin-bottom: 3px;
+    margin-top: 5px;
+    font-size: 17px;
+    color: whitesmoke;
+    text-decoration: underline;
+}
+
+#footer-title-onlypics{
+    margin-bottom: 3px;
+    margin-top: 5px;
+    font-size: 17px;
+    color: whitesmoke;
+    font-family: 'Bad Script';
+}
+
+.footer-gradient {
+    background-color: red;
+    background-image: linear-gradient(red, yellow);
+}
