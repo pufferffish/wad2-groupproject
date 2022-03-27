@@ -18,7 +18,7 @@ body {
 }
 
 .input-group input{
-    width: 300px;
+    width: 100%;
 }
 
 .footer{
@@ -42,9 +42,9 @@ body {
 }
 
 .navbarBtns a {
-    padding: 20px;
+    padding: 10px;
+    font-size: 1.25vw;
 }
-
 
 .footerList -> a {
     padding: 0px;
