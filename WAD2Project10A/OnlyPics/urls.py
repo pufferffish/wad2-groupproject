@@ -13,7 +13,6 @@ urlpatterns = [
     path("add_tokens", views.add_tokens, name='add_tokens'),
     path("explore", views.explore, name='explore'),
     path("upload", views.upload, name='upload'),
-    path("search", views.search, name='search'),
 
     path("account", views.account, name='account'),
     path("edit_account", views.edit_account, name='edit_account'),
@@ -25,5 +24,4 @@ urlpatterns = [
     path("buy_picture", views.buy_picture, name='buy_picture'),
     path("privacy", views.privacy_policy, name='privacy'),
     path("tos", views.terms_and_conditions, name='tos'),
-
 ]

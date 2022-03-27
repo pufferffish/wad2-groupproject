@@ -58,13 +58,26 @@ def index(request):
 
 def explore(request):
     filter_query = request.GET.get("filter", None)
+    search_query = request.GET.get("search", None)
     context_dic = {}
     try:
         filter_category = Category.objects.get(name = filter_query)
         picture_list = Picture.objects.filter(tags = filter_category)
     except:
         picture_list = Picture.objects.all()
+
     categories = Category.objects.all()
+
+    if search_query:
+        search_query = search_query.replace(" ", "")
+        dictWordDist = {}
+        for pic in picture_list:
+            distance = levenshteinDistanceDP(search_query, pic.name.replace(" ", ""))
+            distance = min(distance, 9)
+            dictWordDist[distance] = pic
+        sortedDict = dict(sorted(dictWordDist.items(), key=lambda x: x[0]))
+        picture_list = sortedDict.values()
+
     comments = Comment.objects.all()
 
     user_info = None
@@ -222,32 +235,6 @@ def upload(request):
 
     return render(request, 'onlypics/upload.html', {'form':form})
 
-def search(request):
-    search_term = ""
-    if request.user.is_authenticated:
-        categories = Category.objects.all()
-        disallowed_characters = "._! ,/[]()"
-
-        if 'search' in request.GET:
-            search_term = request.GET['search']
-        for character in disallowed_characters:
-            search_term = search_term.replace(character, "")
-
-        if (len(search_term) == 0):
-            context_dic_empty = {}
-            picture_list = Picture.objects.all()
-            context_dic_empty['pictures'] = picture_list
-            context_dic_empty['categories'] = categories
-            return render(request, 'onlypics/explore.html', context=context_dic_empty)
-
-        picture_list = calcDictDistance(search_term)
-        context_dic = {}
-        context_dic['pictures'] = picture_list
-        context_dic['categories'] = categories
-        return render(request, 'onlypics/explore.html', context=context_dic)
-    else:
-        redirect('onlypics:explore')
-
 def levenshteinDistanceDP(token1, token2):
     if token1 == "":
         return len(token2)
@@ -270,29 +257,6 @@ def levenshteinDistanceDP(token1, token2):
                 distances[row][column] = distances[row - 1][column-1]
 
     return distances[len(source) - 1][len(target) - 1]
-
-def calcDictDistance(word):
-    pictures = Picture.objects.all()
-    disallowed_characters = "._! ,/[]()"
-
-    dictWordDist = {}
-    wordIdx = 0
-
-    for pic in pictures:
-        splitPicName = pic.name
-        for character in disallowed_characters:
-            splitPicName = splitPicName.replace(character,"")
-
-        wordDistance = levenshteinDistanceDP(word, splitPicName)
-
-        if wordDistance >= 10:
-            wordDistance = 9
-        dictWordDist[wordDistance] = pic
-        wordIdx = wordIdx + 1
-
-    sortedDict = dict(sorted(dictWordDist.items(), key=lambda x: x[0]))
-
-    return sortedDict.values()
 
 def account(request):
     user = request.user
