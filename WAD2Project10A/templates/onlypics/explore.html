@@ -55,12 +55,14 @@
                                         {% csrf_token %}
                                         <input type="hidden" id="picture_uuid" name="picture_uuid" value="{{ picture.id }}"/>
                                         <button type="submit" name="likeButton" value="true" id="likeButton-{{picture.id}}"
-                                            {% if not_logged_in %}disabled{% endif %} class="btn btn-outline-secondary div-box-button">Like</button>
+                                            {% if not_logged_in %}disabled{% endif %}
+                                            class="{% if picture in liked_pics %}voted-btn{% endif %} btn btn-outline-secondary div-box-button">Like</button>
                                         <button type="button" onclick="buyPicture('{{ picture.id }}')"
                                             {% if not_logged_in or picture in forbidden_pics %} disabled=true {% endif %}
                                             class="btn btn-outline-primary div-buy div-buy-button">Buy</button>
                                         <button type="submit" name="dislikeButton" value="false" id="dislikeButton-{{picture.id}}"
-                                            {% if not_logged_in %}disabled{% endif %} class="btn btn-outline-secondary div-box-button">Dislike</button>
+                                            {% if not_logged_in %}disabled{% endif %}
+                                            class="{% if picture in disliked_pics %}voted-btn{% endif %} btn btn-outline-secondary div-box-button">Dislike</button>
                                         <p class="haveVoted" id="haveVoted-{{picture.id}}" ></p>
                                     </form>
 

@@ -79,6 +79,19 @@ def explore(request):
         if user_info and not can_buy_picture(user_info, pic):
             forbidden_pics.append(pic)
 
+    disliked_pics = []
+    liked_pics = []
+    if user_info:
+        for pic in picture_list:
+            try:
+                if PictureVotes.objects.get(user = user_info, picture = pic).positive:
+                    liked_pics.append(pic)
+                else:
+                    disliked_pics.append(pic)
+            except:
+                pass
+
+
     form = PostCommentForm()
     context_dic['pictures'] = picture_list
     context_dic['categories'] = categories
@@ -87,6 +100,8 @@ def explore(request):
     context_dic['form'] = form
     context_dic['forbidden_pics'] = forbidden_pics
     context_dic['not_logged_in'] = user_info == None
+    context_dic['disliked_pics'] = disliked_pics
+    context_dic['liked_pics'] = liked_pics
 
     return render(request, 'onlypics/explore.html', context=context_dic)
 
@@ -391,22 +406,16 @@ def like_picture(request):
                 user_info = UserInfo.objects.get(user=request.user)
                 picture = Picture.objects.get(id=uuid)
 
-                instance = PictureVotes()
-                instance.user = user_info
-                instance.picture = picture
-                if data.get("likeButton"):
-                    instance.positive = True
-                elif data.get("dislikeButton"):
-                    instance.positive = False
+                instance, ignored = PictureVotes.objects.get_or_create(user = user_info, picture = picture)
+                instance.positive = "likeButton" in data
 
                 like_result = instance.positive
                 instance.save()
 
                 return JsonResponse({"like_result": like_result, "uuid": uuid}, status=200)
-            except:
-                error_message = "You have already "
-                existing_like_result = PictureVotes.objects.get(user=user_info, picture=picture)
-                return JsonResponse({"error": error_message, "like_result": existing_like_result.positive, "uuid": uuid}, status=200)
+            except Exception as e:
+                print(e)
+                return JsonResponse({"error": "already_liked", "uuid": uuid}, status=200)
         return JsonResponse({"error": ""}, status=400)
 
 def can_buy_picture(user, picture):
