@@ -3,14 +3,13 @@ $(document).ready(function() {
         event.preventDefault();
         let submitter_btn = $(event.originalEvent.submitter);
         var data = new FormData(event.target);
-        var picture_uuid = data['picture_uuid'];
-        console.log(submitter_btn.attr("id"))
+        var picture_uuid = $('input[name=picture_uuid]').val()
 
         if (submitter_btn.attr("name") == "likeButton") {
-            data.append("likeButton", $("#likeButton + picture_uuid").val());
+            data.append("likeButton", true);
         }
         else if (submitter_btn.attr("name") == "dislikeButton") {
-            data.append("dislikeButton", $("#dislikeButton + picture_uuid").val());
+            data.append("dislikeButton", true);
         }
 
         $.ajax({
@@ -24,34 +23,26 @@ $(document).ready(function() {
             success: function (response) {
                 event.target.reset();
                 like_dislike = response["like_result"];
+                var pic_uuid = response["uuid"];
+                console.log(pic_uuid);
                 if ("error" in response) {
                     if (like_dislike) {
-                        $("#haveVoted").text(response["error"] + "Like!");
+                        $("#haveVoted-"+pic_uuid).text(response["error"] + "liked this picture!");
                     }
                     else {
-                        $("#haveVoted").text(response["error"] + "Dislike!");
+                        $("#haveVoted-"+pic_uuid).text(response["error"] + "disliked this picture!");
                     }
                 }
                 else {
-                    var pic_uuid = response["uuid"];
-
-                    if (like_dislike) {
-                        $("#likeButton + pic_uuid").css({'color':'#fff',
+                    submitter_btn.css({'color':'#fff',
                             'background-color' :'#6c757d',
                             'border-color':'#6c757d'});
-                    }
-                    else {
-                        $("#dislikeButton + pic_uuid").css({'color':'#fff',
-                            'background-color' :'#6c757d',
-                            'border-color':'#6c757d'});
-                    }
                 }
 
             },
             error: function (response) {
                 // alert the error if any error occured
                 alert("An error occured!");
-                alert("wowowo");
             }
         });
         return false;

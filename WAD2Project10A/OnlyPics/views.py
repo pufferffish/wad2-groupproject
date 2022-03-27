@@ -66,10 +66,12 @@ def explore(request):
         picture_list = Picture.objects.all()
     categories = Category.objects.all()
     comments = Comment.objects.all()
+    
+    if request.user.is_authenticated:
+        user_info = UserInfo.objects.get(user=request.user)
+        context_dic['user_info'] = user_info
 
     form = PostCommentForm()
-
-    context_dic = {}
     context_dic['pictures'] = picture_list
     context_dic['categories'] = categories
     context_dic['topCats'] = getMostPopularCategories()
@@ -371,12 +373,34 @@ def like_picture(request):
 
                 return JsonResponse({"like_result": like_result, "uuid": uuid}, status=200)
             except:
-                error_message = "You have already voted for this picture with "
+                error_message = "You have already "
                 existing_like_result = PictureVotes.objects.get(user=user_info, picture=picture)
-                return JsonResponse({"error": error_message, "like_result": existing_like_result.positive}, status=200)
-
-
+                return JsonResponse({"error": error_message, "like_result": existing_like_result.positive, "uuid": uuid}, status=200)
         return JsonResponse({"error": ""}, status=400)
+
+@login_required
+def buy_picture(request):
+    if request.method == 'GET' and request.is_ajax:
+        picture_id = request.GET.get('picture_id')
+        user = UserInfo.objects.get(user=request.user)
+        picture = Picture.objects.get(id=picture_id)
+
+        if user.tokens > picture.price and picture.price != -1:
+            user.tokens -= picture.price
+            picture.owner = user
+            picture.price = -1
+
+            user.save()
+            picture.save()
+            return redirect('onlypics:account')
+        else:
+            return JsonResponse({'result':'failure'}, status=200)
+
+    return JsonResponse({"error": ""}, status=400)
+
+
+
+
 
 def terms_and_conditions(request):
     context_dic = {}

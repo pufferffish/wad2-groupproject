@@ -86,6 +86,9 @@ class PictureVotes(models.Model):
         unique_together = [ 'user', 'picture' ]
         verbose_name_plural = 'PictureVotes'
 
+    def __str__(self):
+        return f"{self.user} voted for {self.picture} with {self.positive}"
+
 
 class Comment(models.Model):
     # The user who made the comment
