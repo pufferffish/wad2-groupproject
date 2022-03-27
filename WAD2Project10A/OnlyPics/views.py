@@ -259,19 +259,9 @@ def account(request):
     positiveVotes = {}
     negativeVotes = {}
 
-    for picVote in pictureVotes:
-        for pic in pictures:
-            if picVote.picture == pic:
-                if picVote.positive == True:
-                    if pic in positiveVotes.keys():
-                        positiveVotes[pic] += 1
-                    else:
-                        positiveVotes[pic] = 1
-                else:
-                    if pic in negativeVotes.keys():
-                        negativeVotes[pic] += 1
-                    else:
-                        negativeVotes[pic] = 1
+    for pic in pictures:
+        positiveVotes[pic] = len(PictureVotes.objects.filter(picture = pic, positive = True))
+        negativeVotes[pic] = len(PictureVotes.objects.filter(picture = pic, positive = False))
 
     len_of_pictures = len(pictures)
 
