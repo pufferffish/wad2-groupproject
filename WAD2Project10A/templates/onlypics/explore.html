@@ -51,6 +51,7 @@
                                         {% endif %}
                                     </div>
 
+                                    {% if not not_logged_in %}
                                     <form like-form class="div-button-text">
                                         {% csrf_token %}
                                         <input type="hidden" id="picture_uuid" name="picture_uuid" value="{{ picture.id }}"/>
@@ -65,8 +66,14 @@
                                             class="{% if picture in disliked_pics %}voted-btn{% endif %} btn btn-outline-secondary div-box-button">Dislike</button>
                                         <p class="haveVoted" id="haveVoted-{{picture.id}}" ></p>
                                     </form>
+                                    {% endif %}
 
+
+                                    {% if not_logged_in %}
+                                    <div style="height: 90%">
+                                    {% else %}
                                     <div style="height: 50%">
+                                    {% endif %}
                                         <div class="scrollable" id="comment-{{ picture.id }}">
                                             <p style="font-size: 1.5vw; height: 10%; text-decoration: underline;">Comments:</p>
                                             {% for comment in comments %}
@@ -78,12 +85,14 @@
                                                 {% endif %}
                                             {% endfor %}
                                         </div>
+                                        {% if not not_logged_in %}
                                         <form picture-form style="height: 20%">
                                             {% csrf_token %}
                                             {{ form }}
                                             <input type="hidden" name="picture_uuid" value="{{ picture.id }}"/>
                                             <input type="submit" class="btn btn-outline-secondary submit-comment_btn" value="Submit"/>
                                         </form>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
