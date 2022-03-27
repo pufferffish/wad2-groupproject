@@ -378,5 +378,8 @@ def like_picture(request):
 
         return JsonResponse({"error": ""}, status=400)
 
-
+def terms_and_conditions(request):
+    context_dic = {}
+    context_dic['topCats'] = getMostPopularCategories()
+    return render(request, 'onlypics/tos.html', context=context_dic)
 
