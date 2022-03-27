@@ -126,3 +126,7 @@ button a:hover{
     color: inherit;
 }
 
+.normal-href {
+    color: black;
+    text-decoration: none;
+}

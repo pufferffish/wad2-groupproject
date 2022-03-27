@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from OnlyPics.models import UserInfo, Picture, Category, PictureVotes, Comment
 from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm, PostForSaleForm, PostCommentForm
 
-from OnlyPics.hcaptcha import verify_hcaptcha_request
+from OnlyPics.hcaptcha import CaptchaException, verify_hcaptcha_request
 
 from datetime import datetime
 import numpy as np
@@ -58,8 +58,12 @@ def index(request):
     return render(request, 'onlypics/index.html', context=context_dic)
 
 def explore(request):
-    context_dic = {}
-    picture_list = Picture.objects.all()
+    filter_query = request.GET.get("filter", None)
+    try:
+        filter_category = Category.objects.get(name = filter_query)
+        picture_list = Picture.objects.filter(tags = filter_category)
+    except:
+        picture_list = Picture.objects.all()
     categories = Category.objects.all()
     comments = Comment.objects.all()
     
@@ -262,19 +266,9 @@ def account(request):
     positiveVotes = {}
     negativeVotes = {}
 
-    for picVote in pictureVotes:
-        for pic in pictures:
-            if picVote.picture == pic:
-                if picVote.positive == True:
-                    if pic in positiveVotes.keys():
-                        positiveVotes[pic] += 1
-                    else:
-                        positiveVotes[pic] = 1
-                else:
-                    if pic in negativeVotes.keys():
-                        negativeVotes[pic] += 1
-                    else:
-                        negativeVotes[pic] = 1
+    for pic in pictures:
+        positiveVotes[pic] = len(PictureVotes.objects.filter(picture = pic, positive = True))
+        negativeVotes[pic] = len(PictureVotes.objects.filter(picture = pic, positive = False))
 
     len_of_pictures = len(pictures)
 

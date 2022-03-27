@@ -19,7 +19,9 @@
                 {% if categories %}
                     <ul class="list-group list-group-flush" >
                         {% for c in categories %}
-                          <li class="list-group-item" style="font-size: 20px;">{{ c.name }}</li>
+                        <li class="list-group-item" style="font-size: 20px;">
+                            <a class="normal-href" href="{% url 'onlypics:explore' %}?filter={{ c.name }}">{{ c.name }}</a>
+                        </li>
                         {% endfor %}
                     </ul>
                 {% else %}
