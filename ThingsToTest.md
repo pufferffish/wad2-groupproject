@@ -1,8 +1,0 @@
-- user can post
-- user can add tokens
-- user can change profile name
-- user can change profile icon
-- user can comment
-- user can buy
-- user can sell
-- user cannot see other users's private pictures

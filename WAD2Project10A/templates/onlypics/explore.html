@@ -41,7 +41,7 @@
                             <div class="picture-box">
                                 <img class="explore-img" src="{{ MEDIA_URL }}{{picture.upload}}" >
                                 <div id="info-picture-div">
-                                    <div style="height: 30%; padding-top: 2%;">
+                                    <div style="height: 30%;">
                                         <h3 class="div-buy div-buy-text">Name: {{ picture.name }}</h3>
                                         <h3 class="div-buy div-buy-text">Owner: {{ picture.owner }}</h3><br/>
                                         <h3 class="div-buy div-buy-text">Price: <span style="color: blue; ">{{ picture.price }} tokens</span></h3>
@@ -54,10 +54,13 @@
                                     <form like-form class="div-button-text">
                                         {% csrf_token %}
                                         <input type="hidden" id="picture_uuid" name="picture_uuid" value="{{ picture.id }}"/>
-                                        <button type="submit" name="likeButton" value="true" id="likeButton-{{picture.id}}" disabled=false class="btn btn-outline-secondary div-box-button">Like</button>
-                                        <button type="button" onclick="buyPicture('{{ picture.id }}')" {% if not_logged_in or picture in forbidden_pics %} disabled=true {% endif %}
+                                        <button type="submit" name="likeButton" value="true" id="likeButton-{{picture.id}}"
+                                            {% if not_logged_in %}disabled{% endif %} class="btn btn-outline-secondary div-box-button">Like</button>
+                                        <button type="button" onclick="buyPicture('{{ picture.id }}')"
+                                            {% if not_logged_in or picture in forbidden_pics %} disabled=true {% endif %}
                                             class="btn btn-outline-primary div-buy div-buy-button">Buy</button>
-                                        <button type="submit" name="dislikeButton" value="false" id="dislikeButton-{{picture.id}}" disabled={{ not_logged_in }} class="btn btn-outline-secondary div-box-button">Dislike</button>
+                                        <button type="submit" name="dislikeButton" value="false" id="dislikeButton-{{picture.id}}"
+                                            {% if not_logged_in %}disabled{% endif %} class="btn btn-outline-secondary div-box-button">Dislike</button>
                                         <p class="haveVoted" id="haveVoted-{{picture.id}}" ></p>
                                     </form>
 

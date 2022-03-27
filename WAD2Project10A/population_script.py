@@ -5,7 +5,7 @@ from datetime import datetime
 import django
 
 django.setup()
-from OnlyPics.models import Picture, Category, UserInfo, User
+from OnlyPics.models import *
 from django.core.files.uploadedfile import UploadedFile
 
 import random
@@ -27,6 +27,7 @@ usernames = [faker.name() for i in range(12)]
 
 def populate_users():
     i = 0
+    users = []
     for username in usernames:
         i += 1
         django_user, ignored = User.objects.get_or_create(username = f"testuser{i}")
@@ -34,8 +35,11 @@ def populate_users():
         user, ignored = UserInfo.objects.get_or_create(user=django_user)
         user.nickname = username
         user.save()
+        users.append(user)
+    return users
 
 def populate_images(images):
+    pictures = []
     for cat in images:
         category, ignored = Category.objects.get_or_create(name=cat)
         for img in images[cat]:
@@ -50,10 +54,20 @@ def populate_images(images):
                 upload=UploadedFile(file=open(file_path, 'rb'))
             )
             instance.save()
+            pictures.append(instance)
+    return pictures
 
+
+def populate_comments(users, pictures):
+    for i in range(18):
+        picture = random.choice(pictures)
+        user = random.choice(users)
+        Comment(owner = user, picture = picture, text = faker.sentence(), made_at = faker.date_time_this_year()).save()
 
 if __name__ == '__main__':
     print("populating fake users")
-    populate_users()
+    users = populate_users()
     print("populating images and categories")
-    populate_images(images)
+    pictures = populate_images(images)
+    print("populating comments")
+    populate_comments(users, pictures)
