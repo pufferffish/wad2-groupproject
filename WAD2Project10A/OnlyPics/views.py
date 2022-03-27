@@ -59,6 +59,7 @@ def index(request):
 
 def explore(request):
     filter_query = request.GET.get("filter", None)
+    context_dic = {}
     try:
         filter_category = Category.objects.get(name = filter_query)
         picture_list = Picture.objects.filter(tags = filter_category)
