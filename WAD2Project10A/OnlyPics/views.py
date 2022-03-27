@@ -386,8 +386,9 @@ def buy_picture(request):
         user = UserInfo.objects.get(user=request.user)
         picture = Picture.objects.get(id=picture_id)
 
-        if user.tokens > picture.price and picture.price != -1:
+        if user.tokens >= picture.price and picture.price != -1:
             user.tokens -= picture.price
+            picture.owner.tokens += picture.price
             picture.owner = user
             picture.price = -1
 
