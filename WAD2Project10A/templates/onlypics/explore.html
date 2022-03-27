@@ -41,7 +41,7 @@
                             <div class="picture-box">
                                 <img class="explore-img" src="{{ MEDIA_URL }}{{picture.upload}}" >
                                 <div id="info-picture-div">
-                                    <div style="margin-bottom: 15px; margin-top: 15px;">
+                                    <div style="height: 30%; padding-top: 2%;">
                                         <h3 class="div-buy div-buy-text">Name: {{ picture.name }}</h3>
                                         <h3 class="div-buy div-buy-text">Owner: {{ picture.owner }}</h3><br/>
                                         <h3 class="div-buy div-buy-text">Price: <span style="color: blue; ">{{ picture.price }} tokens</span></h3>
@@ -50,39 +50,35 @@
                                         {% else %}
                                         {% endif %}
                                     </div>
-                                    <div id="delimiter1"></div>
-                                    <div >
-                                        <form like-form class="div-button-text">
-                                            {% csrf_token %}
-                                            <input type="hidden" id="picture_uuid" name="picture_uuid" value="{{ picture.id }}"/>
-                                            <button type="submit" name="likeButton" value="true" id="likeButton-{{picture.id}}" disabled={{ not_logged_in }} class="btn btn-outline-secondary div-box-button">Like</button>
-                                            <button type="button" onclick="buyPicture('{{ picture.id }}')" {% if not_logged_in or picture in forbidden_pics %}disabled=true{% endif %}
-                                                class="btn btn-outline-primary div-buy div-buy-button">Buy</button>
-                                            <button type="submit" name="dislikeButton" value="false" id="dislikeButton-{{picture.id}}" disabled={{ not_logged_in }} class="btn btn-outline-secondary div-box-button">Dislike</button>
-                                            <p class="haveVoted" id="haveVoted-{{picture.id}}" ></p>
-                                        </form>
-                                    </div>
-                                    <div id="delimiter2"></div>
-                                    <div style="height: 30%">
-                                        <p style="font-size: 20px; text-decoration: underline; margin-bottom: 0;">Comments:</p>
+
+                                    <form like-form class="div-button-text">
+                                        {% csrf_token %}
+                                        <input type="hidden" id="picture_uuid" name="picture_uuid" value="{{ picture.id }}"/>
+                                        <button type="submit" name="likeButton" value="true" id="likeButton-{{picture.id}}" disabled=false class="btn btn-outline-secondary div-box-button">Like</button>
+                                        <button type="button" onclick="buyPicture('{{ picture.id }}')" {% if not_logged_in or picture in forbidden_pics %} disabled=true {% endif %}
+                                            class="btn btn-outline-primary div-buy div-buy-button">Buy</button>
+                                        <button type="submit" name="dislikeButton" value="false" id="dislikeButton-{{picture.id}}" disabled={{ not_logged_in }} class="btn btn-outline-secondary div-box-button">Dislike</button>
+                                        <p class="haveVoted" id="haveVoted-{{picture.id}}" ></p>
+                                    </form>
+
+                                    <div style="height: 50%">
                                         <div class="scrollable" id="comment-{{ picture.id }}">
+                                            <p style="font-size: 1.5vw; height: 10%; text-decoration: underline;">Comments:</p>
                                             {% for comment in comments %}
                                                 {% if picture == comment.picture %}
                                                         <div style="display: flex;" id="comment-section">
-                                                            <p style="float: left; margin-left: 20px;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
+                                                            <p style="float: left; margin-left: 20px; margin-bottom: 0;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
                                                         </div>
                                                 {% else %}
                                                 {% endif %}
                                             {% endfor %}
                                         </div>
-                                        <div>
-                                            <form picture-form>
-                                                {% csrf_token %}
-                                                {{ form }}
-                                                <input type="hidden" name="picture_uuid" value="{{ picture.id }}"/>
-                                                <input type="submit" class="btn btn-outline-secondary" value="Submit"/>
-                                            </form>
-                                        </div>
+                                        <form picture-form style="height: 20%">
+                                            {% csrf_token %}
+                                            {{ form }}
+                                            <input type="hidden" name="picture_uuid" value="{{ picture.id }}"/>
+                                            <input type="submit" class="btn btn-outline-secondary submit-comment_btn" value="Submit"/>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

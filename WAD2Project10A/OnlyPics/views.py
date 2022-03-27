@@ -148,6 +148,7 @@ def post_for_sale(request):
 
     context_dic = {}
     context_dic["categories"] = Category.objects.all()
+    context_dic['topCats'] = getMostPopularCategories()
     context_dic["error_message"] = resolve_error_message(request.GET.get("error", None))
     context_dic["target"] = target_picture
     return render(request, 'onlypics/post_for_sale.html', context_dic)
