@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from OnlyPics.models import UserInfo, Picture, Category, PictureVotes, Comment
 from OnlyPics.forms import UserInfoForm, UpdateUserInfoForm, PostForSaleForm, PostCommentForm
 
-from OnlyPics.hcaptcha import verify_hcaptcha_request
+from OnlyPics.hcaptcha import CaptchaException, verify_hcaptcha_request
 
 from datetime import datetime
 import numpy as np
