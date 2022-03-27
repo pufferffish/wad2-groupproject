@@ -18,6 +18,9 @@
                 <p style="font-size: 25px; margin-bottom: 40px;"><strong>Popular Categories</strong></p>
                 {% if categories %}
                     <ul class="list-group list-group-flush" >
+                        <li class="list-group-item" style="font-size: 20px;">
+                            <a class="normal-href" href="{% url 'onlypics:explore' %}">All</a>
+                        </li>
                         {% for c in categories %}
                         <li class="list-group-item" style="font-size: 20px;">
                             <a class="normal-href" href="{% url 'onlypics:explore' %}?filter={{ c.name }}">{{ c.name }}</a>
