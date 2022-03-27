@@ -106,6 +106,7 @@ def image_reformat(image):
 @login_required
 def post_for_sale(request):
     if request.method == 'POST':
+        old_image_id = None
         try:
             user = UserInfo.objects.get(user=request.user)
             query = request.POST
@@ -114,11 +115,12 @@ def post_for_sale(request):
                 picture_id = query['target']
                 picture = Picture.objects.get(id = picture_id)
                 is_new_image = False
+                old_image_id = picture_id
             except:
                 picture = Picture()
             picture.owner = user
-            if query['forSale'] == 'on':
-                picture.price = int(query['price'])
+            if query.get('forSale', None) == 'on':
+                picture.price = max(int(query['price']), -1)
             else:
                 picture.price = -1
             picture.tags = Category.objects.get(name=query['category'])
@@ -131,8 +133,12 @@ def post_for_sale(request):
             picture.save()
             return redirect('onlypics:account')
         except Exception as e:
-            print(e)
-            return redirect(request.build_absolute_uri() + "?error=" + INVALID_PICTURE_REASON)
+            redirect_uri = request.build_absolute_uri()
+            if old_image_id != None:
+                redirect_uri += "?error=unknown&picture=" + old_image_id
+            else:
+                redirect_uri += "?error=" + INVALID_PICTURE_REASON
+            return redirect(redirect_uri)
 
     try:
         target_picture = request.GET.get("picture", None)
