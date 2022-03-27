@@ -67,10 +67,16 @@ def explore(request):
         picture_list = Picture.objects.all()
     categories = Category.objects.all()
     comments = Comment.objects.all()
-    
+
+    user_info = None
     if request.user.is_authenticated:
         user_info = UserInfo.objects.get(user=request.user)
         context_dic['user_info'] = user_info
+
+    forbidden_pics = []
+    for pic in picture_list:
+        if user_info and not can_buy_picture(user_info, pic):
+            forbidden_pics.append(pic)
 
     form = PostCommentForm()
     context_dic['pictures'] = picture_list
@@ -78,6 +84,7 @@ def explore(request):
     context_dic['topCats'] = getMostPopularCategories()
     context_dic['comments'] = comments
     context_dic['form'] = form
+    context_dic['forbidden_pics'] = forbidden_pics
 
     return render(request, 'onlypics/explore.html', context=context_dic)
 
@@ -379,6 +386,9 @@ def like_picture(request):
                 return JsonResponse({"error": error_message, "like_result": existing_like_result.positive, "uuid": uuid}, status=200)
         return JsonResponse({"error": ""}, status=400)
 
+def can_buy_picture(user, picture):
+    return picture.owner != user and user.tokens >= picture.price and picture.price != -1
+
 @login_required
 def buy_picture(request):
     if request.method == 'GET' and request.is_ajax:
@@ -386,7 +396,7 @@ def buy_picture(request):
         user = UserInfo.objects.get(user=request.user)
         picture = Picture.objects.get(id=picture_id)
 
-        if picture.owner != user and user.tokens >= picture.price and picture.price != -1:
+        if can_buy_picture(user, picture):
             user.tokens -= picture.price
             picture.owner.tokens += picture.price
             picture.owner.save()
