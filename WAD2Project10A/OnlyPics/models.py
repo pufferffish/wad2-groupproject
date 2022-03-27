@@ -84,7 +84,7 @@ class PictureVotes(models.Model):
     # The picture which the vote is casted on
     picture = models.ForeignKey(Picture, on_delete=models.CASCADE)
     # Whether the vote is positive (a like) or negative (a dislike)
-    positive = models.BooleanField()
+    positive = models.BooleanField(default = True)
 
     class Meta:
         unique_together = [ 'user', 'picture' ]

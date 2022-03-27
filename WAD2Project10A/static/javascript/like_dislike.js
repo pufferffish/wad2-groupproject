@@ -4,6 +4,12 @@ $(document).ready(function() {
         let submitter_btn = $(event.originalEvent.submitter);
         var data = new FormData(event.target);
         var picture_uuid = $('input[name=picture_uuid]').val()
+        for (const btn of event.target.getElementsByClassName("voted-btn")) {
+            if (btn == submitter_btn[0]) {
+                return false;
+            }
+            btn.classList.remove("voted-btn");
+        }
 
         if (submitter_btn.attr("name") == "likeButton") {
             data.append("likeButton", true);
@@ -32,11 +38,8 @@ $(document).ready(function() {
                     else {
                         $("#haveVoted-"+pic_uuid).text(response["error"] + "disliked this picture!");
                     }
-                }
-                else {
-                    submitter_btn.css({'color':'#fff',
-                            'background-color' :'#6c757d',
-                            'border-color':'#6c757d'});
+                } else {
+                    submitter_btn[0].classList.add("voted-btn");
                 }
 
             },
