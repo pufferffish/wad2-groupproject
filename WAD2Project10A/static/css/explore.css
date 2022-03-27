@@ -116,3 +116,13 @@ p.haveVoted{
     margin-bottom: 0;
 }
 
+button a{
+    text-decoration: none;
+    color: inherit;
+}
+
+button a:hover{
+    text-decoration: none;
+    color: inherit;
+}
+

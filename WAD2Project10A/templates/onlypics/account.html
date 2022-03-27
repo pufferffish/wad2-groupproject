@@ -48,6 +48,7 @@
               </div>
               {% if pictures %}
                   {% for pic in pictures %}
+              <p style="margin-top: 15px; margin-bottom: 0; font-size: 25px;">Picture name: <strong>{{pic.name}}</strong></p>
                       <div class="picture-box">
                           <img class="owned-img" src="{{ MEDIA_URL }}{{pic.upload}}">
                       </div>

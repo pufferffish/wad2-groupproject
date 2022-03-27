@@ -22,4 +22,5 @@ urlpatterns = [
 
     path("post_comment", views.post_comment, name='post_comment'),
     path("like_picture", views.like_picture, name='like_picture'),
+    path("buy_picture", views.buy_picture, name='buy_picture'),
 ]

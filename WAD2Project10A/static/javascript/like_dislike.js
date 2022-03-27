@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     $('[like-form]').submit(function(event){
         event.preventDefault();
@@ -8,11 +7,9 @@ $(document).ready(function() {
 
         if (submitter_btn.attr("name") == "likeButton") {
             data.append("likeButton", true);
-            otherButton = $("#dislikeButton-"+picture_uuid);
         }
         else if (submitter_btn.attr("name") == "dislikeButton") {
             data.append("dislikeButton", true);
-            otherButton = $("#likeButton-"+picture_uuid);
         }
 
         $.ajax({

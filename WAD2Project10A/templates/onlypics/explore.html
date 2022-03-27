@@ -32,49 +32,56 @@
         <div class="col-md-10">
             <div class="content">
                     {% for picture in pictures %}
-                        <div class="picture-box">
-                            <img class="explore-img" src="{{ MEDIA_URL }}{{picture.upload}}" >
-                            <div id="info-picture-div">
-                                <div style="margin-bottom: 15px; margin-top: 15px;">
-                                    <h3 class="div-buy div-buy-text">Name: {{ picture.name }}</h3>
-                                    <h3 class="div-buy div-buy-text">Owner: {{ picture.owner }}</h3><br/>
-                                    <h3 class="div-buy div-buy-text">Price: <span style="color: blue; ">{{ picture.price }} tokens</span></h3>
-                                </div>
-                                <div id="delimiter1"></div>
-                                <div >
-                                    <form like-form class="div-button-text">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="picture_uuid" value="{{ picture.id }}"/>
-                                        <button type="submit" name="likeButton" value="true" id="likeButton-{{picture.id}}" class="btn btn-outline-secondary div-box-button">Like</button>
-                                        <button type="button" class="btn btn-outline-primary div-buy div-buy-button" >Buy</button>
-                                        <button type="submit" name="dislikeButton" value="false" id="dislikeButton-{{picture.id}}" class="btn btn-outline-secondary div-box-button">Dislike</button>
-                                        <p class="haveVoted" id="haveVoted-{{picture.id}}" ></p>
-                                    </form>
-                                </div>
-                                <div id="delimiter2"></div>
-                                <div style="height: 30%">
-                                    <p style="font-size: 20px; text-decoration: underline; margin-bottom: 0;">Comments:</p>
-                                    <div class="scrollable" id="comment-{{ picture.id }}">
-                                        {% for comment in comments %}
-                                            {% if picture == comment.picture %}
-                                                    <div style="display: flex;" id="comment-section">
-                                                        <p style="float: left; margin-left: 20px;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
-                                                    </div>
-                                            {% else %}
-                                            {% endif %}
-                                        {% endfor %}
+                        {% if picture.price != -1 %}
+                            <div class="picture-box">
+                                <img class="explore-img" src="{{ MEDIA_URL }}{{picture.upload}}" >
+                                <div id="info-picture-div">
+                                    <div style="margin-bottom: 15px; margin-top: 15px;">
+                                        <h3 class="div-buy div-buy-text">Name: {{ picture.name }}</h3>
+                                        <h3 class="div-buy div-buy-text">Owner: {{ picture.owner }}</h3><br/>
+                                        <h3 class="div-buy div-buy-text">Price: <span style="color: blue; ">{{ picture.price }} tokens</span></h3>
+                                        {% if user.is_authenticated %}
+                                            <h6>(Available tokens: {{user_info.tokens}})</h6>
+                                        {% else %}
+                                        {% endif %}
                                     </div>
-                                    <div>
-                                        <form picture-form>
+                                    <div id="delimiter1"></div>
+                                    <div >
+                                        <form like-form class="div-button-text">
                                             {% csrf_token %}
-                                            {{ form }}
-                                            <input type="hidden" name="picture_uuid" value="{{ picture.id }}"/>
-                                            <input type="submit" class="btn btn-outline-secondary" value="Submit"/>
+                                            <input type="hidden" id="picture_uuid" name="picture_uuid" value="{{ picture.id }}"/>
+                                            <button type="submit" name="likeButton" value="true" id="likeButton-{{picture.id}}" class="btn btn-outline-secondary div-box-button">Like</button>
+                                            <button type="button" onclick="buyPicture('{{ picture.id }}')"  class="btn btn-outline-primary div-buy div-buy-button">Buy</button>
+                                            <button type="submit" name="dislikeButton" value="false" id="dislikeButton-{{picture.id}}" class="btn btn-outline-secondary div-box-button">Dislike</button>
+                                            <p class="haveVoted" id="haveVoted-{{picture.id}}" ></p>
                                         </form>
+                                    </div>
+                                    <div id="delimiter2"></div>
+                                    <div style="height: 30%">
+                                        <p style="font-size: 20px; text-decoration: underline; margin-bottom: 0;">Comments:</p>
+                                        <div class="scrollable" id="comment-{{ picture.id }}">
+                                            {% for comment in comments %}
+                                                {% if picture == comment.picture %}
+                                                        <div style="display: flex;" id="comment-section">
+                                                            <p style="float: left; margin-left: 20px;"><strong>{{ comment.owner }}</strong> : {{ comment.text }}</p>
+                                                        </div>
+                                                {% else %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <div>
+                                            <form picture-form>
+                                                {% csrf_token %}
+                                                {{ form }}
+                                                <input type="hidden" name="picture_uuid" value="{{ picture.id }}"/>
+                                                <input type="submit" class="btn btn-outline-secondary" value="Submit"/>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        {% else %}
+                        {% endif %}
                     {% endfor %}
             </div>
         </div>
@@ -82,7 +89,8 @@
 </div>
 {% block javaScript %}
     <script src="{% static 'javascript/post_comment.js'%}"></script>
-<script src="{% static 'javascript/like_dislike.js'%}"></script>
+    <script src="{% static 'javascript/like_dislike.js'%}"></script>
+    <script src="{% static 'javascript/buy_picture.js'%}"></script>
 {% endblock %}
 {% endblock %}
 
