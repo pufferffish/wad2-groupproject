@@ -22,35 +22,46 @@
         <div class="row container uploadForm">
             <div class="border uploadPart">
                 <div align="left">
+                    {% if target is None %}
                     <img id="pic" class="preview"/>
-                </div>
+                    {% else %}
+                    <img class="preview" src="{{ MEDIA_URL }}{{target.upload}}"/>
+                    {% endif %}
+            </div>
                 <div align="left">
+                    {% if target is None %}
                     <input type="file" name="upload" accept="image/*" required="yes" id="upload" class="file-btn form-control">
+                    {% else %}
+                    <input type="hidden" name="target" value="{{target.id}}">
+                    {% endif %}
                 </div>
             </div>
             <div class="border uploadPart">
                 <div class="flexbox" align="left">
                     <div class="postList">
                         <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" min="0" required="yes" class="form-control">
+                        <input type="text" id="name" name="name" min="0" required="yes" class="form-control" value="{{ target.name }}">
                     </div>
                     <div class="postList">
                         <label for="createdAt">Created At:</label>
-                        <input type="date" id="createdAt" name="createdAt" required="yes" class="form-control">
+                        <input type="date" id="createdAt" name="createdAt" required="yes" class="form-control"  value="{{ target.day_created_at }}">
                     </div>
                     <div class="postList">
                         <label for="forSale">For sale:</label>
-                        <input type="checkbox" id="forSale" name="forSale" onchange="toggleForSale(this)" checked/>
+                        <input type="checkbox" id="forSale" name="forSale" onchange="toggleForSale(this)"
+                            {% if target != None and target.price >= 0 %} checked {% endif %}/>
                     </div>
                     <div class="postList">
                         <label for="price">Price:</label>
-                        <input type="number" id="price" name="price" min="0" value="0" required="yes" class="form-control">
+                        <input type="number" id="price" name="price" min="0"
+                            value="{% if target is None or target.price < 0 %}0{% else %}{{ target.price }}{% endif %}"
+                            required="yes" class="form-control">
                     </div>
                     <div class="postList">
                         <label for="category">Category:</label>
-                        <select name="category" id="category" required="yes" class="form-control">
+                        <select name="category" id="category" required="yes" class="form-control" >
                             {% for c in categories %}
-                                <option value="{{ c }}">{{ c }}</option>
+                                <option value="{{ c }}" {% if target.tags == c %}selected{% endif %}>{{ c }}</option>
                             {% endfor %}
                         </select>
                     </div>

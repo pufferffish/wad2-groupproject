@@ -17,6 +17,7 @@ import io
 from PIL import Image
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import sys
+import html
 
 INVALID_CAPTCHA_REASON = "invalidCaptcha"
 INVALID_PICTURE_REASON = "invalidPicture"
@@ -108,7 +109,13 @@ def post_for_sale(request):
         try:
             user = UserInfo.objects.get(user=request.user)
             query = request.POST
-            picture = Picture()
+            is_new_image = True
+            try:
+                picture_id = query['target']
+                picture = Picture.objects.get(id = picture_id)
+                is_new_image = False
+            except:
+                picture = Picture()
             picture.owner = user
             if query['forSale'] == 'on':
                 picture.price = int(query['price'])
@@ -117,18 +124,26 @@ def post_for_sale(request):
             picture.tags = Category.objects.get(name=query['category'])
             picture.createdAt = query['createdAt']
             picture.name = query['name']
-            image = request.FILES['upload']
-            image = image_reformat(image)
-            picture.upload.save(image.name, image)
+            if is_new_image:
+                image = request.FILES['upload']
+                image = image_reformat(image)
+                picture.upload.save(image.name, image)
             picture.save()
             return redirect('onlypics:account')
         except Exception as e:
             print(e)
             return redirect(request.build_absolute_uri() + "?error=" + INVALID_PICTURE_REASON)
 
+    try:
+        target_picture = request.GET.get("picture", None)
+        target_picture = Picture.objects.get(id = target_picture)
+    except:
+        target_picture = None
+
     context_dic = {}
     context_dic["categories"] = Category.objects.all()
     context_dic["error_message"] = resolve_error_message(request.GET.get("error", None))
+    context_dic["target"] = target_picture
     return render(request, 'onlypics/post_for_sale.html', context_dic)
 
 @login_required
@@ -303,7 +318,7 @@ def edit_account(request):
             info.user = request.user
             info.save()
             return redirect('onlypics:account')
-        except:
+        except Exception as e:
             return redirect(request.build_absolute_uri() + "?error=" + INVALID_PICTURE_REASON)
 
     error_message = resolve_error_message(request.GET.get("error", None))
@@ -326,7 +341,7 @@ def upload(request):
                 user_info.user = user
                 user_info.save()
                 return redirect('onlypics:index')
-            except:
+            except Exception as e:
                 return redirect(request.build_absolute_uri() + "?error=" + INVALID_PICTURE_REASON)
     error_message = resolve_error_message(request.GET.get("error", None))
     return render(request, 'onlypics/upload.html', context={'form': form, 'error_message': error_message})

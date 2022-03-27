@@ -6,6 +6,8 @@ function toggleForSale(element) {
     priceInput.disabled = !element.checked;
 }
 
+toggleForSale(document.getElementById("forSale"));
+
 uploadButton.addEventListener("change", function () {
    files = uploadButton.files[0];
   if (files) {

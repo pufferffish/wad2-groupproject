@@ -56,8 +56,14 @@
                         <div id="content">
                             <p class="info-explore-picture">Likes: {{ positiveVotes|picVoteValue:pic }}</p>
                             <p class="info-explore-picture">Dislikes: {{ negativeVotes|picVoteValue:pic }}</p>
+                            {% if pic.price >= 0 %}
+                            <p class="info-explore-picture">Price: {{ pic.price }}</p>
+                            {% endif %}
+                            <a href="{% url 'onlypics:post_for_sale' %}?picture={{ pic.id }}">
+                                <button style="margin-left: 10px" class="btn download-button"><i class="fa fa-pencil"></i> Edit</button>
+                            </a>
                             <a href="{{ MEDIA_URL }}{{pic.upload}}" download="{{pic.name}}">
-                                <button class="btn download-button"><i class="fa fa-download"></i> Download</button>
+                                <button style="margin-left: 10px" class="btn download-button"><i class="fa fa-download"></i> Download</button>
                             </a>
                         </div>
                         <div id="delimiter"></div>

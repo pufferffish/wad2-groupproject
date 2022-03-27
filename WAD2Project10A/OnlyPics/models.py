@@ -71,6 +71,10 @@ class Picture(models.Model):
     # The UUID to identify the picture
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
+    @property
+    def day_created_at(self):
+        return self.createdAt.date().strftime('%Y-%m-%d')
+
     def __str__(self):
         return self.name
 
