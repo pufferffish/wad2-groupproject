@@ -52,9 +52,7 @@ def getMostPopularCategories():
     return topThreeCategories
 
 def index(request):
-    pictures = Picture.objects.all()
     context_dic = {}
-    context_dic['pics'] = pictures
     context_dic['topCats'] = getMostPopularCategories()
     return render(request, 'onlypics/index.html', context=context_dic)
 
@@ -167,14 +165,6 @@ def post_for_sale(request):
     context_dic["error_message"] = resolve_error_message(request.GET.get("error", None))
     context_dic["target"] = target_picture
     return render(request, 'onlypics/post_for_sale.html', context_dic)
-
-@login_required
-def profile(request):
-    user = UserInfo.objects.get(user = request.user)
-    pictures = Picture.objects.filter(owner = user)
-    context_dic = {}
-    context_dic['pictures'] = pictures
-    return render(request, 'onlypics/profile.html', context=context_dic)
 
 # calculate how many tokens should be gained
 # in add_tokens.html
