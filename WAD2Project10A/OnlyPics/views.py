@@ -58,7 +58,12 @@ def index(request):
     return render(request, 'onlypics/index.html', context=context_dic)
 
 def explore(request):
-    picture_list = Picture.objects.all()
+    filter_query = request.GET.get("filter", None)
+    try:
+        filter_category = Category.objects.get(name = filter_query)
+        picture_list = Picture.objects.filter(tags = filter_category)
+    except:
+        picture_list = Picture.objects.all()
     categories = Category.objects.all()
     comments = Comment.objects.all()
 

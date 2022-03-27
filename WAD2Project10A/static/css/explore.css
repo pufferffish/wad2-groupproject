@@ -109,3 +109,8 @@
 #comment-section{
     display: block;
 }
+
+.normal-href {
+    color: black;
+    text-decoration: none;
+}
