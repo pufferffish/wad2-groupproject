@@ -84,29 +84,31 @@
             <div class="col-md-4">
                 {% if topCats %}
                     {% for c in topCats %}
-                        <li class="categories"><a href="#category"></a>{{ c }}</li>
+                        <li class="footerList">
+                            <a href="{% url 'onlypics:explore' %}?filter={{ c }}">{{ c }}</a>
+                        </li>
                     {% endfor %}
                 {% else %}
                     <li class="categories">None</li>
                 {% endif %}
             </div>
             <div class="col-md-4">
-                <li class="aboutUsList">
-                    <a href="{% url 'onlypics:about'%}#about-us" style="padding: 0;">Visit our about page</a>
+                <li class="footerList">
+                    <a href="{% url 'onlypics:about'%}#about-us">Visit our about page</a>
                 </li>
-                <li class="aboutUsList">
-                    <a href="{% url 'onlypics:about'%}#faqs" style="padding: 0;">FAQs</a>
+                <li class="footerList">
+                    <a href="{% url 'onlypics:about'%}#faqs">FAQs</a>
                 </li>
-                <li class="aboutUsList">
-                    <a href="{% url 'onlypics:about'%}#contact-us" style="padding: 0;">Contact Us</a>
+                <li class="footerList">
+                    <a href="{% url 'onlypics:about'%}#contact-us">Contact Us</a>
                 </li>
             </div>
             <div class="col-md-4">
-                <li class="aboutUsList">
-                    <a href="{% url 'onlypics:privacy' %}" style="padding: 0;">Privacy Policy</a>
+                <li class="footerList">
+                    <a href="{% url 'onlypics:privacy' %}">Privacy Policy</a>
                 </li>
-                <li class="aboutUsList">
-                    <a href="{% url 'onlypics:tos' %}" style="padding: 0;">Terms and Conditions</a>
+                <li class="footerList">
+                    <a href="{% url 'onlypics:tos' %}">Terms and Conditions</a>
                 </li>
             </div>
         </div>
