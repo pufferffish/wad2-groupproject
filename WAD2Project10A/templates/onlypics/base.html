@@ -35,6 +35,7 @@
                         {% if user.is_authenticated%}
                             <li><a href="{% url 'onlypics:logout'%}">Log out</a></li>
                             <li><a href="{% url 'onlypics:account'%}">Account</a></li>
+                            <li><a href="{% url 'onlypics:post_for_sale'%}">Sell Pictures</a></li>
                         {% else %}
                             <li><a href="/microsoft/to-auth-redirect/?next=/onlypics/upload">Log in</a></li>
                         {% endif %}

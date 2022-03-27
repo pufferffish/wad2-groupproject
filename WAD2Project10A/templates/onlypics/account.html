@@ -35,9 +35,10 @@
                   {% endif %}
               </div>
               <div>
-                  <a class="account-option" href="{% url 'onlypics:edit_account'%}">Edit Account</a>
-                  <a class="account-option" href="{% url 'onlypics:delete_account'%}">Delete Account</a>
-                  <a class="account-option" href="{% url 'onlypics:add_tokens'%}">Get the daily amount of tokens</a>
+                  <div><a class="account-option" href="{% url 'onlypics:edit_account'%}">Edit Account</a></div>
+                  <div><a class="account-option" href="{% url 'onlypics:delete_account'%}">Delete Account</a></div>
+                  <div><a class="account-option" href="{% url 'onlypics:post_for_sale'%}">Sell pictures</a></div>
+                  <div><a class="account-option" href="{% url 'onlypics:add_tokens'%}">Get the daily amount of tokens</a></div>
               </div>
           </div>
         </div>
