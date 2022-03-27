@@ -449,3 +449,8 @@ def terms_and_conditions(request):
     context_dic['topCats'] = getMostPopularCategories()
     return render(request, 'onlypics/tos.html', context=context_dic)
 
+def privacy_policy(request):
+    context_dic = {}
+    context_dic['topCats'] = getMostPopularCategories()
+    return render(request, 'onlypics/privacy.html', context=context_dic)
+
