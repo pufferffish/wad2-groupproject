@@ -393,15 +393,11 @@ def buy_picture(request):
 
             user.save()
             picture.save()
-            return redirect('onlypics:account')
+            return JsonResponse({'result':'ok'}, status=200)
         else:
-            return JsonResponse({'result':'failure'}, status=200)
+            return JsonResponse({'result':'failure'}, status=400)
 
     return JsonResponse({"error": ""}, status=400)
-
-
-
-
 
 def terms_and_conditions(request):
     context_dic = {}

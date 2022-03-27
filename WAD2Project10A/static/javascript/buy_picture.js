@@ -9,6 +9,7 @@ function buyPicture(picture_id) {
             if (result == "failure") {
                 alert("This picture cannot be bought because you dont have enough tokens!");
             }
+            window.location = "/onlypics/account";
         },
         error: function (response) {
             alert("An error occured!");
