@@ -20,5 +20,8 @@ python3 manage.py migrate
 python3 manage.py shell < django_setup.py
 python3 manage.py runserver
 ```
-
+To populate the database and see some content, run the following command and start the server again:
+```
+python3 population_script.py
+```
 The site is hosted at [octeep.pythonanywhere.com](https://octeep.pythonanywhere.com).
